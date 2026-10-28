@@ -6,15 +6,17 @@ Jamie Chait's own classroom study game (Knights Preparatory School, Randburg). L
 
 ## How it plays (agreed with Jamie)
 
-1. Home: Mr Chait + logo lockup, "Pick a deck", how-to-play steps, sound toggle.
-2. Each round starts face down (card back + START). Words are only shown after START, so the partner can't peek while the iPad is handed over.
-3. START flips the card and starts the 60-second ring timer (ticking in the last 10 seconds).
-4. Each of the 3 words has a tick button. Tapping it = partner guessed it (ding). Tapping again undoes a mistake.
-5. All 3 ticked: round ends with "MADNESS! ALL 3!", fanfare, confetti, and Mr Chait pops up ("MadneSS! Legends!").
-6. Time up: buzzer, card shakes, every un-ticked word reveals its **hint** and its tick becomes a lock. They may keep describing with the hint but cannot tick it. Mr Chait pops up ("Use the hint! Keep going!").
-7. NEXT ROUND deals a new face-down card.
+Rolling round (Jamie's change, 28 Oct 2026; the earlier version dealt fixed cards of 3 words, like the printed deck):
 
-Decisions: **no points/scoring yet** (Jamie wants to trial it first, then maybe add scoring); words are **shuffled into fresh cards every game** (each card = 3 words from 3 different topics, no repeats until the deck runs out); sound on by default with a mute toggle; no login and nothing about learners is stored (only the sound on/off choice in localStorage); screen kept awake during a round.
+1. Home: Mr Chait + logo lockup, "Pick a deck", how-to-play steps, sound toggle.
+2. Each round starts face down (card back + START), so the partner can't peek while the iPad is handed over.
+3. START flips the card and starts the 60-second ring timer (ticking in the last 10 seconds). **One word at a time** appears, with a yellow "GOT SO FAR" score strip.
+4. **GOT IT!** = partner guessed it (ding, score +1, word added as a green chip, next word slides in). **SKIP** passes a stuck word (it goes to the back of the pile and comes round again later). **Oops, undo** brings back the last ticked word and takes the point off.
+5. Time up: buzzer, card shakes, "TIME'S UP!" stamp. The word they were on shows its **hint** with a lock: they finish explaining it but it doesn't count.
+6. Result panel: Mr Chait with a speech bubble, "YOU GOT 7!", a random line picked by score tier (`PRAISE` in `src/app.src.html`: 0, 1+, 3+, 6+, 9+, 12+), "Best this game", a NEW BEST ribbon from round 2 on, and chips for every word got (green) and skipped (crossed out). Confetti and fanfare for 5+ or a new best.
+7. NEXT ROUND = swap roles.
+
+Decisions: words are dealt one at a time from the whole shuffled deck, never the same topic twice in a row, no repeats until the deck runs out; "best this game" lives only in memory (resets when they pick a deck), so nothing about learners is stored (only the sound on/off choice in localStorage); sound on by default with a mute toggle; no login; screen kept awake during a round. On phones under 400px wide the top-bar chips drop their text labels.
 
 ## Files
 
@@ -43,12 +45,12 @@ Decisions: **no points/scoring yet** (Jamie wants to trial it first, then maybe 
 
 ## Look
 
-Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A; "MR CHAIT'S" in a tilted pink tag over "ONE MINUTE" (yellow) and "MADNESS" with a big pink **SS** (the SS stands for Social Sciences). Mr Chait (cap, beard, black hoodie, blue sneakers, thumbs up) appears in the logo lockup, on the card back, in the card header and in end-of-round pop-ups.
+Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A; "MR CHAIT'S" in a tilted pink tag over "ONE MINUTE" (yellow) and "MADNESS" with a big pink **SS** (the SS stands for Social Sciences). Mr Chait (cap, beard, black hoodie, blue sneakers, thumbs up) appears in the logo lockup, on the card back, in the card header and in the end-of-round result panel.
 
 ## Ideas Jamie has liked / next steps
 
-- More Mr Chait catchphrases, picked at random, so the pop-ups don't get stale.
-- Points/scoring once he has trialled it (the printed version used: 1 point per word, +1 MadneSS bonus for all 3, first to 15 wins).
+- Done: random Mr Chait lines by score, and a per-round score (the rolling round).
+- Possible next: a team/class leaderboard, or a two-team match mode (the printed version used: 1 point per word, +1 MadneSS bonus for all 3, first to 15 wins).
 
 ## Printed version
 
