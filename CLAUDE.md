@@ -30,12 +30,16 @@ Decisions: **no points/scoring yet** (Jamie wants to trial it first, then maybe 
 - Words come only from what Jamie actually taught (his notes / exam sections). Keep each word short enough for one or two lines on a phone.
 - A hint must **never contain the word or any part of it** (the build blocks this). Hints are 1–2 plain sentences a Grade 6 can read, written so the Explainer can use them to describe the word.
 - Jamie checks new hints before the kids see them: send him the list first.
-- Topic colours used so far: Explorers #F07F1E, Population #1FA463, Climate #2389D6, Democracy #8A3FB5, Medicine #E0303F.
+- Topic colours used so far: Explorers #F07F1E, Population #1FA463, Climate #2389D6, Democracy #8A3FB5, Medicine #E0303F; The Cape #0E9F9A, Disasters #E8562A, Slave Trade #4C5FD5; Money Words #1FA463, Costs & Prices #F07F1E, Budgets & Saving #2389D6, Business #8A3FB5, Marketing #E0306E.
+- Topic keys are single letters and must be unique across ALL decks, because each key has its own icon in `ICONS` in `src/app.src.html` (used: E P C D M, K Q S, A R B N Y). A new topic needs a new key and a new icon.
+- New decks go on a branch first; merge to `main` only after Jamie has approved the hints.
 
 ## Current decks
 
 - **Grade 6 Social Sciences** (`g6ss`, 90 words): Explorers 18, Population 18, Climate 18, Democracy 20, Medicine 16. Matches his Grade 6 SS exam sections.
-- Coming soon (shown greyed out on the home screen): Grade 7 Social Sciences, Grade 7 EMS.
+- **Grade 7 Social Sciences** (`g7ss`, 73 words): The Cape 23, Disasters 27, Slave Trade 23. Matches the Nov 2026 Grade 7 SS exam sections. Not taught, so left out: frontier wars, hurricanes, tornadoes, slavery at the Cape, trekboers.
+- **Grade 7 EMS** (`g7ems`, 74 words): Money Words 14, Costs & Prices 11, Budgets & Saving 14, Business 17, Marketing 18. Only Financial Literacy and Entrepreneurship, the two strands Jamie chose for the Nov 2026 EMS exam (no Economy strand).
+- Long words (any part over 9 letters) get a slightly smaller font on phones (`.word.long`) so they wrap between words, not mid-word.
 
 ## Look
 
@@ -45,7 +49,6 @@ Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A;
 
 - More Mr Chait catchphrases, picked at random, so the pop-ups don't get stale.
 - Points/scoring once he has trialled it (the printed version used: 1 point per word, +1 MadneSS bonus for all 3, first to 15 wins).
-- New decks: Grade 7 SS, Grade 7 EMS.
 
 ## Printed version
 

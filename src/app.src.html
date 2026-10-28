@@ -106,7 +106,8 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
 .disc{flex:none;width:46px;height:46px;border-radius:50%;background:var(--c);color:var(--paper);font-family:var(--display);font-size:24px;
   display:flex;align-items:center;justify-content:center;padding-top:3px;box-shadow:inset 0 -5px 0 rgba(0,0,0,.18)}
 .txt{flex:1;min-width:0}
-.word{font-weight:900;font-size:clamp(23px, 5.6vw, 32px);line-height:1.08;color:var(--ink);overflow-wrap:anywhere}
+.word{font-weight:900;font-size:clamp(23px, 5.6vw, 32px);line-height:1.08;color:var(--ink);overflow-wrap:break-word;hyphens:manual}
+.word.long{font-size:clamp(18px, 4.6vw, 32px)}
 .tag{display:flex;align-items:center;gap:6px;margin-top:4px;font-weight:900;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
 .tick{flex:none;width:68px;height:68px;border-radius:50%;background:var(--paper);border:4px solid var(--c);color:var(--c);
   display:flex;align-items:center;justify-content:center;transition:transform .12s, background .2s}
@@ -187,11 +188,8 @@ canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:non
 /*DECKS*/
 
 /* ------------------------------------------------------------ decks */
-const DECKS = [DECK_G6SS];
-const COMING = [
-  { title: 'Grade 7 Social Sciences', note: 'Coming soon' },
-  { title: 'Grade 7 EMS', note: 'Coming soon' },
-];
+const DECKS = [DECK_G6SS, DECK_G7SS, DECK_G7EMS];
+const COMING = [];
 const ROUND_SECONDS = 60;
 
 /* ------------------------------------------------------------ icons */
@@ -201,6 +199,16 @@ const ICONS = {
   C: c => `<svg width="15" height="15" viewBox="0 0 24 24"><circle cx="9" cy="9" r="4.2" fill="${c}"/><path d="M9 1.5v2.4M9 14.1v2.4M1.5 9h2.4M3.7 3.7l1.7 1.7M12.6 5.4l1.7-1.7M3.7 14.3l1.7-1.7" stroke="${c}" stroke-width="2" stroke-linecap="round"/><path d="M7 21 Q3 21 3.5 17.5 Q4 14.5 7.5 15 Q8.5 11.5 12.5 12 Q16.5 12 17 15.5 Q21 15.5 21 18.5 Q21 21 18 21 Z" fill="${c}"/></svg>`,
   D: c => `<svg width="15" height="15" viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="11" rx="2" fill="${c}"/><rect x="7.5" y="2.5" width="9" height="10" rx="1" fill="none" stroke="${c}" stroke-width="2"/><path d="M9.5 7 L11.3 9 L14.7 5" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
   M: c => `<svg width="15" height="15" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="18" rx="1.5" fill="${c}"/><rect x="3" y="9" width="18" height="6" rx="1.5" fill="${c}"/></svg>`,
+  // Grade 7 SS
+  K: c => `<svg width="15" height="15" viewBox="0 0 24 24"><path d="M11 2.5v12.5M11 3 L19 13 H11 Z" fill="${c}" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 6 L5 13 H10" fill="${c}"/><path d="M2.5 16 H21.5 L18.5 21 H5.5 Z" fill="${c}"/></svg>`,
+  Q: c => `<svg width="15" height="15" viewBox="0 0 24 24"><path d="M2 21 L9 9 H15 L22 21 Z" fill="${c}"/><path d="M10.5 6 Q9.5 3.5 11.5 2.5 M13.5 6 Q15 3.5 13.5 1.5" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  S: c => `<svg width="15" height="15" viewBox="0 0 24 24"><rect x="2" y="8.5" width="10" height="7" rx="3.5" fill="none" stroke="${c}" stroke-width="2.6"/><rect x="12" y="8.5" width="10" height="7" rx="3.5" fill="none" stroke="${c}" stroke-width="2.6"/></svg>`,
+  // Grade 7 EMS
+  A: c => `<svg width="15" height="15" viewBox="0 0 24 24"><ellipse cx="12" cy="18" rx="8" ry="3" fill="${c}"/><ellipse cx="12" cy="13" rx="8" ry="3" fill="${c}"/><ellipse cx="12" cy="8" rx="8" ry="3" fill="${c}"/><ellipse cx="12" cy="7.4" rx="5" ry="1.4" fill="#fff" opacity=".45"/></svg>`,
+  R: c => `<svg width="15" height="15" viewBox="0 0 24 24"><path d="M3 3 H11.5 L21 12.5 L12.5 21 L3 11.5 Z" fill="${c}" stroke="${c}" stroke-width="1.5" stroke-linejoin="round"/><circle cx="7.5" cy="7.5" r="1.9" fill="#fff"/></svg>`,
+  B: c => `<svg width="15" height="15" viewBox="0 0 24 24"><path d="M5 9 Q5 6 8 6 H16 Q19 6 19 9 V19 Q19 21 17 21 H7 Q5 21 5 19 Z" fill="${c}"/><rect x="9" y="2" width="6" height="2.6" rx="1" fill="${c}"/><rect x="10" y="9" width="4" height="1.8" rx=".9" fill="#fff"/></svg>`,
+  N: c => `<svg width="15" height="15" viewBox="0 0 24 24"><path d="M12 2 Q19 2 19 9 Q19 12.5 15.5 15 V17 H8.5 V15 Q5 12.5 5 9 Q5 2 12 2 Z" fill="${c}"/><rect x="8.5" y="18.5" width="7" height="2.2" rx="1" fill="${c}"/><rect x="9.8" y="21.4" width="4.4" height="1.6" rx=".8" fill="${c}"/></svg>`,
+  Y: c => `<svg width="15" height="15" viewBox="0 0 24 24"><path d="M3 9.5 V14.5 H7 L18 20 V4 L7 9.5 Z" fill="${c}" stroke="${c}" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.5 14.5 L9.5 21" stroke="${c}" stroke-width="2.6" stroke-linecap="round"/><path d="M20.5 10 V14" stroke="${c}" stroke-width="2.2" stroke-linecap="round"/></svg>`,
 };
 const TICK = `<svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5 L9.5 17.5 L19.5 6.5" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const LOCK = `<svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2.6"/></svg>`;
@@ -324,7 +332,7 @@ function rowHTML(x, i) {
   const t = S.deck.topics[x.t];
   return `<div class="row" id="row${i}" style="--c:${t.c};--t:${t.t}">
     <div class="main"><div class="disc">${i + 1}</div>
-      <div class="txt"><div class="word">${esc(x.w)}</div><div class="tag">${ICONS[x.t](t.c)}${t.name}</div></div>
+      <div class="txt"><div class="word${x.w.split(/\s+/).some(p => p.length > 9) ? ' long' : ''}">${esc(x.w)}</div><div class="tag">${ICONS[x.t](t.c)}${t.name}</div></div>
       <button class="tick" data-i="${i}" aria-label="Partner guessed ${esc(x.w)}">${TICK}</button></div>
     <div class="hintbox"><div class="lbl">HINT</div><p>${esc(x.h)}</p><div class="nt">Keep explaining! This one can’t be ticked now.</div></div></div>`;
 }
