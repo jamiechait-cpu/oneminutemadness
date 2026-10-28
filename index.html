@@ -121,7 +121,22 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
 .now .lock svg{width:100%;height:100%}
 .now.missed .lock{display:block}
 .hintbox{display:none;margin:0 14px 14px;background:var(--hint);border:3px dashed var(--hint-line);border-radius:14px;padding:10px 14px;text-align:left}
-.now.missed .hintbox{display:block;animation:drop .35s ease-out}
+.now.missed .hintbox,.now.hinted .hintbox{display:block;animation:drop .35s ease-out}
+.hint-btn{display:inline-flex;align-items:center;gap:6px;margin-top:2px;background:var(--hint);color:var(--ink);border:3px solid var(--hint-line);
+  border-radius:999px;padding:7px 16px 6px;font-weight:900;font-size:16px;letter-spacing:.05em;transition:transform .1s}
+.hint-btn:active{transform:scale(.94)}
+.hint-btn svg{width:18px;height:18px;color:var(--hint-line);margin-top:-2px}
+.hint-btn small{font-size:13px;font-weight:900;color:var(--bad);letter-spacing:.02em}
+.hint-btn[disabled]{opacity:.45;cursor:default}
+.now.hinted .hint-btn,.now.missed .hint-btn{display:none}
+.timer .minus{position:absolute;left:50%;top:50%;z-index:2;font-family:var(--display);font-size:clamp(26px, 7vw, 36px);color:var(--paper);
+  background:var(--bad);border:3px solid var(--paper);border-radius:12px;padding:4px 8px 0;white-space:nowrap;pointer-events:none;
+  animation:minus 1.1s ease-out forwards}
+@keyframes minus{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}20%{transform:translate(-50%,-50%) scale(1.15);opacity:1}
+  70%{transform:translate(-50%,-60%) scale(1);opacity:1}100%{transform:translate(-50%,-110%) scale(.9);opacity:0}}
+.timer.drain .fill{animation:drainflash .6s}
+@keyframes drainflash{0%,100%{stroke:var(--sun)}50%{stroke:var(--bad)}}
+.chips span.h svg.b{color:var(--hint-line)}
 @keyframes drop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .hintbox .lbl{font-family:var(--display);font-size:16px;letter-spacing:.05em;color:var(--bad)}
 .hintbox p{margin:2px 0 0;font-weight:800;font-size:clamp(17px, 4vw, 21px);line-height:1.35;color:var(--ink)}
@@ -206,7 +221,7 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
 .backart .me{position:absolute;left:0;bottom:-10px;height:clamp(150px, 40vw, 210px);width:auto;max-width:none;z-index:2;transform:rotate(-4deg)}
 canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
 @media (prefers-reduced-motion: reduce){
-  .card.flip,.card.shake,.now .in,.now.missed .hintbox,.timer.hurry .num,.banner,.result,.scorebar .n,.chips span{animation:none !important}
+  .card.flip,.card.shake,.now .in,.now.missed .hintbox,.now.hinted .hintbox,.timer .minus,.timer.hurry .num,.banner,.result,.scorebar .n,.chips span{animation:none !important}
 }
 </style>
 
@@ -513,6 +528,7 @@ const DECK_G7SS = {
 const DECKS = [DECK_G6SS, DECK_G7SS, DECK_G7EMS];
 const COMING = [];
 const ROUND_SECONDS = 60;
+const HINT_COST = 10; // seconds taken off the clock for a hint during the round
 
 /* ------------------------------------------------------------ icons */
 const ICONS = {
@@ -533,6 +549,7 @@ const ICONS = {
   Y: c => `<svg width="15" height="15" viewBox="0 0 24 24"><path d="M3 9.5 V14.5 H7 L18 20 V4 L7 9.5 Z" fill="${c}" stroke="${c}" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.5 14.5 L9.5 21" stroke="${c}" stroke-width="2.6" stroke-linecap="round"/><path d="M20.5 10 V14" stroke="${c}" stroke-width="2.2" stroke-linecap="round"/></svg>`,
 };
 const TICK = `<svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5 L9.5 17.5 L19.5 6.5" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const BULB = `<svg viewBox="0 0 24 24"><path d="M12 2 Q19 2 19 9 Q19 12.5 15.5 15 V17 H8.5 V15 Q5 12.5 5 9 Q5 2 12 2 Z" fill="currentColor"/><rect x="8.5" y="18.5" width="7" height="2.2" rx="1" fill="currentColor"/><rect x="9.8" y="21.4" width="4.4" height="1.6" rx=".8" fill="currentColor"/></svg>`;
 const LOCK = `<svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2.6"/></svg>`;
 const HOME = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 11 L12 3.5 L21 11 M5.5 9.5V20h13V9.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const SOUND_ON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`;
@@ -568,6 +585,7 @@ const Sound = (() => {
     ding() { tone(988, 0, .14, 'sine', .3); tone(1319, .09, .3, 'sine', .3); },
     undo() { tone(330, 0, .14, 'triangle', .2, 220); },
     skip() { tone(560, 0, .12, 'triangle', .16, 380); },
+    hint() { tone(700, 0, .18, 'triangle', .2, 500); tone(480, .16, .3, 'triangle', .2, 300); },
     tick(hi) { tone(hi ? 1500 : 1150, 0, .05, 'square', .07); },
     buzz() { tone(150, 0, .75, 'sawtooth', .22, 110); tone(156, 0, .75, 'square', .12, 115); },
     win() { [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, i) => tone(f, i * .09, .22, 'triangle', .22)); },
@@ -605,7 +623,7 @@ const praiseFor = n => { const tier = PRAISE.filter(([min]) => n >= min).pop()[1
 
 /* ------------------------------------------------------------ app state */
 const app = document.getElementById('app');
-const S = { screen: 'home', deck: null, deal: null, round: 0, cur: null, got: [], skipped: [], best: 0, phase: 'ready', left: ROUND_SECONDS, endAt: 0, raf: 0, lastSec: null, dir: '' };
+const S = { screen: 'home', deck: null, deal: null, round: 0, cur: null, got: [], skipped: [], hinted: new Set(), best: 0, phase: 'ready', left: ROUND_SECONDS, endAt: 0, raf: 0, lastSec: null, dir: '' };
 let wake = null;
 const holdWake = async on => {
   try { if (on && 'wakeLock' in navigator && !wake) wake = await navigator.wakeLock.request('screen'); if (!on && wake) { await wake.release(); wake = null; } } catch (e) { wake = null; }
@@ -637,7 +655,7 @@ function renderHome() {
       <div class="how"><ol>
         <li><span class="n">1</span><span>The <b>Explainer</b> holds the iPad so their partner can’t see it, and taps <b>Start</b>.</span></li>
         <li><span class="n">2</span><span>One word at a time. Describe it <b>without saying the word</b> or any part of it.</span></li>
-        <li><span class="n">3</span><span>Partner got it? Tap <b>GOT IT</b> and the next word pops up. Really stuck? <b>Skip</b> it.</span></li>
+        <li><span class="n">3</span><span>Partner got it? Tap <b>GOT IT</b> and the next word pops up. Stuck? Tap <b>HINT</b> (it costs <b>10 seconds</b>) or <b>skip</b> it.</span></li>
         <li><span class="n">4</span><span>Time’s up? A <b>hint</b> helps you finish the last word, and Mr Chait gives you your <b>score</b>. Then swap!</span></li>
       </ol></div>
     </div>`;
@@ -651,7 +669,7 @@ function startDeck(i) {
   nextRound();
 }
 function nextRound() {
-  S.round++; S.cur = null; S.got = []; S.skipped = []; S.phase = 'ready'; S.left = ROUND_SECONDS;
+  S.round++; S.cur = null; S.got = []; S.skipped = []; S.hinted = new Set(); S.phase = 'ready'; S.left = ROUND_SECONDS;
   renderGame(true); window.scrollTo(0, 0);
 }
 function topBar() {
@@ -667,16 +685,20 @@ function ring() {
 function nowInner(x) {
   const t = S.deck.topics[x.t];
   return `<div class="in${S.dir ? ' ' + S.dir : ''}"><div class="tag">${ICONS[x.t](t.c)}${t.name}</div>
-    <div class="word${x.w.split(/\s+/).some(p => p.length > 9) ? ' long' : ''}">${esc(x.w)}</div><div class="lock">${LOCK}</div></div>
-    <div class="hintbox"><div class="lbl">HINT</div><p>${esc(x.h)}</p><div class="nt">Keep explaining! This one doesn’t count now.</div></div>`;
+    <div class="word${x.w.split(/\s+/).some(p => p.length > 9) ? ' long' : ''}">${esc(x.w)}</div><div class="lock">${LOCK}</div>
+    ${S.phase === 'playing' ? `<button class="hint-btn" id="hintbtn"${S.left <= HINT_COST ? ' disabled' : ''}>${BULB}HINT <small>${S.left <= HINT_COST ? 'not in the last 10 sec' : `−${HINT_COST} sec`}</small></button>` : ''}</div>
+    <div class="hintbox"><div class="lbl">HINT</div><p>${esc(x.h)}</p><div class="nt">${S.phase === 'playing' ? `That hint cost ${HINT_COST} seconds. Keep going!` : 'Keep explaining! This one doesn’t count now.'}</div></div>`;
 }
 function paintWord() {
   const el = document.getElementById('now'); if (!el) return;
   const t = S.deck.topics[S.cur.t];
   el.style.setProperty('--c', t.c); el.style.setProperty('--t', t.t);
+  el.classList.toggle('hinted', S.phase === 'playing' && S.hinted.has(S.cur));
   el.innerHTML = nowInner(S.cur);
+  const hb = document.getElementById('hintbtn'); if (hb) hb.onclick = useHint;
 }
-const chipsHTML = (fresh) => S.got.map((x, i) => `<span class="${fresh && i === S.got.length - 1 ? 'new' : ''}">${TICK}${esc(x.w)}</span>`).join('');
+const gotChip = (x, fresh) => `<span class="${fresh ? 'new' : ''}${S.hinted.has(x) ? ' h' : ''}">${TICK}${esc(x.w)}${S.hinted.has(x) ? BULB.replace('<svg', '<svg class="b"') : ''}</span>`;
+const chipsHTML = (fresh) => S.got.map((x, i) => gotChip(x, fresh && i === S.got.length - 1)).join('');
 function paintScore(bump) {
   const n = document.getElementById('score'); if (!n) return;
   n.innerHTML = `${TICK}${S.got.length}`;
@@ -685,12 +707,13 @@ function paintScore(bump) {
   const u = document.getElementById('undo'); if (u) u.disabled = !(S.phase === 'playing' && S.got.length);
 }
 function resultHTML(n, newBest) {
-  const recap = [...S.got.map(x => `<span>${TICK}${esc(x.w)}</span>`), ...S.skipped.map(x => `<span class="sk">${esc(x.w)}</span>`)].join('');
+  const recap = [...S.got.map(x => gotChip(x, false)), ...S.skipped.map(x => `<span class="sk">${esc(x.w)}</span>`)].join('');
   return `<div class="result" id="result"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
     <div class="bubble">${newBest ? '<div class="ribbon">NEW BEST!</div>' : ''}
       <div class="big">${n === 1 ? 'YOU GOT <b>1</b> WORD!' : `YOU GOT <b>${n}</b>!`}</div>
       <div class="line">${praiseFor(n)}</div>
       ${S.round > 1 || n ? `<div class="best">Best this game: ${S.best}</div>` : ''}
+      ${S.hinted.size ? `<div class="best">Hints used: ${S.hinted.size} (−${S.hinted.size * HINT_COST} sec)</div>` : ''}
     </div></div>
     ${recap ? `<div class="chips" style="justify-content:center">${recap}</div>` : ''}`;
 }
@@ -708,7 +731,7 @@ function renderGame(animate) {
       <div class="head">${LOCKUP()}<div class="grow"></div>${ring()}</div>
       <div class="scorebar"><span class="lbl">${playing ? 'GOT SO FAR' : 'FINAL SCORE'}</span><span class="n" id="score">${TICK}${S.got.length}</span></div>
       <div class="play">
-        <div class="now${playing ? '' : ' missed'}" id="now" style="--c:${t.c};--t:${t.t}" aria-live="polite">${nowInner(S.cur)}</div>
+        <div class="now${playing ? (S.hinted.has(S.cur) ? ' hinted' : '') : ' missed'}" id="now" style="--c:${t.c};--t:${t.t}" aria-live="polite">${nowInner(S.cur)}</div>
         ${playing ? `<div class="btns"><button class="skip-btn" id="skip">SKIP</button><button class="got-btn" id="gotit">${TICK} GOT IT!</button></div>
         <div class="chips" id="chips">${chipsHTML(false)}</div>` : ''}
       </div></div></div>
@@ -723,7 +746,7 @@ function renderGame(animate) {
   if (S.phase === 'ready') document.getElementById('go').onclick = beginRound;
   else {
     const on = (id, f) => { const b = document.getElementById(id); if (b) b.onclick = f; };
-    on('gotit', gotIt); on('skip', skipWord); on('undo', undoLast); on('next', nextRound);
+    on('gotit', gotIt); on('skip', skipWord); on('undo', undoLast); on('next', nextRound); on('hintbtn', useHint);
     paintScore(false); paintTimer();
   }
 }
@@ -743,6 +766,14 @@ function skipWord() {
   Sound.skip(); S.skipped.push(S.cur); S.deal.later(S.cur); S.cur = S.deal.next(); S.dir = 'slide';
   paintWord();
 }
+function useHint() {
+  if (S.phase !== 'playing' || S.hinted.has(S.cur) || S.left <= HINT_COST) return;
+  Sound.hint(); S.hinted.add(S.cur); S.endAt -= HINT_COST * 1000; S.dir = '';
+  paintWord();
+  const tm = document.getElementById('timer');
+  if (tm) { const m = document.createElement('div'); m.className = 'minus'; m.textContent = `−${HINT_COST}`; tm.appendChild(m); setTimeout(() => m.remove(), 1200);
+    tm.classList.remove('drain'); void tm.offsetWidth; tm.classList.add('drain'); }
+}
 function undoLast() {
   if (S.phase !== 'playing' || !S.got.length) return;
   Sound.undo(); S.deal.back(S.cur); S.cur = S.got.pop(); S.dir = 'back';
@@ -755,6 +786,8 @@ function paintTimer() {
   document.getElementById('ringfill').setAttribute('stroke-dashoffset', (C * (1 - frac)).toFixed(1));
   document.getElementById('secs').textContent = Math.ceil(Math.max(0, S.left));
   el.classList.toggle('hurry', S.phase === 'playing' && S.left <= 10);
+  const hb = document.getElementById('hintbtn');
+  if (hb && !hb.disabled && S.left <= HINT_COST) { hb.disabled = true; hb.querySelector('small').textContent = 'not in the last 10 sec'; }
 }
 function loop() {
   cancelAnimationFrame(S.raf);
