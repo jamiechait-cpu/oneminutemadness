@@ -322,8 +322,54 @@ canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:non
 .slist .none{margin:0;font-weight:900;color:var(--good)}
 .sheet .tip{margin:14px 0 0;text-align:center;font-weight:900;font-size:14px;color:var(--ink-soft)}
 @media (max-width:400px){.mini .pill{font-size:19px;padding:5px 9px 1px;min-width:38px}}
+/* ---------- choose mode */
+.modes{width:100%;display:grid;gap:14px}
+.mode{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--paper);color:var(--ink);border-radius:22px;
+  padding:12px 16px 12px 10px;border:5px solid var(--mc);box-shadow:0 7px 0 var(--md);transition:transform .12s}
+.mode:active{transform:translateY(3px)}
+.mode.teams{--mc:var(--blue);--md:var(--red)}
+.mode.solo{--mc:var(--sun);--md:var(--pop)}
+.mode .pics{flex:none;display:flex;align-items:flex-end;justify-content:center;width:clamp(96px, 26vw, 130px)}
+.mode .pics img{height:clamp(84px, 22vw, 110px);width:auto}
+.mode .pics img+img{margin-left:-26%;transform:scaleX(-1)}
+.mode .info{flex:1;min-width:0}
+.mode h3{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(24px, 6.6vw, 30px);letter-spacing:.04em;color:var(--night)}
+.mode p{margin:2px 0 0;font-weight:800;font-size:15px;line-height:1.3;color:var(--ink-soft)}
+.mode p b{color:var(--night)}
+.mode .go{flex:none;width:48px;height:48px;border-radius:50%;background:var(--sun);display:flex;align-items:center;justify-content:center;color:var(--night)}
+
+/* ---------- solo setup */
+.solo-hero{max-width:520px}
+.solo-hero .me{height:clamp(140px, 32vw, 190px)}
+.topics{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+.tchip{--c:var(--night);display:inline-flex;align-items:center;gap:6px;font-weight:900;font-size:13.5px;letter-spacing:.05em;text-transform:uppercase;
+  padding:8px 13px;border-radius:999px;border:3px solid var(--c);color:var(--c);background:var(--paper);transition:background .15s,color .15s}
+.tchip svg{width:15px;height:15px}
+.tchip.on{background:var(--c);color:var(--paper)}
+.panel .note b{color:var(--pop)}
+
+/* ---------- Beat the Clock */
+.qcard{--c:#888;--t:#eee;border-radius:22px;background:var(--t);border:4px solid var(--c);overflow:hidden}
+.qcard .in{min-height:clamp(140px, 22vh, 210px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;text-align:center}
+.qtext{margin:0;font-weight:900;font-size:clamp(19px, 5vw, 27px);line-height:1.3;color:var(--ink)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{min-height:clamp(64px, 15vw, 84px);border-radius:18px;background:var(--paper);border:4px solid var(--night);box-shadow:0 5px 0 var(--night);
+  font-weight:900;font-size:clamp(16px, 4.4vw, 22px);line-height:1.15;color:var(--ink);padding:8px;transition:transform .1s, background .2s;overflow-wrap:break-word}
+.opt.long{font-size:clamp(14px, 3.8vw, 20px)}
+.opt:active{transform:translateY(3px);box-shadow:0 2px 0 var(--night)}
+.opt.right{background:var(--good);border-color:#137A48;box-shadow:0 5px 0 #137A48;color:var(--paper);animation:pop .35s}
+.opt.wrong{background:var(--bad);border-color:#9A1117;box-shadow:0 5px 0 #9A1117;color:var(--paper);animation:shake .4s}
+.opt.reveal{animation:pop .5s .15s both}
+.qstats{display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin-bottom:14px}
+.qstats div{background:#F6F4FC;border-radius:14px;padding:8px 4px 6px;text-align:center;font-weight:900;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.qstats b{display:block;font-family:var(--display);font-weight:400;font-size:28px;color:var(--night);letter-spacing:.02em}
+.slist.solo{--tc:var(--pop);--tt:#FFE7F1}
+.slist .picked{margin-top:3px;font-size:13px;font-weight:900;color:var(--bad)}
+.why.fixed{background:var(--good)}
+.gotlist{margin-top:14px}
+.gotlist h4{margin:0 0 8px;font-family:var(--display);font-weight:400;font-size:19px;letter-spacing:.04em;color:var(--good)}
 @media (prefers-reduced-motion: reduce){
-  .card.flip,.card.shake,.now .in,.now.missed .hintbox,.now.hinted .hintbox,.timer .minus,.timer.hurry .num,.banner,.result,.scorebar .n,.chips span,.board,.plus,.winstamp,.winhero img{animation:none !important}
+  .card.flip,.card.shake,.now .in,.now.missed .hintbox,.now.hinted .hintbox,.timer .minus,.timer.hurry .num,.banner,.result,.scorebar .n,.chips span,.board,.plus,.winstamp,.winhero img,.opt{animation:none !important}
 }
 </style>
 
@@ -747,24 +793,203 @@ function renderHome() {
   const decks = DECKS.map((d, i) => {
     const dots = Object.entries(d.topics).map(([k, t]) => `<span style="--c:${t.c}">${ICONS[k]('#fff')}${t.name}</span>`).join('');
     return `<button class="deck" data-deck="${i}"><div class="stack">${HOURGLASS(30, '#FFD23F', '#FF4F9A')}</div>
-      <div class="info"><h3>${esc(d.title)}</h3><p>${d.words.length} words · Red vs Blue</p><div class="dots">${dots}</div></div>
+      <div class="info"><h3>${esc(d.title)}</h3><p>${d.words.length} words · teams or on your own</p><div class="dots">${dots}</div></div>
       <div class="go">${PLAY}</div></button>`;
   }).join('') + COMING.map(c => `<div class="deck soon" aria-disabled="true"><div class="stack"></div><div class="info"><h3>${esc(c.title)}</h3><p>${c.note}</p></div></div>`).join('');
   app.innerHTML = `
     <div class="bar"><div class="grow"></div>${soundBtn()}</div>
     <div class="home">
-      <div class="hero">${LOCKUP()}<div class="tagline">Describe it. Don’t say it. Team Blue vs Team Red!</div></div>
+      <div class="hero">${LOCKUP()}<div class="tagline">Describe it. Don’t say it. Team Blue vs Team Red, or beat the clock on your own!</div></div>
       <div class="section-title">Pick a deck</div>
       <div class="decks">${decks}</div>
       <div class="how"><ol>
-        <li><span class="n">1</span><span>Pick a deck and choose how many points win. <b>Team Blue</b> goes first, then <b>Team Red</b>.</span></li>
+        <li><span class="n">1</span><span>Pick a deck, then <b>Teams</b> (Blue vs Red, Blue goes first) or <b>On my own</b> to study solo.</span></li>
         <li><span class="n">2</span><span>The <b>Explainer</b> holds the iPad so their team can’t see it. One word at a time: describe it <b>without saying it</b>.</span></li>
         <li><span class="n">3</span><span>Team got it? Tap <b>GOT IT</b> for a point. Stuck? <b>HINT</b> costs 10 seconds, or <b>skip</b> it.</span></li>
         <li><span class="n">4</span><span>Teams swap every minute. First to the target <b>wins</b>, and Mr Chait hands each team its <b>words to study</b>!</span></li>
       </ol></div>
     </div>`;
   wireSound();
-  app.querySelectorAll('[data-deck]').forEach(b => b.onclick = () => { Sound.unlock(); S.deck = DECKS[+b.dataset.deck]; renderSetup(); });
+  app.querySelectorAll('[data-deck]').forEach(b => b.onclick = () => { Sound.unlock(); S.deck = DECKS[+b.dataset.deck]; renderMode(); });
+}
+
+/* ------------------------------------------------------------ choose: teams or on my own */
+function renderMode() {
+  S.screen = 'mode'; window.scrollTo(0, 0);
+  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to decks">${HOME}<span>Decks</span></button><div class="grow"></div>${soundBtn()}</div>
+    <div class="setup">
+      <div class="deckname">${esc(S.deck.title)}</div>
+      <div class="section-title" style="align-self:center">How do you want to play?</div>
+      <div class="modes">
+        <button class="mode teams" id="m-teams"><div class="pics"><img src="${CHAIT_BLUE}" alt=""><img src="${CHAIT_RED}" alt=""></div>
+          <div class="info"><h3>TEAMS</h3><p><b>Red vs Blue.</b> Explain the words to your team. First to the target wins!</p></div><div class="go">${PLAY}</div></button>
+        <button class="mode solo" id="m-solo"><div class="pics"><img src="${CHAIT}" alt=""></div>
+          <div class="info"><h3>ON MY OWN</h3><p><b>Beat the Clock.</b> The meaning pops up, you pick the word. Perfect for studying!</p></div><div class="go">${PLAY}</div></button>
+      </div>
+    </div>`;
+  wireSound();
+  document.getElementById('home').onclick = renderHome;
+  document.getElementById('m-teams').onclick = () => { Sound.unlock(); renderSetup(); };
+  document.getElementById('m-solo').onclick = () => { Sound.unlock(); renderQuizSetup(); };
+}
+
+/* ------------------------------------------------------------ ON MY OWN: Beat the Clock */
+// The hint (the meaning) shows; the learner taps the right word out of four from the same topic.
+// Wrong answers show the right one, come back a few questions later, and go on the words-to-study list.
+// Personal best is kept on this device only (a number per deck + topic choice, no names).
+let Q = null;
+const QUIZ_TOPICS = {}; // remembered topic choice per deck, for this visit
+const bestKey = (deck, topics) => `omm-best-${deck.id}-${[...topics].sort().join('')}`;
+const getBest = k => { try { return +localStorage.getItem(k) || 0; } catch (e) { return 0; } };
+const setBest = (k, v) => { try { localStorage.setItem(k, String(v)); } catch (e) {} };
+
+function renderQuizSetup() {
+  S.screen = 'quizsetup'; window.scrollTo(0, 0);
+  const d = S.deck, keys = Object.keys(d.topics);
+  const sel = QUIZ_TOPICS[d.id] || new Set(keys); QUIZ_TOPICS[d.id] = sel;
+  const chip = k => { const t = d.topics[k]; return `<button class="tchip${sel.has(k) ? ' on' : ''}" data-k="${k}" style="--c:${t.c}" aria-pressed="${sel.has(k)}">${ICONS[k]('currentColor')}${t.name}</button>`; };
+  const all = sel.size === keys.length;
+  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back">${HOME}<span>Decks</span></button><div class="grow"></div>${soundBtn()}</div>
+    <div class="setup">
+      <div class="deckname">${esc(d.title)}</div>
+      <div class="result solo-hero"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
+        <div class="bubble"><div class="big">BEAT THE <b>CLOCK</b>!</div>
+          <div class="line">The meaning pops up. Tap the right word. How many in one minute?</div></div></div>
+      <div class="panel"><div class="q">Which topics?</div>
+        <div class="topics"><button class="tchip all${all ? ' on' : ''}" id="t-all" aria-pressed="${all}">All topics</button>${keys.map(chip).join('')}</div>
+        <div class="note" id="pb"></div>
+      </div>
+      <button class="action" id="startquiz">${PLAY} START</button>
+    </div>`;
+  wireSound();
+  document.getElementById('home').onclick = renderMode;
+  const paint = () => {
+    const isAll = sel.size === keys.length;
+    app.querySelectorAll('.tchip[data-k]').forEach(b => { const on = sel.has(b.dataset.k); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+    const a = document.getElementById('t-all'); a.classList.toggle('on', isAll); a.setAttribute('aria-pressed', isAll);
+    const best = getBest(bestKey(d, sel));
+    const n = d.words.filter(w => sel.has(w[0])).length;
+    document.getElementById('pb').innerHTML = `${n} words in play · ${best ? `Your best on this device: <b>${best}</b>` : 'No best score yet. Set one!'}`;
+  };
+  app.querySelectorAll('.tchip[data-k]').forEach(b => b.onclick = () => {
+    const k = b.dataset.k;
+    if (sel.size === keys.length) { sel.clear(); sel.add(k); }          // from "all", tapping a topic picks just that one
+    else if (sel.has(k)) { if (sel.size > 1) sel.delete(k); }          // always keep at least one topic
+    else sel.add(k);
+    Sound.tick(true); paint();
+  });
+  document.getElementById('t-all').onclick = () => { keys.forEach(k => sel.add(k)); Sound.tick(true); paint(); };
+  document.getElementById('startquiz').onclick = () => { Sound.unlock(); startQuiz(sel); };
+  paint();
+}
+function startQuiz(sel) {
+  const d = S.deck;
+  const pool = d.words.filter(w => sel.has(w[0])).map(([t, w, h]) => ({ t, w, h }));
+  Q = { topics: new Set(sel), pool, queue: shuffle([...pool]), cur: null, last: null, score: 0, streak: 0, bestStreak: 0, right: [], wrong: [], locked: false, key: bestKey(d, sel) };
+  Q.prevBest = getBest(Q.key);
+  S.mode = 'quiz'; S.screen = 'game'; S.phase = 'ready'; S.left = ROUND_SECONDS;
+  renderQuizReady();
+}
+function renderQuizReady() {
+  app.innerHTML = `${topBar()}<div class="game"><div class="stage"><div class="card back flip">
+      <div class="backart">${ME()}<div class="badge">${HOURGLASS(44, '#241A4D', '#FF4F9A')}${LOGO}</div></div>
+      <div class="msg">Read the <b>meaning</b>, tap the <b>word</b>. Wrong answers cost you time, so think fast! ${Q.prevBest ? `Your best: <b>${Q.prevBest}</b>` : ''}</div></div></div>
+    <button class="action" id="go">${PLAY} START</button><div class="status"></div></div>`;
+  wireSound(); wireHome();
+  document.getElementById('go').onclick = beginQuiz;
+}
+function beginQuiz() {
+  Sound.unlock(); Sound.start(); holdWake(true);
+  S.phase = 'playing'; S.left = ROUND_SECONDS; S.endAt = performance.now() + ROUND_SECONDS * 1000; S.lastSec = ROUND_SECONDS;
+  app.innerHTML = `${topBar()}<div class="game"><div class="stage"><div class="card flip" id="card">
+      <div class="head">${LOCKUP()}<div class="grow"></div>${ring()}</div>
+      <div class="scorebar"><span class="lbl">SCORE<small id="streak"></small></span><span class="n" id="score">${TICK}0</span></div>
+      <div class="play"><div class="qcard" id="qcard"></div><div class="opts" id="opts"></div></div></div></div>
+    <div class="status" id="status">Which word matches the meaning? Tap it!</div></div>`;
+  wireSound(); wireHome();
+  nextQuestion(); paintTimer(); loop();
+}
+function pickNext() {
+  if (!Q.queue.length) Q.queue = shuffle([...Q.pool]);
+  let i = Q.queue.findIndex(x => x !== Q.last); if (i < 0) i = 0;
+  return Q.queue.splice(i, 1)[0];
+}
+function optionsFor(x) {
+  const same = shuffle(S.deck.words.filter(w => w[0] === x.t && w[1] !== x.w).map(w => w[1]));
+  const rest = shuffle(S.deck.words.filter(w => w[0] !== x.t).map(w => w[1]));
+  return shuffle([x.w, ...[...same, ...rest].slice(0, 3)]);
+}
+function nextQuestion() {
+  if (S.phase !== 'playing') return;
+  const x = pickNext(); Q.last = x; Q.cur = { x, opts: optionsFor(x) }; Q.locked = false;
+  const t = S.deck.topics[x.t];
+  const qc = document.getElementById('qcard');
+  qc.style.setProperty('--c', t.c); qc.style.setProperty('--t', t.t);
+  qc.innerHTML = `<div class="in slide"><div class="tag">${ICONS[x.t](t.c)}${t.name}</div><p class="qtext">${esc(x.h)}</p></div>`;
+  const op = document.getElementById('opts');
+  op.innerHTML = Q.cur.opts.map((w, i) => `<button class="opt${w.split(/\s+/).some(p => p.length > 11) ? ' long' : ''}" data-i="${i}">${esc(w)}</button>`).join('');
+  op.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(+b.dataset.i));
+}
+function paintQuizScore(bump) {
+  const n = document.getElementById('score'); if (!n) return;
+  n.innerHTML = `${TICK}${Q.score}`;
+  if (bump) { n.classList.remove('bump'); void n.offsetWidth; n.classList.add('bump'); }
+  const s = document.getElementById('streak'); if (s) s.textContent = Q.streak >= 2 ? `🔥 ${Q.streak} in a row!` : '';
+}
+function answer(i) {
+  if (S.phase !== 'playing' || Q.locked) return;
+  Q.locked = true;
+  const picked = Q.cur.opts[i], x = Q.cur.x, btns = [...document.querySelectorAll('.opt')];
+  if (picked === x.w) {
+    Sound.ding(); Q.score++; Q.streak++; Q.bestStreak = Math.max(Q.bestStreak, Q.streak);
+    if (!Q.right.includes(x)) Q.right.push(x);
+    btns[i].classList.add('right'); paintQuizScore(true);
+    setTimeout(nextQuestion, 420);
+  } else {
+    Sound.undo(); Q.streak = 0;
+    Q.wrong.push({ x, picked });
+    btns[i].classList.add('wrong'); btns[Q.cur.opts.indexOf(x.w)].classList.add('right', 'reveal');
+    paintQuizScore(false);
+    Q.queue.splice(Math.min(3, Q.queue.length), 0, x); // it comes back a few questions later
+    setTimeout(nextQuestion, 1400);
+  }
+}
+function endQuiz() {
+  stopTimer(); holdWake(false); S.phase = 'done';
+  const n = Q.score, newBest = n > 0 && n > Q.prevBest;
+  if (newBest) setBest(Q.key, n);
+  const best = Math.max(n, Q.prevBest);
+  // words to study: every word they got wrong (once each), with what they picked and the meaning
+  const study = new Map();
+  Q.wrong.forEach(({ x, picked }) => { const e = study.get(x.w) || { x, picked: new Set() }; e.picked.add(picked); study.set(x.w, e); });
+  const fixed = w => Q.right.some(r => r.w === w);
+  const list = study.size ? `<ul>${[...study.values()].map(e => `<li><b>${esc(e.x.w)}</b>${fixed(e.x.w) ? '<em class="why fixed">Got it later ✓</em>' : ''}
+      <div class="picked">You picked: ${[...e.picked].map(esc).join(', ')}</div><p>${esc(e.x.h)}</p></li>`).join('')}</ul>`
+    : '<p class="none">Nothing wrong. Flawless! 🏆</p>';
+  const tried = n + Q.wrong.length, acc = tried ? Math.round(n / tried * 100) : 0;
+  app.innerHTML = `${topBar()}<div class="final">
+    <div class="result" id="result"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
+      <div class="bubble">${newBest ? '<div class="ribbon">NEW BEST!</div>' : ''}
+        <div class="big">${n === 1 ? 'YOU GOT <b>1</b>!' : `YOU GOT <b>${n}</b>!`}</div>
+        <div class="line">${praiseFor(n)}</div>
+        <div class="best">Your best: ${best}</div></div></div>
+    <div class="sheet">
+      <h3>YOUR SCORE SHEET</h3>
+      <div class="meta">${esc(S.deck.title)} · ${Q.topics.size === Object.keys(S.deck.topics).length ? 'all topics' : [...Q.topics].map(k => S.deck.topics[k].name).join(', ')}</div>
+      <div class="qstats"><div><b>${n}</b>right</div><div><b>${Q.wrong.length}</b>wrong</div><div><b>${acc}%</b>accuracy</div><div><b>${Q.bestStreak}</b>best streak</div></div>
+      <div class="slist solo"><h4>WORDS TO STUDY</h4>${list}</div>
+      ${Q.right.filter(x => !study.has(x.w)).length ? `<div class="gotlist"><h4>YOU KNEW THESE</h4><div class="chips">${Q.right.filter(x => !study.has(x.w)).map(x => `<span>${TICK}${esc(x.w)}</span>`).join('')}</div></div>` : ''}
+      <p class="tip">Learn each word with its meaning, then try to beat ${best ? `<b>${best}</b>` : 'your score'}!</p>
+    </div>
+    <button class="action" id="again">${PLAY} PLAY AGAIN</button>
+    <button class="practice" id="topics">Change topics</button>
+  </div>`;
+  wireSound(); wireHome();
+  document.getElementById('again').onclick = () => { Sound.unlock(); startQuiz(Q.topics); };
+  document.getElementById('topics').onclick = renderQuizSetup;
+  window.scrollTo(0, 0);
+  Sound.buzz();
+  setTimeout(() => { if (newBest || n >= 8) { Sound.win(); confetti(); } }, 700);
 }
 
 /* ------------------------------------------------------------ match setup: Blue vs Red, first to N */
@@ -787,10 +1012,10 @@ function renderSetup() {
         <div class="note">Teams take turns, <b>Blue goes first</b>. One minute each turn. Every word your team gets = <b>1 point</b>.</div>
       </div>
       <button class="action team-blue" id="startmatch">${PLAY} START MATCH</button>
-      <button class="practice" id="practice">or just practise on your own (no teams)</button>
+      <button class="practice" id="practice">or just play in pairs (no teams)</button>
     </div>`;
   wireSound();
-  document.getElementById('home').onclick = renderHome;
+  document.getElementById('home').onclick = renderMode;
   app.querySelectorAll('.tgt').forEach(b => b.onclick = () => {
     S.target = +b.dataset.t; Sound.tick(true);
     app.querySelectorAll('.tgt').forEach(x => { const on = +x.dataset.t === S.target; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
@@ -823,7 +1048,7 @@ function miniScore() {
 }
 function topBar() {
   return `<div class="bar"><button class="chip" id="home" aria-label="Back to decks">${HOME}<span>Decks</span></button>
-    <div class="grow"></div>${S.mode === 'match' ? miniScore() : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
+    <div class="grow"></div>${S.mode === 'match' ? miniScore() : S.mode === 'quiz' ? '<span class="round-label">BEAT THE CLOCK</span>' : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
 }
 function wireHome() {
   const b = document.getElementById('home'); if (!b) return;
@@ -980,7 +1205,7 @@ function loop() {
     const sec = Math.ceil(S.left);
     if (sec !== S.lastSec) { S.lastSec = sec; if (sec <= 10 && sec > 0) Sound.tick(sec % 2 === 0); }
     paintTimer();
-    if (S.left <= 0) { S.left = 0; paintTimer(); endRound(); return; }
+    if (S.left <= 0) { S.left = 0; paintTimer(); (S.mode === 'quiz' ? endQuiz : endRound)(); return; }
     S.raf = requestAnimationFrame(step);
   };
   S.raf = requestAnimationFrame(step);
