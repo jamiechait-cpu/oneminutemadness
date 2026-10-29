@@ -221,8 +221,110 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
 .backart{position:relative;display:flex;align-items:flex-end;justify-content:center;padding-left:clamp(70px, 20vw, 110px)}
 .backart .me{position:absolute;left:0;bottom:-10px;height:clamp(150px, 40vw, 210px);width:auto;max-width:none;z-index:2;transform:rotate(-4deg)}
 canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+/* ---------- teams */
+:root{--blue:#1E63E0;--blue-d:#0F3C99;--blue-t:#E3ECFD;--red:#E6262E;--red-d:#9A1117;--red-t:#FDE4E5}
+.team-blue{--tc:var(--blue);--td:var(--blue-d);--tt:var(--blue-t)}
+.team-red{--tc:var(--red);--td:var(--red-d);--tt:var(--red-t)}
+.action.team-blue,.action.team-red{background:var(--tc);color:var(--paper);box-shadow:0 8px 0 var(--td)}
+.action.team-blue:active,.action.team-red:active{box-shadow:0 3px 0 var(--td)}
+.chip.armed{background:var(--bad);border-color:var(--paper)}
+.bar .chip.armed span{display:inline !important}
+
+/* setup */
+.setup{width:100%;max-width:640px;display:flex;flex-direction:column;align-items:center;gap:18px;padding-top:4px}
+.deckname{font-family:var(--display);font-size:22px;letter-spacing:.04em;color:var(--sun);text-align:center}
+.faceoff{width:100%;display:flex;align-items:flex-end;justify-content:center}
+.side{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+.side img{height:clamp(170px, 40vw, 250px);width:auto;max-width:100%;filter:drop-shadow(0 5px 0 rgba(0,0,0,.25))}
+.side.team-red img{transform:scaleX(-1)}
+.side span{font-family:var(--display);font-size:clamp(20px, 5.6vw, 30px);letter-spacing:.04em;color:var(--paper);background:var(--tc);
+  padding:8px 14px 2px;border-radius:12px;border:4px solid var(--paper);box-shadow:0 5px 0 var(--td);white-space:nowrap}
+.vs{flex:none;align-self:center;margin:0 -8px 40px;font-family:var(--display);font-size:clamp(48px, 13vw, 76px);color:var(--sun);
+  -webkit-text-stroke:3px var(--night);paint-order:stroke fill;text-shadow:5px 5px 0 var(--pop);transform:rotate(-8deg);z-index:1}
+.panel{width:100%;background:var(--paper);color:var(--ink);border-radius:22px;border:5px solid var(--sun);box-shadow:0 7px 0 var(--pop);padding:16px 18px;text-align:center}
+.panel .q{font-family:var(--display);font-size:clamp(21px, 5.6vw, 26px);letter-spacing:.03em;color:var(--night)}
+.targets{display:flex;gap:clamp(6px, 2vw, 10px);justify-content:center;margin:12px 0}
+.tgt{width:clamp(48px, 13vw, 62px);height:clamp(48px, 13vw, 62px);flex:none;border-radius:50%;font-family:var(--display);font-size:clamp(22px, 6vw, 28px);padding-top:5px;background:#F1EFF8;color:var(--night);
+  border:4px solid var(--disabled);transition:transform .12s}
+.tgt.on{background:var(--sun);border-color:var(--night);box-shadow:0 4px 0 var(--pop);transform:scale(1.1)}
+.panel .note{font-weight:800;font-size:15px;line-height:1.35;color:var(--ink-soft)}
+.panel .note b{color:var(--night)}
+.practice{font-weight:900;font-size:15px;color:#C9C2F0;text-decoration:underline;padding:6px}
+
+/* mini score in the top bar */
+.mini{display:flex;align-items:center;gap:8px}
+.pill{display:inline-block;background:var(--tc);color:var(--paper);font-family:var(--display);font-size:22px;letter-spacing:.03em;
+  border-radius:12px;padding:6px 12px 1px;border:3px solid var(--paper);box-shadow:0 3px 0 var(--td);min-width:44px;text-align:center}
+.mini .t{font-weight:900;font-size:10.5px;line-height:1.1;letter-spacing:.08em;color:var(--sun);text-align:center}
+
+/* team colours on the card */
+.card.back.team-blue,.card.back.team-red{box-shadow:0 0 0 4px var(--tc), 0 14px 0 4px var(--td)}
+.card.back.team-blue .badge,.card.back.team-red .badge{border-color:var(--tc)}
+.turn{font-family:var(--display);font-size:clamp(24px, 6.6vw, 34px);letter-spacing:.04em;color:var(--paper);background:var(--tc);
+  padding:10px 20px 3px;border-radius:14px;border:4px solid var(--paper);box-shadow:0 6px 0 var(--td);transform:rotate(-3deg);white-space:nowrap}
+.scorebar.team-blue,.scorebar.team-red{background:var(--tc);color:var(--paper)}
+.scorebar.team-blue .n svg,.scorebar.team-red .n svg{color:var(--sun)}
+.scorebar small{display:block;font-family:var(--body);font-weight:900;font-size:12.5px;letter-spacing:.03em;opacity:.92;margin-top:2px}
+.scorebar small:empty{display:none}
+.result.team-blue .bubble,.result.team-red .bubble{box-shadow:6px 6px 0 var(--tc)}
+.result.team-blue .bubble .big b,.result.team-red .bubble .big b{color:var(--tc)}
+
+/* score update between rounds */
+.board{width:100%;background:var(--paper);color:var(--ink);border-radius:22px;border:5px solid var(--night);box-shadow:0 0 0 4px var(--sun);
+  padding:14px 16px 12px;animation:rise .5s .9s cubic-bezier(.2,.8,.3,1.3) both}
+.board h4{margin:0 0 6px;font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:.05em;color:var(--night);text-align:center}
+.brow{display:flex;align-items:center;gap:10px;margin:10px 0}
+.brow .nm{flex:none;width:62px;font-family:var(--display);font-size:21px;color:var(--tc);padding-top:3px}
+.track2{flex:1;height:26px;border-radius:999px;background:#EEEAF8;border:3px solid #DCD6EE;position:relative;overflow:hidden}
+.track2 i{position:absolute;left:0;top:0;bottom:0;background:var(--tc);border-radius:999px;transition:width 1s cubic-bezier(.2,.8,.3,1)}
+.track2 .flag{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:900;color:var(--ink-soft)}
+.brow .num{flex:none;width:40px;text-align:right;font-family:var(--display);font-size:32px;padding-top:4px}
+.plus{flex:none;width:46px;text-align:center;background:var(--sun);color:var(--night);font-family:var(--display);font-size:18px;
+  padding:4px 0 0;border-radius:10px;animation:pop .45s 1.5s both}
+.plus.ghost{visibility:hidden}
+.togo{text-align:center;font-weight:900;font-size:15px;color:var(--ink-soft)}
+.togo b{color:var(--night)}
+
+/* winner + score sheet */
+.final{width:100%;max-width:640px;display:flex;flex-direction:column;align-items:center;gap:18px;padding:22px 0 10px}
+.winhero{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.winstamp{font-family:var(--display);font-size:clamp(44px, 12vw, 70px);letter-spacing:.04em;color:var(--paper);background:var(--tc);
+  padding:12px 26px 3px;border-radius:20px;border:6px solid var(--paper);box-shadow:0 8px 0 var(--td);white-space:nowrap;
+  animation:stampin .55s cubic-bezier(.2,.8,.3,1.4) both;transform:rotate(-5deg);z-index:2}
+@keyframes stampin{from{transform:rotate(-5deg) scale(2.4);opacity:0}to{transform:rotate(-5deg) scale(1);opacity:1}}
+.winhero img{height:clamp(220px, 50vw, 320px);width:auto;max-width:100%;margin-top:-6px;filter:drop-shadow(0 6px 0 rgba(0,0,0,.25));animation:jump .7s .5s ease-in-out infinite alternate}
+@keyframes jump{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-14px) rotate(2deg)}}
+.whoo{font-family:var(--display);font-size:clamp(24px, 6.4vw, 34px);letter-spacing:.04em;color:var(--sun)}
+.whoo b{font-weight:400;color:var(--pop)}
+.finalscore{display:flex;align-items:center;gap:10px}
+.finalscore .pill{font-size:28px;padding:8px 16px 2px}
+.finalscore .dash{font-family:var(--display);font-size:30px;color:var(--paper)}
+.sheet{width:100%;background:var(--paper);color:var(--ink);border-radius:24px;border:5px solid var(--night);
+  box-shadow:0 0 0 4px var(--sun), 0 12px 0 4px var(--pop);padding:18px 16px}
+.sheet h3{margin:0;font-family:var(--display);font-weight:400;font-size:28px;letter-spacing:.05em;color:var(--night);text-align:center}
+.sheet .meta{text-align:center;font-weight:900;font-size:14px;color:var(--ink-soft);margin:2px 0 12px}
+.stats{width:100%;border-collapse:separate;border-spacing:0 6px;margin-bottom:14px;font-weight:900}
+.stats th,.stats td{text-align:center;padding:6px 8px;font-size:17px}
+.stats tbody th{text-align:left;color:var(--ink-soft);font-size:15px}
+.stats thead th.team-blue,.stats thead th.team-red{color:var(--paper);background:var(--tc);font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:.04em;border-radius:10px;padding-top:9px}
+.stats tbody tr{background:#F6F4FC}
+.stats td{font-family:var(--display);font-size:24px;padding-top:9px}
+.study{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
+@media (min-width:620px){.study{grid-template-columns:1fr 1fr}}
+.slist{border-radius:18px;border:3px solid var(--tc);background:var(--tt);padding:12px}
+.slist h4{margin:0 0 8px;font-family:var(--display);font-weight:400;font-size:19px;letter-spacing:.04em;color:var(--tc)}
+.slist ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.slist li{background:var(--paper);border-radius:12px;padding:8px 10px;border:2px solid rgba(0,0,0,.06)}
+.slist li b{font-weight:900;font-size:17px;margin-right:4px}
+.why{display:inline-block;margin:2px 4px 0 0;font-style:normal;font-size:10.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--paper);border-radius:999px;padding:2px 8px;vertical-align:2px}
+.why.sk{background:#7D77A0}.why.tm{background:var(--bad)}.why.hn{background:var(--hint-line);color:var(--ink)}
+.slist li p{margin:4px 0 0;font-weight:800;font-size:14px;line-height:1.3;color:var(--ink-soft)}
+.slist .none{margin:0;font-weight:900;color:var(--good)}
+.sheet .tip{margin:14px 0 0;text-align:center;font-weight:900;font-size:14px;color:var(--ink-soft)}
+@media (max-width:400px){.mini .pill{font-size:19px;padding:5px 9px 1px;min-width:38px}}
 @media (prefers-reduced-motion: reduce){
-  .card.flip,.card.shake,.now .in,.now.missed .hintbox,.now.hinted .hintbox,.timer .minus,.timer.hurry .num,.banner,.result,.scorebar .n,.chips span{animation:none !important}
+  .card.flip,.card.shake,.now .in,.now.missed .hintbox,.now.hinted .hintbox,.timer .minus,.timer.hurry .num,.banner,.result,.scorebar .n,.chips span,.board,.plus,.winstamp,.winhero img{animation:none !important}
 }
 </style>
 
@@ -267,8 +369,10 @@ const PLAY = `<svg width="26" height="26" viewBox="0 0 24 24"><path d="M7 4.5v15
 const HOURGLASS = (s, frame, sand) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><rect x="4" y="1.5" width="16" height="2.6" rx="1.2" fill="${frame}"/><rect x="4" y="19.9" width="16" height="2.6" rx="1.2" fill="${frame}"/><path d="M6 4.1 L18 4.1 Q18 9 12 12 Q18 15 18 19.9 L6 19.9 Q6 15 12 12 Q6 9 6 4.1 Z" fill="none" stroke="${frame}" stroke-width="1.8"/><path d="M8 6.5 L16 6.5 Q15 9.5 12 11 Q9 9.5 8 6.5 Z M8.5 19 Q12 15.5 15.5 19 Z" fill="${sand}"/></svg>`;
 const LOGO = `<div class="logo"><span class="mr">MR CHAIT’S</span><span class="one">ONE MINUTE</span><span class="mad">MADNE<b>SS</b></span></div>`;
 const CHAIT = '__CHAIT__';
-const ME = (extra = '') => `<img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up"${extra}>`;
-const LOCKUP = () => `<div class="lockup">${ME()}${LOGO}</div>`;
+const CHAIT_BLUE = '__CHAIT_BLUE__';
+const CHAIT_RED = '__CHAIT_RED__';
+const ME = (extra = '', src = CHAIT) => `<img class="me" src="${src}" alt="Mr Chait giving a thumbs up"${extra}>`;
+const LOCKUP = (src) => `<div class="lockup">${ME('', src)}${LOGO}</div>`;
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /* ------------------------------------------------------------ sound (Web Audio, no files) */
@@ -332,7 +436,7 @@ const praiseFor = n => { const tier = PRAISE.filter(([min]) => n >= min).pop()[1
 
 /* ------------------------------------------------------------ app state */
 const app = document.getElementById('app');
-const S = { screen: 'home', deck: null, deal: null, round: 0, cur: null, got: [], skipped: [], hinted: new Set(), best: 0, phase: 'ready', left: ROUND_SECONDS, endAt: 0, raf: 0, lastSec: null, dir: '' };
+const S = { screen: 'home', deck: null, deal: null, round: 0, cur: null, got: [], skipped: [], hinted: new Set(), best: 0, mode: 'solo', target: 10, phase: 'ready', left: ROUND_SECONDS, endAt: 0, raf: 0, lastSec: null, dir: '' };
 let wake = null;
 const holdWake = async on => {
   try { if (on && 'wakeLock' in navigator && !wake) wake = await navigator.wakeLock.request('screen'); if (!on && wake) { await wake.release(); wake = null; } } catch (e) { wake = null; }
@@ -348,42 +452,97 @@ function wireSound() {
 
 /* ------------------------------------------------------------ home */
 function renderHome() {
-  stopTimer(); holdWake(false);
+  stopTimer(); holdWake(false); S.screen = 'home';
   const decks = DECKS.map((d, i) => {
     const dots = Object.entries(d.topics).map(([k, t]) => `<span style="--c:${t.c}">${ICONS[k]('#fff')}${t.name}</span>`).join('');
     return `<button class="deck" data-deck="${i}"><div class="stack">${HOURGLASS(30, '#FFD23F', '#FF4F9A')}</div>
-      <div class="info"><h3>${esc(d.title)}</h3><p>${d.words.length} words · shuffled every game</p><div class="dots">${dots}</div></div>
+      <div class="info"><h3>${esc(d.title)}</h3><p>${d.words.length} words · Red vs Blue</p><div class="dots">${dots}</div></div>
       <div class="go">${PLAY}</div></button>`;
   }).join('') + COMING.map(c => `<div class="deck soon" aria-disabled="true"><div class="stack"></div><div class="info"><h3>${esc(c.title)}</h3><p>${c.note}</p></div></div>`).join('');
   app.innerHTML = `
     <div class="bar"><div class="grow"></div>${soundBtn()}</div>
     <div class="home">
-      <div class="hero">${LOCKUP()}<div class="tagline">Describe it. Don’t say it. How many can you get in one minute?</div></div>
+      <div class="hero">${LOCKUP()}<div class="tagline">Describe it. Don’t say it. Team Blue vs Team Red!</div></div>
       <div class="section-title">Pick a deck</div>
       <div class="decks">${decks}</div>
       <div class="how"><ol>
-        <li><span class="n">1</span><span>The <b>Explainer</b> holds the iPad so their partner can’t see it, and taps <b>Start</b>.</span></li>
-        <li><span class="n">2</span><span>One word at a time. Describe it <b>without saying the word</b> or any part of it.</span></li>
-        <li><span class="n">3</span><span>Partner got it? Tap <b>GOT IT</b> and the next word pops up. Stuck? Tap <b>HINT</b> (it costs <b>10 seconds</b>) or <b>skip</b> it.</span></li>
-        <li><span class="n">4</span><span>Time’s up? A <b>hint</b> helps you finish the last word, and Mr Chait gives you your <b>score</b>. Then swap!</span></li>
+        <li><span class="n">1</span><span>Pick a deck and choose how many points win. <b>Team Blue</b> goes first, then <b>Team Red</b>.</span></li>
+        <li><span class="n">2</span><span>The <b>Explainer</b> holds the iPad so their team can’t see it. One word at a time: describe it <b>without saying it</b>.</span></li>
+        <li><span class="n">3</span><span>Team got it? Tap <b>GOT IT</b> for a point. Stuck? <b>HINT</b> costs 10 seconds, or <b>skip</b> it.</span></li>
+        <li><span class="n">4</span><span>Teams swap every minute. First to the target <b>wins</b>, and Mr Chait hands each team its <b>words to study</b>!</span></li>
       </ol></div>
     </div>`;
   wireSound();
-  app.querySelectorAll('[data-deck]').forEach(b => b.onclick = () => { Sound.unlock(); startDeck(+b.dataset.deck); });
+  app.querySelectorAll('[data-deck]').forEach(b => b.onclick = () => { Sound.unlock(); S.deck = DECKS[+b.dataset.deck]; renderSetup(); });
+}
+
+/* ------------------------------------------------------------ match setup: Blue vs Red, first to N */
+const TEAMS = { blue: { name: 'BLUE', img: CHAIT_BLUE }, red: { name: 'RED', img: CHAIT_RED } };
+const other = t => (t === 'blue' ? 'red' : 'blue');
+const TARGETS = [5, 10, 15, 20, 25];
+let M = null; // the match in progress
+function renderSetup() {
+  S.screen = 'setup'; window.scrollTo(0, 0);
+  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to decks">${HOME}<span>Decks</span></button><div class="grow"></div>${soundBtn()}</div>
+    <div class="setup">
+      <div class="deckname">${esc(S.deck.title)}</div>
+      <div class="faceoff">
+        <div class="side team-blue"><img src="${CHAIT_BLUE}" alt="Blue Mr Chait"><span>TEAM BLUE</span></div>
+        <div class="vs">VS</div>
+        <div class="side team-red"><img src="${CHAIT_RED}" alt="Red Mr Chait"><span>TEAM RED</span></div>
+      </div>
+      <div class="panel"><div class="q">First to how many points?</div>
+        <div class="targets">${TARGETS.map(n => `<button class="tgt${n === S.target ? ' on' : ''}" data-t="${n}" aria-pressed="${n === S.target}">${n}</button>`).join('')}</div>
+        <div class="note">Teams take turns, <b>Blue goes first</b>. One minute each turn. Every word your team gets = <b>1 point</b>.</div>
+      </div>
+      <button class="action team-blue" id="startmatch">${PLAY} START MATCH</button>
+      <button class="practice" id="practice">or just practise on your own (no teams)</button>
+    </div>`;
+  wireSound();
+  document.getElementById('home').onclick = renderHome;
+  app.querySelectorAll('.tgt').forEach(b => b.onclick = () => {
+    S.target = +b.dataset.t; Sound.tick(true);
+    app.querySelectorAll('.tgt').forEach(x => { const on = +x.dataset.t === S.target; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
+  });
+  document.getElementById('startmatch').onclick = () => { Sound.unlock(); startMatch(); };
+  document.getElementById('practice').onclick = () => { Sound.unlock(); startPractice(); };
+}
+function startMatch() {
+  const blank = () => ({ turns: 0, skips: 0, hints: 0, study: new Map() });
+  M = { target: S.target, score: { blue: 0, red: 0 }, turn: 'blue', winner: null, added: 0, before: { blue: 0, red: 0 }, stats: { blue: blank(), red: blank() } };
+  S.mode = 'match'; S.deal = Dealer(S.deck); S.round = 0; S.best = 0; S.screen = 'game';
+  nextRound();
+}
+function startPractice() {
+  M = null; S.mode = 'solo'; S.deal = Dealer(S.deck); S.round = 0; S.best = 0; S.screen = 'game';
+  nextRound();
 }
 
 /* ------------------------------------------------------------ game */
-function startDeck(i) {
-  S.deck = DECKS[i]; S.deal = Dealer(S.deck); S.round = 0; S.best = 0; S.screen = 'game';
-  nextRound();
-}
+const team = () => (S.mode === 'match' ? M.turn : null);
+const teamImg = () => (team() ? TEAMS[team()].img : CHAIT);
 function nextRound() {
+  if (S.mode === 'match' && S.round > 0) M.turn = other(M.turn);
   S.round++; S.cur = null; S.got = []; S.skipped = []; S.hinted = new Set(); S.phase = 'ready'; S.left = ROUND_SECONDS;
   renderGame(true); window.scrollTo(0, 0);
 }
+function miniScore() {
+  return `<div class="mini" aria-label="Blue ${M.score.blue}, Red ${M.score.red}, first to ${M.target}">
+    <span class="pill team-blue">${M.score.blue}</span><span class="t">FIRST<br>TO ${M.target}</span><span class="pill team-red">${M.score.red}</span></div>`;
+}
 function topBar() {
   return `<div class="bar"><button class="chip" id="home" aria-label="Back to decks">${HOME}<span>Decks</span></button>
-    <div class="grow"></div><span class="round-label">ROUND ${S.round}</span><div class="grow"></div>${soundBtn()}</div>`;
+    <div class="grow"></div>${S.mode === 'match' ? miniScore() : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
+}
+function wireHome() {
+  const b = document.getElementById('home'); if (!b) return;
+  // in a match, leaving needs a second tap so nobody loses the scores by accident (no pop-up dialogs)
+  let armed = false, t = 0;
+  b.onclick = () => {
+    if (S.mode !== 'match' || S.screen === 'final' || armed) { stopTimer(); renderHome(); return; }
+    armed = true; b.classList.add('armed'); b.querySelector('span').textContent = 'Tap again to quit';
+    clearTimeout(t); t = setTimeout(() => { armed = false; b.classList.remove('armed'); b.querySelector('span').textContent = 'Decks'; }, 2500);
+  };
 }
 function ring() {
   const r = 44, C = 2 * Math.PI * r;
@@ -414,44 +573,66 @@ function paintScore(bump) {
   if (bump) { n.classList.remove('bump'); void n.offsetWidth; n.classList.add('bump'); }
   const c = document.getElementById('chips'); if (c) c.innerHTML = chipsHTML(bump);
   const u = document.getElementById('undo'); if (u) u.disabled = !(S.phase === 'playing' && S.got.length);
+  const mt = document.getElementById('mtot');
+  if (mt) { const total = M.score[M.turn] + S.got.length; mt.textContent = `Match: ${total} of ${M.target} · ${M.target - total} to win`; }
+}
+function recapHTML() {
+  const recap = [...S.got.map(x => gotChip(x, false)), ...S.skipped.map(x => `<span class="sk">${esc(x.w)}</span>`)].join('');
+  return recap ? `<div class="chips" style="justify-content:center">${recap}</div>` : '';
 }
 function resultHTML(n, newBest) {
-  const recap = [...S.got.map(x => gotChip(x, false)), ...S.skipped.map(x => `<span class="sk">${esc(x.w)}</span>`)].join('');
-  return `<div class="result" id="result"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
+  const tm = team();
+  const who = tm ? TEAMS[tm].name : 'YOU';
+  return `<div class="result${tm ? ' team-' + tm : ''}" id="result"><img class="me" src="${teamImg()}" alt="Mr Chait giving a thumbs up">
     <div class="bubble">${newBest ? '<div class="ribbon">NEW BEST!</div>' : ''}
-      <div class="big">${n === 1 ? 'YOU GOT <b>1</b> WORD!' : `YOU GOT <b>${n}</b>!`}</div>
+      <div class="big">${n === 1 ? `${who} GOT <b>1</b> WORD!` : `${who} GOT <b>${n}</b>!`}</div>
       <div class="line">${praiseFor(n)}</div>
-      ${S.round > 1 || n ? `<div class="best">Best this game: ${S.best}</div>` : ''}
+      ${!tm && (S.round > 1 || n) ? `<div class="best">Best this game: ${S.best}</div>` : ''}
       ${S.hinted.size ? `<div class="best">Hints used: ${S.hinted.size} (−${S.hinted.size * HINT_COST} sec)</div>` : ''}
-    </div></div>
-    ${recap ? `<div class="chips" style="justify-content:center">${recap}</div>` : ''}`;
+    </div></div>`;
+}
+// score update between rounds: bars grow from the old score to the new one
+function boardHTML() {
+  const row = t => {
+    const was = M.before[t], now = M.score[t], scored = t === M.turn && M.added > 0;
+    return `<div class="brow team-${t}"><span class="nm">${TEAMS[t].name}</span>
+      <div class="track2"><i data-to="${Math.min(100, now / M.target * 100)}" style="width:${Math.min(100, was / M.target * 100)}%"></i><b class="flag" title="Target">${M.target}</b></div>
+      <span class="num">${now}</span>${scored ? `<span class="plus">+${M.added}</span>` : '<span class="plus ghost"></span>'}</div>`;
+  };
+  const need = t => M.target - M.score[t];
+  return `<div class="board" id="board"><h4>SCORE UPDATE</h4>${row('blue')}${row('red')}
+    <div class="togo">Blue needs <b>${need('blue')}</b> more · Red needs <b>${need('red')}</b> more</div></div>`;
 }
 function renderGame(animate) {
+  const tm = team();
   let body;
   if (S.phase === 'ready') {
-    body = `<div class="stage"><div class="card back${animate ? ' flip' : ''}">
-      <div class="backart">${ME()}<div class="badge">${HOURGLASS(44, '#241A4D', '#FF4F9A')}${LOGO}</div></div>
-      <div class="msg"><b>Explainer:</b> hold the iPad so your partner can’t see the screen, then tap <b>START</b>. How many can you get?</div></div></div>
-      <button class="action" id="go">${PLAY} START</button><div class="status"></div>`;
+    body = `<div class="stage"><div class="card back${tm ? ' team-' + tm : ''}${animate ? ' flip' : ''}">
+      ${tm ? `<div class="turn">TEAM ${TEAMS[tm].name}’S TURN</div>` : ''}
+      <div class="backart">${ME('', teamImg())}<div class="badge">${HOURGLASS(44, '#241A4D', '#FF4F9A')}${LOGO}</div></div>
+      <div class="msg">${tm ? `<b>Team ${tm === 'blue' ? 'Blue' : 'Red'}:</b> pick your Explainer. Hold the iPad so your team can’t see it, then tap <b>START</b>.`
+        : '<b>Explainer:</b> hold the iPad so your partner can’t see the screen, then tap <b>START</b>. How many can you get?'}</div></div></div>
+      <button class="action${tm ? ' team-' + tm : ''}" id="go">${PLAY} START</button><div class="status"></div>`;
   } else {
     const t = S.deck.topics[S.cur.t];
     const playing = S.phase === 'playing';
-    body = `<div class="stage"><div class="card${animate ? ' flip' : ''}" id="card">
-      <div class="head">${LOCKUP()}<div class="grow"></div>${ring()}</div>
-      <div class="scorebar"><span class="lbl">${playing ? 'GOT SO FAR' : 'FINAL SCORE'}</span><span class="n" id="score">${TICK}${S.got.length}</span></div>
+    const label = tm ? `TEAM ${TEAMS[tm].name}<small id="mtot"></small>` : (playing ? 'GOT SO FAR' : 'FINAL SCORE');
+    const nextLbl = tm ? `${PLAY} TEAM ${TEAMS[other(tm)].name}’S TURN` : 'NEXT ROUND';
+    body = `<div class="stage"><div class="card${tm ? ' team-' + tm : ''}${animate ? ' flip' : ''}" id="card">
+      <div class="head">${LOCKUP(teamImg())}<div class="grow"></div>${ring()}</div>
+      <div class="scorebar${tm ? ' team-' + tm : ''}"><span class="lbl">${label}</span><span class="n" id="score">${TICK}${S.got.length}</span></div>
       <div class="play">
         <div class="now${playing ? (S.hinted.has(S.cur) ? ' hinted' : '') : ' missed'}" id="now" style="--c:${t.c};--t:${t.t}" aria-live="polite">${nowInner(S.cur)}</div>
         ${playing ? `<div class="btns"><button class="skip-btn" id="skip">SKIP</button><button class="got-btn" id="gotit">${TICK} GOT IT!</button></div>
         <div class="chips" id="chips">${chipsHTML(false)}</div>` : ''}
       </div></div></div>
       ${playing ? `<button class="undo" id="undo" disabled>↩ Oops, undo</button>` : ''}
-      ${playing ? '' : resultHTML(S.got.length, S.newBest)}
-      <button class="action next" id="next"${playing ? ' hidden' : ''}>NEXT ROUND</button>
-      <div class="status" id="status">${playing ? 'Tap GOT IT the moment your partner says it!' : 'Use the hint to finish the last word, then swap roles!'}</div>`;
+      ${playing ? '' : resultHTML(S.got.length, S.newBest) + (tm ? boardHTML() : '') + recapHTML()}
+      <button class="action next${tm ? ' team-' + other(tm) : ''}" id="next"${playing ? ' hidden' : ''}>${nextLbl}</button>
+      <div class="status" id="status">${playing ? 'Tap GOT IT the moment your team says it!' : 'Use the hint to finish the last word, then swap!'}</div>`;
   }
   app.innerHTML = `${topBar()}<div class="game">${body}</div>`;
-  wireSound();
-  document.getElementById('home').onclick = () => { S.screen = 'home'; renderHome(); };
+  wireSound(); wireHome();
   if (S.phase === 'ready') document.getElementById('go').onclick = beginRound;
   else {
     const on = (id, f) => { const b = document.getElementById(id); if (b) b.onclick = f; };
@@ -467,7 +648,9 @@ function beginRound() {
 }
 function gotIt() {
   if (S.phase !== 'playing') return;
-  Sound.ding(); S.got.push(S.cur); S.cur = S.deal.next(); S.dir = 'slide';
+  Sound.ding(); S.got.push(S.cur);
+  if (S.mode === 'match' && M.score[M.turn] + S.got.length >= M.target) { winMatch(); return; }
+  S.cur = S.deal.next(); S.dir = 'slide';
   paintWord(); paintScore(true);
 }
 function skipWord() {
@@ -512,10 +695,23 @@ function loop() {
   S.raf = requestAnimationFrame(step);
 }
 function stopTimer() { cancelAnimationFrame(S.raf); }
+
+// words a team should go and study: skipped, ran out of time on, or needed a hint
+const WHY = { sk: 'Skipped', tm: 'Out of time', hn: 'Needed a hint' };
+function noteStudy(includeCurrent) {
+  const st = M.stats[M.turn];
+  const add = (x, why) => { const e = st.study.get(x.w) || { x, why: new Set() }; e.why.add(why); st.study.set(x.w, e); };
+  S.skipped.forEach(x => add(x, 'sk'));
+  S.hinted.forEach(x => add(x, 'hn'));
+  if (includeCurrent && S.cur) add(S.cur, 'tm');
+  st.turns++; st.skips += S.skipped.length; st.hints += S.hinted.size;
+  M.before = { ...M.score }; M.added = S.got.length; M.score[M.turn] += S.got.length;
+}
 function endRound() {
   stopTimer(); holdWake(false);
   const n = S.got.length;
-  S.newBest = S.round > 1 && n > S.best; if (n > S.best) S.best = n;
+  if (S.mode === 'match') { noteStudy(true); S.newBest = false; }
+  else { S.newBest = S.round > 1 && n > S.best; if (n > S.best) S.best = n; }
   S.phase = 'done'; S.dir = '';
   renderGame(false);
   const card = document.getElementById('card');
@@ -523,7 +719,58 @@ function endRound() {
   banner.className = 'banner up fade'; banner.textContent = 'TIME’S UP!';
   card.appendChild(banner); card.classList.add('shake');
   Sound.buzz();
+  if (S.mode === 'match') setTimeout(() => {
+    document.querySelectorAll('.track2 i').forEach(i => i.style.width = i.dataset.to + '%');
+    if (M.added) Sound.ding();
+  }, 1300);
   setTimeout(() => { if (S.phase !== 'done') return; if (n >= 5 || S.newBest) { Sound.win(); confetti(); } }, 700);
+}
+
+/* ------------------------------------------------------------ we have a winner + the final score sheet */
+function winMatch() {
+  stopTimer(); holdWake(false);
+  noteStudy(false);
+  M.winner = M.turn; S.phase = 'won'; S.screen = 'final';
+  renderFinal();
+  Sound.win(); setTimeout(() => Sound.win(), 1000); setTimeout(() => Sound.win(), 2000);
+  confetti(); setTimeout(confetti, 2700);
+}
+function studyHTML(t) {
+  const items = [...M.stats[t].study.values()]
+    .sort((a, b) => (b.why.has('sk') - a.why.has('sk')) || (b.why.has('tm') - a.why.has('tm')) || a.x.w.localeCompare(b.x.w));
+  const list = items.length ? `<ul>${items.map(e => `<li><b>${esc(e.x.w)}</b>${[...e.why].map(k => `<em class="why ${k}">${WHY[k]}</em>`).join('')}<p>${esc(e.x.h)}</p></li>`).join('')}</ul>`
+    : '<p class="none">Nothing to study. Flawless! 🏆</p>';
+  return `<div class="slist team-${t}"><h4>TEAM ${TEAMS[t].name}: WORDS TO STUDY</h4>${list}</div>`;
+}
+function renderFinal() {
+  const w = M.winner, l = other(w), s = M.stats;
+  const cell = (t, k) => `<td>${k === 'score' ? M.score[t] : s[t][k]}</td>`;
+  app.innerHTML = `${topBar()}<div class="final">
+    <div class="winhero team-${w}">
+      <div class="winstamp">${TEAMS[w].name} WINS!</div>
+      <img src="${TEAMS[w].img}" alt="${TEAMS[w].name} Mr Chait celebrating">
+      <div class="whoo">WHOOOHOOO! MADNE<b>SS</b>!</div>
+      <div class="finalscore"><span class="pill team-blue">BLUE ${M.score.blue}</span><span class="dash">–</span><span class="pill team-red">${M.score.red} RED</span></div>
+    </div>
+    <div class="sheet">
+      <h3>SCORE SHEET</h3>
+      <div class="meta">${esc(S.deck.title)} · first to ${M.target}</div>
+      <table class="stats"><thead><tr><th></th><th class="team-blue">BLUE</th><th class="team-red">RED</th></tr></thead><tbody>
+        <tr><th>Points</th>${cell('blue', 'score')}${cell('red', 'score')}</tr>
+        <tr><th>Turns</th>${cell('blue', 'turns')}${cell('red', 'turns')}</tr>
+        <tr><th>Skips</th>${cell('blue', 'skips')}${cell('red', 'skips')}</tr>
+        <tr><th>Hints</th>${cell('blue', 'hints')}${cell('red', 'hints')}</tr>
+      </tbody></table>
+      <div class="study">${studyHTML(w)}${studyHTML(l)}</div>
+      <p class="tip">Learn each word with its meaning, then play again and beat your score!</p>
+    </div>
+    <button class="action" id="again">${PLAY} REMATCH</button>
+    <button class="practice" id="decks">Pick a different deck</button>
+  </div>`;
+  wireSound(); wireHome();
+  document.getElementById('again').onclick = () => { Sound.unlock(); S.target = M.target; startMatch(); };
+  document.getElementById('decks').onclick = renderHome;
+  window.scrollTo(0, 0);
 }
 
 /* ------------------------------------------------------------ confetti */

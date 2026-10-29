@@ -44,6 +44,8 @@ def main():
     s = open(os.path.join(SRC, 'app.src.html')).read()
     s = s.replace('/*DECKS*/', decks)
     s = s.replace('__CHAIT__', webp_data_uri(os.path.join(SRC, 'assets', 'chait-sticker.png')))
+    s = s.replace('__CHAIT_BLUE__', webp_data_uri(os.path.join(SRC, 'assets', 'chait-blue-sticker.png')))
+    s = s.replace('__CHAIT_RED__', webp_data_uri(os.path.join(SRC, 'assets', 'chait-red-sticker.png')))
     fonts = os.path.join(SRC, 'fonts')
     faces = ('<style>'
              f"@font-face{{font-family:'Luckiest Guy';src:url(data:font/woff2;base64,{b64(os.path.join(fonts, 'luckiest-guy-latin-400-normal.woff2'))}) format('woff2')}}"

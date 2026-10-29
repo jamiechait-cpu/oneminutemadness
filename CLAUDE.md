@@ -1,29 +1,32 @@
 # Mr Chait's One Minute MadneSS
 
-Jamie Chait's own classroom study game (Knights Preparatory School, Randburg). Learners play in pairs on school iPads: the Explainer describes three words without saying them while their partner guesses, against a one-minute timer. It is Jamie's game, not a Knights product: Knights branding rules do not apply.
+Jamie Chait's own classroom study game (Knights Preparatory School, Randburg). Learners play Team Blue vs Team Red on school iPads: the Explainer describes words one at a time without saying them while their team guesses, against a one-minute timer per turn. It is Jamie's game, not a Knights product: Knights branding rules do not apply.
 
 **Live:** https://jamiechait-cpu.github.io/oneminutemadness/ (GitHub Pages, `main` branch, root folder). Pushing to `main` updates every iPad automatically. Kids open the link in Safari and use Share → Add to Home Screen; the Mr Chait icon is the app icon.
 
 ## How it plays (agreed with Jamie)
 
-Rolling round (Jamie's change, 28 Oct 2026; the earlier version dealt fixed cards of 3 words, like the printed deck):
+**Red vs Blue match** (the kids' idea, 29 Oct 2026) is the main mode. The rolling round (28 Oct) is what each turn uses; the original version dealt fixed cards of 3 words, like the printed deck.
 
 1. Home: Mr Chait + logo lockup, "Pick a deck", how-to-play steps, sound toggle.
-2. Each round starts face down (card back + START), so the partner can't peek while the iPad is handed over.
-3. START flips the card and starts the 60-second ring timer (ticking in the last 10 seconds). **One word at a time** appears, with a yellow "GOT SO FAR" score strip.
-4. **GOT IT!** = partner guessed it (ding, score +1, word added as a green chip, next word slides in). **SKIP** passes a stuck word (it goes to the back of the pile and comes round again later). **Oops, undo** brings back the last ticked word and takes the point off. **HINT −10 sec** (yellow pill under the word) shows that word's hint during the round and takes 10 seconds off the clock (`HINT_COST`); the word can still be ticked, the same word never costs twice (undo keeps it shown), the button greys out in the last 10 seconds, and words got with a hint carry a little bulb on their chip. The result panel shows "Hints used: N (−N0 sec)".
-5. Time up: buzzer, card shakes, "TIME'S UP!" stamp. The word they were on shows its **hint** with a lock: they finish explaining it but it doesn't count.
-6. Result panel: Mr Chait with a speech bubble, "YOU GOT 7!", a random line picked by score tier (`PRAISE` in `src/app.src.html`: 0, 1+, 3+, 6+, 9+, 12+), "Best this game", a NEW BEST ribbon from round 2 on, and chips for every word got (green) and skipped (crossed out). Confetti and fanfare for 5+ or a new best.
-7. NEXT ROUND = swap roles.
+2. Tapping a deck opens the **match setup**: blue Mr Chait VS red Mr Chait (red mirrored), "First to how many points?" (5 / 10 / 15 / 20 / 25, default 10), START MATCH. A small link underneath, "or just practise on your own (no teams)", runs the solo rolling round.
+3. **Team Blue always goes first**, then turns alternate Blue, Red, Blue... Each turn starts face down with "TEAM BLUE'S TURN" and that team's Mr Chait, and a team-coloured START. The top bar shows the match score (Blue pill, "FIRST TO 10", Red pill).
+4. A turn is one minute of the rolling round: one word at a time. **GOT IT!** = 1 point. **SKIP** sends the word to the back of the pile. **Oops, undo** takes back the last tick. **HINT −10 sec** shows the hint and takes 10 seconds off the clock (`HINT_COST`); the word can still be ticked, it never costs twice, and the button is locked in the last 10 seconds. The score strip is in the team colour and shows "Match: 7 of 10 · 3 to win".
+5. Time up: buzzer, "TIME'S UP!", the hint for the last word (locked). Then the team's Mr Chait says "BLUE GOT 6!" with a random line by score (`PRAISE`), and a **SCORE UPDATE** board pops up: both teams' bars grow to the new totals, a "+6" badge, and "Blue needs 3 more · Red needs 5 more". The button says "TEAM RED'S TURN".
+6. **Winning is instant**: the moment a team's total reaches the target, mid-turn, the match ends. The win screen shows "BLUE WINS!" stamp, a bouncing team Mr Chait, "WHOOOHOOO! MADNESS!", confetti and a fanfare, and the final score.
+7. Under that is the **score sheet**: points, turns, skips and hints per team, and each team's **words to study**. These are the words they skipped, ran out of time on, or needed a hint for, each with its hint as the meaning, tagged Skipped / Out of time / Needed a hint. Then REMATCH (same target) or "Pick a different deck".
+8. In a match, the Decks button needs a second tap ("Tap again to quit") so nobody loses the score by accident. No pop-up dialogs.
 
-Decisions: words are dealt one at a time from the whole shuffled deck, never the same topic twice in a row, no repeats until the deck runs out; "best this game" lives only in memory (resets when they pick a deck), so nothing about learners is stored (only the sound on/off choice in localStorage); sound on by default with a mute toggle; no login; screen kept awake during a round. On phones under 400px wide the top-bar chips drop their text labels.
+Solo practice keeps the old result panel: "YOU GOT 7!", best this game, NEW BEST from round 2.
+
+Decisions: words are dealt from the whole shuffled deck, never the same topic twice in a row, no repeats until the deck runs out; the match lives only in memory (nothing about learners is stored; only the sound on/off choice is kept in localStorage); no login; screen kept awake during a turn. Team colours: blue #1E63E0 (dark #0F3C99, tint #E3ECFD), red #E6262E (dark #9A1117, tint #FDE4E5). On phones under 400px wide the top-bar chips drop their text labels.
 
 ## Files
 
 - `index.html`: the built, self-contained game (fonts, character and icon all inlined; works offline). **Never edit by hand; rebuild it.**
 - `src/app.src.html`: the app (HTML/CSS/JS). Placeholders `/*DECKS*/` and `__CHAIT__` are filled by the build.
 - `src/decks/*.js`: one file per deck. Each defines `const DECK_xxx = { id, title, short, topics: { KEY: { name, c (colour), t (tint) } }, words: [[topicKey, word, hint], ...] }`. Add new decks to `const DECKS = [...]` in `src/app.src.html` and remove the matching entry from `COMING`.
-- `src/assets/`: `chait-original.png` (Jamie's character as he supplied it), `chait-sticker.png` (cut out with white sticker outline, used in the game), `app-icon.png` (180×180 home-screen icon).
+- `src/assets/`: `chait-original.png` (Jamie's character as he supplied it), `chait-sticker.png` (cut out with white sticker outline, used in the game), `chait-blue-original.png` / `chait-red-original.png` (Jamie's team versions) and their `-sticker.png` cut-outs (placeholders `__CHAIT_BLUE__`, `__CHAIT_RED__`), `app-icon.png` (180×180 home-screen icon).
 - `src/fonts/`: Luckiest Guy (display) and Nunito 700/800/900 (body).
 - `tools/build.py`: `python3 tools/build.py` checks every hint and writes `index.html`. Needs Python 3 + Pillow, and Node.
 
@@ -45,12 +48,14 @@ Decisions: words are dealt one at a time from the whole shuffled deck, never the
 
 ## Look
 
-Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A; "MR CHAIT'S" in a tilted pink tag over "ONE MINUTE" (yellow) and "MADNESS" with a big pink **SS** (the SS stands for Social Sciences). Mr Chait (cap, beard, black hoodie, blue sneakers, thumbs up) appears in the logo lockup, on the card back, in the card header and in the end-of-round result panel.
+Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A; "MR CHAIT'S" in a tilted pink tag over "ONE MINUTE" (yellow) and "MADNESS" with a big pink **SS** (the SS stands for Social Sciences). Mr Chait (cap, beard, black hoodie, blue sneakers, thumbs up) appears in the logo lockup, on the card back, in the card header and in the end-of-round result panel. In a match, the blue or red Mr Chait replaces him for that team's turn, result and win screen.
 
 ## Ideas Jamie has liked / next steps
 
-- Done: random Mr Chait lines by score, and a per-round score (the rolling round).
-- Possible next: a team/class leaderboard, or a two-team match mode (the printed version used: 1 point per word, +1 MadneSS bonus for all 3, first to 15 wins).
+- Done: random Mr Chait lines by score, the rolling round, the hint button, the Red vs Blue match with score sheet and words to study.
+- Planned: picture words. Jamie is making simple AI images (square, white background, no text) named after the word; about one word in four shows the picture with the word in small text underneath, so the partner still says the exact term.
+- Possible next: give Red one last turn when Blue wins first (equal turns), or a class leaderboard.
+- Also made (outside the repo): an A4 "SCAN ME!" QR poster in the game's style that opens the live link.
 
 ## Printed version
 
