@@ -11,7 +11,7 @@ import base64, glob, io, os, re, subprocess, sys, json
 
 # GoatCounter site code for the anonymous usage counter (e.g. 'mrchait' for mrchait.goatcounter.com).
 # Leave empty to build without any counter.
-GOATCOUNTER = ''
+GOATCOUNTER = 'mrchait'
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'src')
