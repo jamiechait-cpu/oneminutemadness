@@ -419,6 +419,10 @@ const CHAIT_BLUE = '__CHAIT_BLUE__';
 const CHAIT_RED = '__CHAIT_RED__';
 const ME = (extra = '', src = CHAIT) => `<img class="me" src="${src}" alt="Mr Chait giving a thumbs up"${extra}>`;
 const LOCKUP = (src) => `<div class="lockup">${ME('', src)}${LOGO}</div>`;
+/* ------------------------------------------------------------ anonymous usage counter (GoatCounter, no cookies, nothing about learners) */
+// The page view ("opened the game") is counted by GoatCounter's script, added by tools/build.py when a site code is set.
+// track() adds a count for each game started, by mode and deck. If the script isn't there (no code, offline, blocked), it does nothing.
+const track = (path, title) => { try { window.goatcounter && window.goatcounter.count && window.goatcounter.count({ path, title, event: true }); } catch (e) {} };
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /* ------------------------------------------------------------ sound (Web Audio, no files) */
@@ -596,6 +600,7 @@ function startQuiz(sel) {
   const pool = d.words.filter(w => sel.has(w[0])).map(([t, w, h]) => ({ t, w, h }));
   Q = { topics: new Set(sel), pool, queue: shuffle([...pool]), cur: null, last: null, score: 0, streak: 0, bestStreak: 0, right: [], wrong: [], locked: false, key: bestKey(d, sel) };
   Q.prevBest = getBest(Q.key);
+  track(`solo/${d.id}`, `On my own: ${d.title}`);
   S.mode = 'quiz'; S.screen = 'game'; S.phase = 'ready'; S.left = ROUND_SECONDS;
   renderQuizReady();
 }
@@ -736,10 +741,12 @@ function startMatch() {
   const blank = () => ({ turns: 0, skips: 0, hints: 0, study: new Map() });
   M = { target: S.target, score: { blue: 0, red: 0 }, turn: 'blue', winner: null, added: 0, before: { blue: 0, red: 0 }, stats: { blue: blank(), red: blank() } };
   S.mode = 'match'; S.deal = Dealer(S.deck); S.round = 0; S.best = 0; S.screen = 'game';
+  track(`teams/${S.deck.id}`, `Teams: ${S.deck.title}`);
   nextRound();
 }
 function startPractice() {
   M = null; S.mode = 'solo'; S.deal = Dealer(S.deck); S.round = 0; S.best = 0; S.screen = 'game';
+  track(`pairs/${S.deck.id}`, `Pairs: ${S.deck.title}`);
   nextRound();
 }
 

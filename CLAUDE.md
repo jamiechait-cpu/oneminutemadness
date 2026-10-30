@@ -27,6 +27,13 @@ Pairs (no teams) keeps the old result panel: "YOU GOT 7!", best this game, NEW B
 
 Decisions: words are dealt from the whole shuffled deck, never the same topic twice in a row, no repeats until the deck runs out; the match lives only in memory; the only things kept in localStorage are the sound on/off choice and the solo personal-best numbers (no names, nothing about learners); no login; screen kept awake during a turn. Team colours: blue #1E63E0 (dark #0F3C99, tint #E3ECFD), red #E6262E (dark #9A1117, tint #FDE4E5). On phones under 400px wide the top-bar chips drop their text labels.
 
+## Usage counter (GoatCounter)
+
+Jamie asked (30 Oct 2026) to see how many times the game is opened per day. It uses **GoatCounter**: free for non-commercial use, no cookies, nothing about learners.
+- Switch: `GOATCOUNTER = '<site code>'` at the top of `tools/build.py`, then rebuild. Empty = no counter at all. The build adds GoatCounter's `count.js` (from gc.zgo.at) to the head; the dashboard is `https://<code>.goatcounter.com`.
+- Counted: every open (page view `/`), plus one event per game started: `teams/<deck id>`, `solo/<deck id>` (On my own), `pairs/<deck id>`, titled e.g. "Teams: Grade 7 Social Sciences". REMATCH and PLAY AGAIN count as new games.
+- `track()` in `src/app.src.html` does nothing if the script isn't loaded (no code, offline, or blocked by a school filter), so the game never depends on it. Offline plays aren't counted.
+
 ## Files
 
 - `index.html`: the built, self-contained game (fonts, character and icon all inlined; works offline). **Never edit by hand; rebuild it.**

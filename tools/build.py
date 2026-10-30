@@ -9,6 +9,10 @@
 """
 import base64, glob, io, os, re, subprocess, sys, json
 
+# GoatCounter site code for the anonymous usage counter (e.g. 'mrchait' for mrchait.goatcounter.com).
+# Leave empty to build without any counter.
+GOATCOUNTER = ''
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'src')
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
@@ -59,9 +63,12 @@ def main():
             '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="MadneSS">'
             f'<link rel="apple-touch-icon" href="{icon}"><link rel="icon" href="{icon}">'
             '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>')
+    if GOATCOUNTER:
+        head += (f'<script data-goatcounter="https://{GOATCOUNTER}.goatcounter.com/count" '
+                 'data-goatcounter-settings=\'{"path": "/"}\' async src="https://gc.zgo.at/count.js"></script>')
     s = head + s.replace('<div class="app" id="app">', '</head><body><div class="app" id="app">', 1) + '</body></html>'
     open(os.path.join(ROOT, 'index.html'), 'w').write(s)
-    print(f'Built index.html ({len(s) // 1024} KB) with {len(deck_files)} deck(s).')
+    print(f'Built index.html ({len(s) // 1024} KB) with {len(deck_files)} deck(s); counter: {GOATCOUNTER or "off"}.')
 
 
 if __name__ == '__main__':
