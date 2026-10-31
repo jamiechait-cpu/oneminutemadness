@@ -90,7 +90,7 @@ Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A;
 
 ## Ideas Jamie has liked / next steps
 
-- Done (live 31 Oct): Cycle test memo for the Grade 6 SS Term 3 test and the Grade 7 EMS Movie Night test; the rename to Mr Chait's Classroom; the grade-first layout. Next tests the same way: Jamie sends the paper + memo.
+- Done (live 31 Oct): Cycle test memo for the Grade 6 SS Term 3 test and the Grade 7 EMS Movie Night test; the rename to Mr Chait's Classroom; the grade-first layout. Label the Diagram for Grade 7 SS with 4 diagrams (live 31 Oct); the earthquake diagram is next. Next tests the same way: Jamie sends the paper + memo.
 - Done: random Mr Chait lines by score, the rolling round, the hint button, the Red vs Blue match with score sheet and words to study (live 29 Oct), ON MY OWN Beat the Clock.
 - Planned: picture words. Jamie is making simple AI images (square, white background, no text) named after the word; about one word in four shows the picture with the word in small text underneath, so the partner still says the exact term.
 - Possible next: give Red one last turn when Blue wins first (equal turns), or a class leaderboard.
