@@ -561,7 +561,7 @@ function renderHome() {
       <div class="hero">${LOCKUP()}<div class="tagline">Describe it. Don’t say it. Team Blue vs Team Red, or beat the clock on your own!</div></div>
       <div class="section-title">Pick a deck</div>
       <div class="decks">${decks}</div>
-      ${TESTS.length ? `<div class="section-title">Cycle test practice</div><div class="decks">${tests}</div>` : ''}
+      ${TESTS.length ? `<div class="section-title">Cycle test memo</div><div class="decks">${tests}</div>` : ''}
       <div class="how"><ol>
         <li><span class="n">1</span><span>Pick a deck, then <b>Teams</b> (Blue vs Red, Blue goes first) or <b>On my own</b> to study solo.</span></li>
         <li><span class="n">2</span><span>The <b>Explainer</b> holds the iPad so their team can’t see it. One word at a time: describe it <b>without saying it</b>.</span></li>
@@ -780,7 +780,7 @@ function renderTestSetup() {
     <div class="setup">
       <div class="deckname">${esc(t.title)} · ${esc(t.sub)}</div>
       <div class="result solo-hero"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
-        <div class="bubble"><div class="big">TEST <b>PRACTICE</b>!</div>
+        <div class="bubble"><div class="big">CYCLE TEST <b>MEMO</b>!</div>
           <div class="line">Redo the test. Tap the answer, read the memo, and fix the ones you got wrong!</div></div></div>
       <div class="panel"><div class="q">Which sections?</div>
         <div class="topics"><button class="tchip all${all ? ' on' : ''}" id="t-all" aria-pressed="${all}">Whole test</button>${keys.map(chip).join('')}</div>
@@ -816,7 +816,7 @@ function startTest(sel, only) {
   T = { secs: new Set(sel), only: only || null, pool, queue: [...pool], again: [], pass: 1, done: 0, first: 0, missed: new Map(), cur: null, opts: [], locked: false,
         key: testKey(t, sel) };
   T.prevBest = only ? 0 : getBest(T.key);
-  track(`test/${t.id}`, `Test practice: ${t.title} (${t.sub})`);
+  track(`test/${t.id}`, `Cycle test memo: ${t.title} (${t.sub})`);
   S.mode = 'test'; S.screen = 'game'; S.phase = 'playing';
   Sound.start();
   app.innerHTML = `${topBar()}<div class="game"><div class="stage"><div class="card flip" id="card">
@@ -982,7 +982,7 @@ function miniScore() {
 }
 function topBar() {
   return `<div class="bar"><button class="chip" id="home" aria-label="Back to decks">${HOME}<span>Decks</span></button>
-    <div class="grow"></div>${S.mode === 'match' ? miniScore() : S.mode === 'quiz' ? '<span class="round-label">BEAT THE CLOCK</span>' : S.mode === 'test' ? '<span class="round-label">TEST PRACTICE</span>' : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
+    <div class="grow"></div>${S.mode === 'match' ? miniScore() : S.mode === 'quiz' ? '<span class="round-label">BEAT THE CLOCK</span>' : S.mode === 'test' ? '<span class="round-label">CYCLE TEST MEMO</span>' : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
 }
 function wireHome() {
   const b = document.getElementById('home'); if (!b) return;

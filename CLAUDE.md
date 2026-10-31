@@ -25,7 +25,7 @@ Pairs (no teams) keeps the old result panel: "YOU GOT 7!", best this game, NEW B
 - Score sheet: "YOU GOT 9!" with a random line by score, NEW BEST ribbon and confetti; stats (right, wrong, accuracy, best streak); **words to study** (each wrong word with "You picked: …", its meaning, and "Got it later ✓" if they fixed it); "You knew these" chips; PLAY AGAIN or Change topics.
 - Personal best is saved on the device in localStorage (`omm-best-<deck>-<topic keys>`), just a number, no names.
 
-**Cycle test practice: Test Practice** (Jamie's idea, 31 Oct 2026): a learner redoes one of Jamie's cycle tests on their own. It has its own "Cycle test practice" section on the home screen, under the decks.
+**Cycle test memo** (Jamie's idea, 31 Oct 2026; first called Test Practice, renamed by Jamie the same day): a learner redoes one of Jamie's cycle tests on their own. It has its own "Cycle test memo" section on the home screen, under the decks.
 - Each written test question became 1 or 2 tap-the-answer questions (4 options, or 2 for weather/climate), in test order, with **no clock**. Pick sections or the whole test.
 - After every tap, the **memo line** shows, right or wrong ("NOT QUITE · Answer: …"), then NEXT. Missed questions come back for another go at the end, until all are right.
 - Score = **right first time** out of the total; best is kept on the device (`omm-best-<test id>-<section keys>`). The test sheet lists **questions to revise** by section (what they picked, the answer, the memo line), then JUST MY MISTAKES (redo only those; doesn't count for the best), redo the whole thing, or change sections.
@@ -34,7 +34,7 @@ Pairs (no teams) keeps the old result panel: "YOU GOT 7!", best this game, NEW B
 - Pictures: a test can have `pics: { A: '__TESTIMG_<file>__' }` (the build inlines `src/assets/tests/<file>.png`), and a question's 7th field lists the pictures to show, e.g. `['A', 'C']`. Tap a picture to zoom; tap anywhere to close. 2 or 3 options are allowed (shape names, grow/shrink); they keep a fixed alphabetical order.
 - **Grade 7 EMS cycle test "Movie Night"** (`g7ems-ct`, 22 Oct 2026, 43 questions: Target Market 10, Planning & Risk 9, Break-Even 15, Income & Profit 9), built from Jamie's marking memo. The wrong options are the mistakes the memo warns about (Bulk Bites on 100 children = R1 500, R500 ÷ R50 = 10, 16 instead of 17, the whole R1 500 tuckshop profit = R6 500). Source A/B facts are written into each question (no source sheet). 4.6 and 4.7 left out (no right or wrong answer); "your own Market Day business" questions (2.3, 3.5, 4.9) use the memo's stall examples. The break-even graph (`g7ems-breakeven.png`) shows on 3.6.
 - Keep the right answer about the same length as the wrong ones, so the longest option is not a giveaway.
-- Usage counter event: `test/<test id>`, titled e.g. "Test practice: Grade 6 SS Cycle Test (Term 3)".
+- Usage counter event: `test/<test id>`, titled e.g. "Cycle test memo: Grade 6 SS Cycle Test (Term 3)".
 
 Decisions: words are dealt from the whole shuffled deck, never the same topic twice in a row, no repeats until the deck runs out; the match lives only in memory; the only things kept in localStorage are the sound on/off choice and the solo personal-best numbers (no names, nothing about learners); no login; screen kept awake during a turn. Team colours: blue #1E63E0 (dark #0F3C99, tint #E3ECFD), red #E6262E (dark #9A1117, tint #FDE4E5). On phones under 400px wide the top-bar chips drop their text labels.
 
