@@ -368,6 +368,36 @@ canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:non
 .why.fixed{background:var(--good)}
 .gotlist{margin-top:14px}
 .gotlist h4{margin:0 0 8px;font-family:var(--display);font-weight:400;font-size:19px;letter-spacing:.04em;color:var(--good)}
+
+/* ---------- Test Practice (cycle test redo) */
+.deck.test{border-color:var(--pop)}
+.deck.test .stack{background:var(--pop);color:var(--paper)}
+.deck.test .stack svg{width:34px;height:34px}
+.tprog{flex:none;width:clamp(78px, 21vw, 104px);aspect-ratio:1;border-radius:50%;background:var(--night-3);border:4px solid rgba(255,255,255,.18);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.tprog b{font-family:var(--display);font-weight:400;font-size:clamp(28px, 7.5vw, 38px);color:var(--paper);padding-top:4px}
+.tprog small{font-weight:900;font-size:11px;letter-spacing:.1em;color:var(--sun);text-transform:uppercase;margin-top:2px}
+.tprog.again{border-color:var(--pop)}
+.qcard .ref{font-weight:900;font-size:13px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase}
+.tq .qtext{font-size:clamp(18px, 4.8vw, 25px)}
+.opts.list{grid-template-columns:1fr}
+.opts.list .opt{min-height:58px;text-align:left;font-size:clamp(15px, 4.1vw, 19px);line-height:1.25;padding:10px 14px}
+.opts .opt:disabled{cursor:default}
+.opts.done .opt:not(.right):not(.wrong){opacity:.45}
+.memo{border-radius:18px;background:var(--paper);color:var(--ink);border:4px solid var(--good);padding:12px 14px 14px;animation:pop .3s}
+.memo.no{border-color:var(--bad)}
+.memo .lbl{font-family:var(--display);font-size:22px;letter-spacing:.04em;color:var(--good);padding-top:3px}
+.memo.no .lbl{color:var(--bad)}
+.memo .ans{margin:4px 0 0;font-weight:900;font-size:16px;color:#137A48}
+.memo p{margin:6px 0 0;font-weight:800;font-size:16px;line-height:1.35}
+.memo .comeback{margin:8px 0 0;font-weight:900;font-size:13px;color:var(--ink-soft)}
+.memo .action{margin-top:12px;width:100%}
+.slist.test{--tc:var(--pop);--tt:#FFE7F1}
+.slist .sec{margin:12px 0 6px;font-family:var(--display);font-weight:400;font-size:17px;letter-spacing:.04em;color:var(--c)}
+.slist .sec:first-of-type{margin-top:0}
+.slist li .qn{display:inline-block;font-weight:900;font-size:11px;letter-spacing:.08em;color:var(--paper);background:var(--c);border-radius:999px;padding:2px 8px;margin-bottom:4px}
+.slist li .qq{font-weight:900;font-size:15px;line-height:1.3;color:var(--ink)}
+.slist li .ok{margin-top:3px;font-size:13.5px;font-weight:900;color:#137A48}
 @media (prefers-reduced-motion: reduce){
   .card.flip,.card.shake,.now .in,.now.missed .hintbox,.now.hinted .hintbox,.timer .minus,.timer.hurry .num,.banner,.result,.scorebar .n,.chips span,.board,.plus,.winstamp,.winhero img,.opt{animation:none !important}
 }
@@ -671,10 +701,145 @@ const DECK_G7SS = {
 };
 // = DECK_G7SS;
 
+// Grade 6 SS Term 3 cycle test (55 min, 65 marks) as a Test Practice round.
+// Each test question becomes one or two tap-the-answer questions. Answers checked by Jamie (31 Oct 2026):
+// astrolabe left out (not taught); "carols might rain" counts as climate. Q8 of Section B (where would you live) left out.
+// Section keys reuse the Grade 6 deck's topic keys, so they get the same icons and colours.
+// Each question: [section, test question number, question, right answer, [wrong answers], memo shown after answering]
+const TEST_G6SS_CT3 = {
+  id: 'g6ss-ct3', title: 'Grade 6 SS Cycle Test', sub: 'Term 3', short: 'Gr 6 SS Test',
+  sections: {
+    E: { name: 'Explorers', c: '#F07F1E', t: '#FFF0E1' },
+    P: { name: 'Population', c: '#1FA463', t: '#E3F6EC' },
+    C: { name: 'Climate', c: '#2389D6', t: '#E2F1FC' },
+  },
+  qs: [
+    ['E', 'Q1', 'What was life like for most Europeans BEFORE the Renaissance?',
+      'Most were poor farmers working for a lord, few could read, and the Church controlled learning',
+      ['Most lived in big cities and went to university', 'Most traded spices with India every week', 'Most sailed around the world on caravels'],
+      'Before the Renaissance, life was hard and simple. People farmed, didn’t travel far, and seldom asked questions.'],
+    ['E', 'Q2', 'How did the Renaissance get people interested in exploring the oceans?',
+      'People started asking questions and wanted to find out about the world for themselves',
+      ['The king banned farming, so everyone had to go to sea', 'Europe ran out of fresh water', 'People stopped believing the Earth had oceans'],
+      'New ideas, new maps and curiosity made people want to discover what lay beyond the sea.'],
+    ['E', 'Q3', 'Which of these is an invention that helped explorers sail far distances?',
+      'The magnetic compass', ['The steam train', 'The telephone', 'The aeroplane'],
+      'The compass needle always points north, so sailors knew which way they were heading, even out of sight of land.'],
+    ['E', 'Q3', 'Which invention was a small, fast ship with triangle-shaped sails?',
+      'The caravel', ['The canoe', 'The steamship', 'The submarine'],
+      'Caravels were light and fast, and their triangle sails let them sail into the wind.'],
+    ['E', 'Q4', 'The map in the test showed Vasco da Gama’s route. Which three continents were on it?',
+      'Europe, Africa and Asia', ['Africa, South America and Australia', 'Europe, North America and Asia', 'Africa, Antarctica and Australia'],
+      'He sailed from Portugal (Europe), around Africa, to India (Asia).'],
+    ['E', 'Q5', 'Point B on the map is India. What valuable goods did the Europeans want from there?',
+      'Spices like pepper, cinnamon and cloves', ['Wool and wheat', 'Coal and iron', 'Ice and furs'],
+      'Spices came from Asia, and Europeans paid a fortune for them.'],
+    ['E', 'Q6', 'Why were spices so valuable to Europeans?',
+      'They made food taste better and helped keep meat from going off, and they were hard to get',
+      ['They were used to build ships', 'They grew everywhere in Europe', 'They were only used as medicine for horses'],
+      'There were no fridges. Spices hid the taste of old meat and helped preserve it, and the long trip made them rare and expensive.'],
+    ['E', 'Q7', 'Which is ANOTHER reason Europeans took to the ocean to explore?',
+      'To spread Christianity and win new land and riches for their king',
+      ['To find a quicker way to the Moon', 'To escape the cold winters for a holiday', 'To deliver letters to Africa'],
+      'The explorers sailed for “God, gold and glory”.'],
+    ['E', 'Q8', 'Which reason shows that exploration was driven by WEALTH AND POWER?',
+      'Kings paid for the voyages so their country could control the rich spice trade',
+      ['Sailors just wanted to see what the sea looked like', 'Explorers were bored at home', 'Ships needed the exercise'],
+      'Voyages were expensive. Kings paid for them because they expected trade, gold and land in return.'],
+    ['E', 'Q9', 'Which was a real hardship for sailors on long voyages?',
+      'Scurvy: bleeding gums and weak bodies from no fresh fruit or vegetables',
+      ['Too much fresh fruit on board', 'Getting sunburnt on the beach every day', 'Their phones running out of battery'],
+      'Without vitamin C from fresh food, many sailors fell ill with scurvy and died.'],
+    ['E', 'Q9', 'What happened to the food and water on long voyages?',
+      'The biscuits got weevils and the water went green and smelly',
+      ['It was kept fresh in big fridges', 'They ate fresh bread baked every morning', 'They stopped at a shop every few days'],
+      'Months at sea with no way to keep food fresh meant rotten food, dirty water, rats and cramped, wet decks.'],
+    ['E', 'Passage', 'Who was the first person to sail from Europe to India via the Cape of Good Hope?',
+      'Vasco da Gama', ['Bartolomeu Dias', 'Leonardo da Vinci', 'Galileo Galilei'],
+      'Vasco da Gama reached India in 1498. Dias rounded the Cape in 1488 but turned back.'],
+
+    ['P', 'Q1', 'Which describes an URBAN area, not a rural one?',
+      'Lots of people, tall buildings, shops and traffic', ['Farms, open fields and fresh air', 'Very few people and lots of space', 'Cattle grazing and dirt roads'],
+      'Urban = town or city. Rural = countryside.'],
+    ['P', 'Q1', 'What do urban and rural areas have IN COMMON?',
+      'People live and work in both, and need water, food and schools',
+      ['Both have skyscrapers', 'Both have no people', 'Both are only found in Europe'],
+      'In a double bubble map, the middle bubbles show what both have in common.'],
+    ['P', 'Q2', 'Which is a POSITIVE of living in an urban area?',
+      'More jobs, with hospitals, schools and shops close by', ['Quiet roads and clean air', 'Lots of space for animals', 'Very little traffic'],
+      'Cities offer jobs, services and entertainment.'],
+    ['P', 'Q3', 'Which is a POSITIVE of living in a rural area?',
+      'Fresh air, peace and quiet, and lots of open space', ['Lots of traffic jams', 'Big shopping malls on every corner', 'Factories next door'],
+      'The countryside is calmer and cleaner, with space to farm.'],
+    ['P', 'Q4', 'What does urbanisation mean?',
+      'More and more people moving from the countryside into towns and cities',
+      ['People moving from cities to farms', 'Building new farms', 'A country’s population getting smaller'],
+      'Urbanisation means cities keep growing as people move in.'],
+    ['P', 'Q5', 'Why does urbanisation happen?',
+      'People move to cities looking for jobs and better schools, hospitals and services',
+      ['Cities have more cattle', 'The countryside has too many jobs', 'People are forced out by the weather every winter'],
+      'Pull factors (jobs, services) draw people in. Push factors (no work, drought) send them from rural areas.'],
+    ['P', 'Q6', 'Which is a PROBLEM caused by fast urbanisation?',
+      'Overcrowding, informal settlements, pollution and traffic', ['Too many empty houses in the city', 'Cleaner rivers', 'Fewer people needing water'],
+      'When cities grow faster than homes and services can be built, people end up squashed in with too little housing, water and electricity.'],
+    ['P', 'Q7', 'Which government plan would help reduce the problems of rapid urbanisation?',
+      'Build schools, clinics and jobs in rural areas so people don’t have to move',
+      ['Close all the schools in rural areas', 'Stop building houses in cities', 'Ban buses and trains'],
+      'Making rural areas better means fewer people need to leave.'],
+    ['P', 'Q7', 'Which is ANOTHER good way to fix urbanisation problems?',
+      'Build affordable housing and better public transport in the cities',
+      ['Make city rent more expensive', 'Build more factories next to homes', 'Remove all the parks'],
+      'Other good answers: improve water and electricity, and create more jobs.'],
+    ['P', 'Q9', 'Which is a PUSH factor that makes people LEAVE South Africa?',
+      'High crime and not enough jobs', ['Beautiful weather', 'Good universities', 'Lots of jobs in the cities'],
+      'Push = something bad that makes you want to leave.'],
+    ['P', 'Q9', 'Which is a PULL factor that brings people TO South Africa?',
+      'Jobs in the mines and cities, and good universities', ['Crime', 'Load-shedding', 'Unemployment'],
+      'Pull = something good that attracts people to a place.'],
+    ['P', 'Q10', 'What heading goes on the Y axis (A) of the world population graph?',
+      'Number of people (in billions)', ['Years', 'Countries', 'Temperature'],
+      'The Y axis goes up the side and shows how many people there are.'],
+    ['P', 'Q10', 'What heading goes on the X axis (B) of the world population graph?',
+      'Years', ['Number of people', 'Continents', 'Rainfall'],
+      'The X axis runs along the bottom and shows time.'],
+    ['P', 'Q11', 'Why did the world population suddenly shoot up (box C on the graph)?',
+      'Better medicine like vaccines and antibiotics, so fewer people died', ['People stopped having babies', 'There was less food', 'Lots of wars'],
+      'Fewer deaths plus the same number of births means the population grows fast.'],
+    ['P', 'Q11', 'Which is ANOTHER reason the world population shot up?',
+      'Better farming and machines meant much more food, plus clean water and toilets', ['Farms got smaller', 'Water got dirtier', 'Hospitals closed'],
+      'The Industrial Revolution brought machines, more food and better living conditions.'],
+
+    ['C', 'Q1', 'When should Knights hold the 2026 swimming season, and why?',
+      'October to March, because that’s summer in the Southern Hemisphere and Joburg is hot',
+      ['June to August, because it rains less then', 'All year, because Joburg has a tropical climate', 'December and January only, because that’s winter'],
+      'South Africa is south of the equator, so summer is October to March. Joburg has hot, rainy summers and cold, dry winters.'],
+    ['C', 'Q2', 'Weather or climate? “Packing for a trip to Canada will need a big suitcase for all the warm clothes.”',
+      'Climate', ['Weather'],
+      'Canada is cold every year. That’s the usual pattern over many years, not just today.'],
+    ['C', 'Q2', 'Weather or climate? “Knights needs a venue for the December carols, as it might rain.”',
+      'Climate', ['Weather'],
+      'Joburg summers are the rainy season every year, so planning for rain in December is about the climate.'],
+    ['C', 'Q2', 'Weather or climate? “Swimming season was delayed by a week because of a cold front.”',
+      'Weather', ['Climate'],
+      'A cold front is a short-term change, just for a few days.'],
+    ['C', 'Q2', 'Weather or climate? “Knights is putting in sprinklers to keep the field green during winter.”',
+      'Climate', ['Weather'],
+      'Joburg winters are dry every year. That’s the usual pattern.'],
+    ['C', 'Q3', 'A resort in a COLD climate wants tourists. Which activity fits best?',
+      'Skiing and snowboarding', ['Snorkelling on a coral reef', 'Sunbathing by the pool', 'Surfing in warm water'],
+      'Show what the climate makes possible: snow means skiing, sledding and ice skating.'],
+    ['C', 'Q3', 'A resort in a HOT climate wants tourists. Which activity fits best?',
+      'Snorkelling, swimming and beach volleyball', ['Ice skating outdoors', 'Building snowmen', 'Skiing down a mountain'],
+      'Sun and warm water mean beach and water activities.'],
+  ],
+};
+// = TEST_G6SS_CT3;
+
 
 /* ------------------------------------------------------------ decks */
 const DECKS = [DECK_G6SS, DECK_G7SS, DECK_G7EMS];
 const COMING = [];
+const TESTS = [TEST_G6SS_CT3]; // cycle-test practice rounds (src/tests), played on your own
 const ROUND_SECONDS = 60;
 const HINT_COST = 10; // seconds taken off the clock for a hint during the round
 
@@ -800,12 +965,19 @@ function renderHome() {
       <div class="info"><h3>${esc(d.title)}</h3><p>${d.words.length} words · teams or on your own</p><div class="dots">${dots}</div></div>
       <div class="go">${PLAY}</div></button>`;
   }).join('') + COMING.map(c => `<div class="deck soon" aria-disabled="true"><div class="stack"></div><div class="info"><h3>${esc(c.title)}</h3><p>${c.note}</p></div></div>`).join('');
+  const tests = TESTS.map((t, i) => {
+    const dots = Object.entries(t.sections).map(([k, x]) => `<span style="--c:${x.c}">${ICONS[k]('#fff')}${x.name}</span>`).join('');
+    return `<button class="deck test" data-test="${i}"><div class="stack">${TICK}</div>
+      <div class="info"><h3>${esc(t.title)}</h3><p>${esc(t.sub)} · ${t.qs.length} questions · redo it on your own</p><div class="dots">${dots}</div></div>
+      <div class="go">${PLAY}</div></button>`;
+  }).join('');
   app.innerHTML = `
     <div class="bar"><div class="grow"></div>${soundBtn()}</div>
     <div class="home">
       <div class="hero">${LOCKUP()}<div class="tagline">Describe it. Don’t say it. Team Blue vs Team Red, or beat the clock on your own!</div></div>
       <div class="section-title">Pick a deck</div>
       <div class="decks">${decks}</div>
+      ${TESTS.length ? `<div class="section-title">Cycle test practice</div><div class="decks">${tests}</div>` : ''}
       <div class="how"><ol>
         <li><span class="n">1</span><span>Pick a deck, then <b>Teams</b> (Blue vs Red, Blue goes first) or <b>On my own</b> to study solo.</span></li>
         <li><span class="n">2</span><span>The <b>Explainer</b> holds the iPad so their team can’t see it. One word at a time: describe it <b>without saying it</b>.</span></li>
@@ -815,6 +987,7 @@ function renderHome() {
     </div>`;
   wireSound();
   app.querySelectorAll('[data-deck]').forEach(b => b.onclick = () => { Sound.unlock(); S.deck = DECKS[+b.dataset.deck]; renderMode(); });
+  app.querySelectorAll('[data-test]').forEach(b => b.onclick = () => { Sound.unlock(); S.test = TESTS[+b.dataset.test]; renderTestSetup(); });
 }
 
 /* ------------------------------------------------------------ choose: teams or on my own */
@@ -997,6 +1170,167 @@ function endQuiz() {
   setTimeout(() => { if (newBest || n >= 8) { Sound.win(); confetti(); } }, 700);
 }
 
+/* ------------------------------------------------------------ ON MY OWN: Test Practice (redo a cycle test) */
+// The test's questions as tap-the-answer questions, in test order, with no clock: this is revision, not a race.
+// After every answer the memo line shows, right or wrong. Missed questions come back for a second go at the end,
+// until every one has been answered right. Score = right first time. Best is kept on this device only (a number).
+let T = null;
+const TEST_SECS = {}; // remembered section choice per test, for this visit
+const testKey = (t, secs) => `omm-best-${t.id}-${[...secs].sort().join('')}`;
+const TEST_PRAISE = [
+  [0, ['Every mistake is a lesson. Read the memo lines, then go again!', 'Good start! Now you know exactly what to study.']],
+  [50, ['Halfway there! Have another go and push it higher!', 'Solid effort! The memo lines will get you the rest.']],
+  [75, ['Great work! You really know this stuff!', 'Brilliant! Just a few to tidy up.']],
+  [90, ['WOW! You’d smash this test now!', 'Almost perfect! Mr Chait is impressed!']],
+  [100, ['PERFECT! WHOOOHOOO! MADNESS!', 'Full marks! You’re a legend!']],
+];
+const testPraise = pct => { const tier = TEST_PRAISE.filter(([min]) => pct >= min).pop()[1]; return tier[Math.floor(Math.random() * tier.length)]; };
+
+function renderTestSetup() {
+  S.screen = 'testsetup'; S.mode = 'test'; window.scrollTo(0, 0);
+  const t = S.test, keys = Object.keys(t.sections);
+  const sel = TEST_SECS[t.id] || new Set(keys); TEST_SECS[t.id] = sel;
+  const chip = k => { const x = t.sections[k]; return `<button class="tchip${sel.has(k) ? ' on' : ''}" data-k="${k}" style="--c:${x.c}" aria-pressed="${sel.has(k)}">${ICONS[k]('currentColor')}${x.name}</button>`; };
+  const all = sel.size === keys.length;
+  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back">${HOME}<span>Decks</span></button><div class="grow"></div>${soundBtn()}</div>
+    <div class="setup">
+      <div class="deckname">${esc(t.title)} · ${esc(t.sub)}</div>
+      <div class="result solo-hero"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
+        <div class="bubble"><div class="big">TEST <b>PRACTICE</b>!</div>
+          <div class="line">Redo the test. Tap the answer, read the memo, and fix the ones you got wrong!</div></div></div>
+      <div class="panel"><div class="q">Which sections?</div>
+        <div class="topics"><button class="tchip all${all ? ' on' : ''}" id="t-all" aria-pressed="${all}">Whole test</button>${keys.map(chip).join('')}</div>
+        <div class="note" id="pb"></div>
+      </div>
+      <button class="action" id="starttest">${PLAY} START</button>
+    </div>`;
+  wireSound();
+  document.getElementById('home').onclick = renderHome;
+  const paint = () => {
+    const isAll = sel.size === keys.length;
+    app.querySelectorAll('.tchip[data-k]').forEach(b => { const on = sel.has(b.dataset.k); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+    const a = document.getElementById('t-all'); a.classList.toggle('on', isAll); a.setAttribute('aria-pressed', isAll);
+    const n = t.qs.filter(q => sel.has(q[0])).length, best = getBest(testKey(t, sel));
+    document.getElementById('pb').innerHTML = `${n} questions · no clock · ${best ? `Your best on this device: <b>${best} / ${n}</b>` : 'No best score yet. Set one!'}`;
+  };
+  app.querySelectorAll('.tchip[data-k]').forEach(b => b.onclick = () => {
+    const k = b.dataset.k;
+    if (sel.size === keys.length) { sel.clear(); sel.add(k); }
+    else if (sel.has(k)) { if (sel.size > 1) sel.delete(k); }
+    else sel.add(k);
+    Sound.tick(true); paint();
+  });
+  document.getElementById('t-all').onclick = () => { keys.forEach(k => sel.add(k)); Sound.tick(true); paint(); };
+  document.getElementById('starttest').onclick = () => { Sound.unlock(); startTest(sel); };
+  paint();
+}
+// only = a list of question indexes, for "Just my mistakes" (not counted for the personal best)
+function startTest(sel, only) {
+  const t = S.test;
+  const pool = t.qs.map(([s, ref, q, ok, wr, memo], i) => ({ i, s, ref, q, ok, wr, memo }))
+    .filter(x => only ? only.includes(x.i) : sel.has(x.s));
+  T = { secs: new Set(sel), only: only || null, pool, queue: [...pool], again: [], pass: 1, done: 0, first: 0, missed: new Map(), cur: null, opts: [], locked: false,
+        key: testKey(t, sel) };
+  T.prevBest = only ? 0 : getBest(T.key);
+  track(`test/${t.id}`, `Test practice: ${t.title} (${t.sub})`);
+  S.mode = 'test'; S.screen = 'game'; S.phase = 'playing';
+  Sound.start();
+  app.innerHTML = `${topBar()}<div class="game"><div class="stage"><div class="card flip" id="card">
+      <div class="head">${LOCKUP()}<div class="grow"></div><div class="tprog" id="tprog"></div></div>
+      <div class="scorebar"><span class="lbl">RIGHT FIRST TIME</span><span class="n" id="score">${TICK}0</span></div>
+      <div class="play"><div class="qcard tq" id="qcard"></div><div class="opts" id="opts"></div><div id="memo"></div></div></div></div>
+    <div class="status" id="status">Tap the right answer. No clock, so take your time!</div></div>`;
+  wireSound(); wireHome(); window.scrollTo(0, 0);
+  nextTestQ();
+}
+function paintTestProgress() {
+  const p = document.getElementById('tprog'); if (!p) return;
+  p.classList.toggle('again', T.pass > 1);
+  p.innerHTML = T.pass === 1 ? `<b>${T.pool.length - T.queue.length}</b><small>of ${T.pool.length}</small>`
+    : `<b>${T.queue.length + T.again.length + 1}</b><small>to fix</small>`;
+}
+function nextTestQ() {
+  if (!T.queue.length) {
+    if (!T.again.length) return endTest();
+    T.queue = T.again; T.again = []; T.pass++;
+    document.getElementById('status').textContent = T.pass === 2 ? 'Second go! Let’s fix the ones you missed.' : 'One more go at these!';
+  }
+  const x = T.queue.shift(); T.cur = x; T.locked = false;
+  T.opts = x.wr.length === 1 ? [x.ok, ...x.wr].sort() : shuffle([x.ok, ...x.wr]);
+  const sec = S.test.sections[x.s];
+  const qc = document.getElementById('qcard');
+  qc.style.setProperty('--c', sec.c); qc.style.setProperty('--t', sec.t);
+  qc.innerHTML = `<div class="in slide"><div class="tag">${ICONS[x.s](sec.c)}${sec.name}</div><div class="ref">Test ${x.ref === 'Passage' ? 'reading passage' : 'question ' + x.ref.slice(1)}</div><p class="qtext">${esc(x.q)}</p></div>`;
+  const op = document.getElementById('opts');
+  op.className = 'opts' + (T.opts.some(o => o.length > 18) ? ' list' : '');
+  op.innerHTML = T.opts.map((o, i) => `<button class="opt" data-i="${i}">${esc(o)}</button>`).join('');
+  op.querySelectorAll('.opt').forEach(b => b.onclick = () => testAnswer(+b.dataset.i));
+  document.getElementById('memo').innerHTML = '';
+  paintTestProgress();
+}
+function testAnswer(i) {
+  if (T.locked) return;
+  T.locked = true;
+  const x = T.cur, picked = T.opts[i], right = picked === x.ok;
+  const op = document.getElementById('opts'), btns = [...op.querySelectorAll('.opt')];
+  op.classList.add('done'); btns.forEach(b => (b.disabled = true));
+  if (right) {
+    Sound.ding(); btns[i].classList.add('right'); T.done++;
+    if (T.pass === 1) { T.first++; const n = document.getElementById('score'); n.innerHTML = `${TICK}${T.first}`; n.classList.remove('bump'); void n.offsetWidth; n.classList.add('bump'); }
+    else T.missed.get(x).fixed = true;
+  } else {
+    Sound.undo(); btns[i].classList.add('wrong'); btns[T.opts.indexOf(x.ok)].classList.add('right', 'reveal');
+    const m = T.missed.get(x) || { picked: new Set(), fixed: false }; m.picked.add(picked); T.missed.set(x, m);
+    T.again.push(x);
+  }
+  const last = !T.queue.length && !T.again.length;
+  const memo = document.getElementById('memo');
+  memo.innerHTML = `<div class="memo${right ? '' : ' no'}"><div class="lbl">${right ? (T.pass === 1 ? 'CORRECT!' : 'FIXED IT!') : 'NOT QUITE'}</div>
+    ${right ? '' : `<div class="ans">Answer: ${esc(x.ok)}</div>`}<p>${esc(x.memo)}</p>
+    ${right ? '' : '<div class="comeback">This one comes back for another go at the end.</div>'}
+    <button class="action" id="nextq">${last ? 'SEE MY SCORE' : 'NEXT'} ${PLAY}</button></div>`;
+  document.getElementById('nextq').onclick = nextTestQ;
+  memo.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function endTest() {
+  S.phase = 'done'; S.screen = 'final';
+  const t = S.test, total = T.pool.length, n = T.first, pct = Math.round(n / total * 100);
+  const newBest = !T.only && n > 0 && n > T.prevBest;
+  if (newBest) setBest(T.key, n);
+  const best = T.only ? 0 : Math.max(n, T.prevBest);
+  const bySec = Object.keys(t.sections).map(k => [k, [...T.missed.keys()].filter(x => x.s === k)]).filter(([, xs]) => xs.length);
+  const list = bySec.length ? bySec.map(([k, xs]) => { const sec = t.sections[k];
+      return `<div class="sec" style="--c:${sec.c}">${sec.name}</div><ul>${xs.map(x => { const m = T.missed.get(x);
+        return `<li style="--c:${sec.c}"><span class="qn">${x.ref === 'Passage' ? 'PASSAGE' : 'TEST ' + x.ref}</span><div class="qq">${esc(x.q)}</div>
+          <div class="picked">You picked: ${[...m.picked].map(esc).join(' · ')}</div><div class="ok">Answer: ${esc(x.ok)}</div><p>${esc(x.memo)}</p></li>`; }).join('')}</ul>`; }).join('')
+    : '<p class="none">Every question right first time. Flawless! 🏆</p>';
+  const secs = T.only ? 'just my mistakes' : T.secs.size === Object.keys(t.sections).length ? 'whole test' : [...T.secs].map(k => t.sections[k].name).join(', ');
+  app.innerHTML = `${topBar()}<div class="final">
+    <div class="result" id="result"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
+      <div class="bubble">${newBest ? '<div class="ribbon">NEW BEST!</div>' : ''}
+        <div class="big">YOU GOT <b>${n}</b>/${total}!</div>
+        <div class="line">${testPraise(pct)}</div>
+        ${best ? `<div class="best">Your best: ${best} / ${total}</div>` : ''}</div></div>
+    <div class="sheet">
+      <h3>YOUR TEST SHEET</h3>
+      <div class="meta">${esc(t.title)} · ${esc(t.sub)} · ${secs}</div>
+      <div class="qstats"><div><b>${n}</b>right first time</div><div><b>${T.missed.size}</b>needed another go</div><div><b>${pct}%</b>score</div><div><b>${total}</b>questions</div></div>
+      <div class="slist test"><h4>QUESTIONS TO REVISE</h4>${list}</div>
+      <p class="tip">${T.missed.size ? 'Read each answer and memo line, then try just your mistakes!' : 'You’re ready for this test. Well done!'}</p>
+    </div>
+    ${T.missed.size ? `<button class="action" id="mistakes">${PLAY} JUST MY MISTAKES</button><button class="practice" id="again">Redo the whole thing</button>`
+      : `<button class="action" id="again">${PLAY} PLAY AGAIN</button>`}
+    <button class="practice" id="secs">Change sections</button>
+  </div>`;
+  wireSound(); wireHome();
+  const ids = [...T.missed.keys()].map(x => x.i), secSel = T.secs;
+  document.getElementById('again').onclick = () => { Sound.unlock(); startTest(secSel); };
+  const mb = document.getElementById('mistakes'); if (mb) mb.onclick = () => { Sound.unlock(); startTest(secSel, ids); };
+  document.getElementById('secs').onclick = renderTestSetup;
+  window.scrollTo(0, 0);
+  setTimeout(() => { if (pct >= 75) { Sound.win(); confetti(); } }, 600);
+}
+
 /* ------------------------------------------------------------ match setup: Blue vs Red, first to N */
 const TEAMS = { blue: { name: 'BLUE', img: CHAIT_BLUE }, red: { name: 'RED', img: CHAIT_RED } };
 const other = t => (t === 'blue' ? 'red' : 'blue');
@@ -1055,7 +1389,7 @@ function miniScore() {
 }
 function topBar() {
   return `<div class="bar"><button class="chip" id="home" aria-label="Back to decks">${HOME}<span>Decks</span></button>
-    <div class="grow"></div>${S.mode === 'match' ? miniScore() : S.mode === 'quiz' ? '<span class="round-label">BEAT THE CLOCK</span>' : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
+    <div class="grow"></div>${S.mode === 'match' ? miniScore() : S.mode === 'quiz' ? '<span class="round-label">BEAT THE CLOCK</span>' : S.mode === 'test' ? '<span class="round-label">TEST PRACTICE</span>' : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
 }
 function wireHome() {
   const b = document.getElementById('home'); if (!b) return;

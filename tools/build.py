@@ -6,6 +6,8 @@
 - Inlines the Mr Chait sticker, the home-screen icon and the fonts, so the game is one self-contained file
   that works offline and needs no other host.
 - Checks every hint: a hint must never contain its own word (or the first 4 letters of any part of it).
+- Inlines every cycle-test practice file in src/tests/*.js (each defines a TEST_xxx constant) and checks it:
+  every question needs a right answer, 1 or 3 wrong answers (no repeats, none equal to the right one) and a memo line.
 """
 import base64, glob, io, os, re, subprocess, sys, json
 
@@ -41,10 +43,25 @@ def check_hints(deck_files):
         sys.exit('Fix the hints above, then build again.')
 
 
+def check_tests(test_files):
+    js = "const fs=require('fs');let bad=0;for(const f of JSON.parse(process.argv[1])){const src=fs.readFileSync(f,'utf8');" \
+         "const T=eval(src.replace(/if \\(typeof module[\\s\\S]*$/,'')+';'+src.match(/const (TEST_\\w+)/)[1]);" \
+         "T.qs.forEach((q,i)=>{const [s,ref,qt,ok,wr,memo]=q;const all=[ok,...(wr||[])];" \
+         "const err=!T.sections[s]?'unknown section':!qt||!ok||!memo?'missing question, answer or memo':" \
+         "!(wr&&(wr.length===1||wr.length===3))?'needs 1 or 3 wrong answers':new Set(all).size!==all.length?'repeated answer':'';" \
+         "if(err){bad++;console.log('TEST QUESTION PROBLEM:',T.id,'#'+(i+1),ref,'|',err,'|',qt)}})}process.exit(bad?1:0)"
+    r = subprocess.run(['node', '-e', js, json.dumps(test_files)], capture_output=True, text=True)
+    print(r.stdout, r.stderr, end='')
+    if r.returncode:
+        sys.exit('Fix the test questions above, then build again.')
+
+
 def main():
     deck_files = sorted(glob.glob(os.path.join(SRC, 'decks', '*.js')))
     check_hints(deck_files)
-    decks = '\n'.join(open(f).read().replace("if (typeof module !== 'undefined') module.exports", '//') for f in deck_files)
+    test_files = sorted(glob.glob(os.path.join(SRC, 'tests', '*.js')))
+    check_tests(test_files)
+    decks = '\n'.join(open(f).read().replace("if (typeof module !== 'undefined') module.exports", '//') for f in deck_files + test_files)
     s = open(os.path.join(SRC, 'app.src.html')).read()
     s = s.replace('/*DECKS*/', decks)
     s = s.replace('__CHAIT__', webp_data_uri(os.path.join(SRC, 'assets', 'chait-sticker.png')))
@@ -68,7 +85,7 @@ def main():
                  'data-goatcounter-settings=\'{"path": "/"}\' async src="https://gc.zgo.at/count.js"></script>')
     s = head + s.replace('<div class="app" id="app">', '</head><body><div class="app" id="app">', 1) + '</body></html>'
     open(os.path.join(ROOT, 'index.html'), 'w').write(s)
-    print(f'Built index.html ({len(s) // 1024} KB) with {len(deck_files)} deck(s); counter: {GOATCOUNTER or "off"}.')
+    print(f'Built index.html ({len(s) // 1024} KB) with {len(deck_files)} deck(s) and {len(test_files)} test(s); counter: {GOATCOUNTER or "off"}.')
 
 
 if __name__ == '__main__':

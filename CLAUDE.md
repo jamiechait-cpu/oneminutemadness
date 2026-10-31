@@ -25,6 +25,14 @@ Pairs (no teams) keeps the old result panel: "YOU GOT 7!", best this game, NEW B
 - Score sheet: "YOU GOT 9!" with a random line by score, NEW BEST ribbon and confetti; stats (right, wrong, accuracy, best streak); **words to study** (each wrong word with "You picked: …", its meaning, and "Got it later ✓" if they fixed it); "You knew these" chips; PLAY AGAIN or Change topics.
 - Personal best is saved on the device in localStorage (`omm-best-<deck>-<topic keys>`), just a number, no names.
 
+**Cycle test practice: Test Practice** (Jamie's idea, 31 Oct 2026): a learner redoes one of Jamie's cycle tests on their own. It has its own "Cycle test practice" section on the home screen, under the decks.
+- Each written test question became 1 or 2 tap-the-answer questions (4 options, or 2 for weather/climate), in test order, with **no clock**. Pick sections or the whole test.
+- After every tap, the **memo line** shows, right or wrong ("NOT QUITE · Answer: …"), then NEXT. Missed questions come back for another go at the end, until all are right.
+- Score = **right first time** out of the total; best is kept on the device (`omm-best-<test id>-<section keys>`). The test sheet lists **questions to revise** by section (what they picked, the answer, the memo line), then JUST MY MISTAKES (redo only those; doesn't count for the best), redo the whole thing, or change sections.
+- Files: `src/tests/*.js`, one per test: `const TEST_xxx = { id, title, sub, short, sections: { KEY: { name, c, t } }, qs: [[section, 'Q3', question, right answer, [wrong answers], memo line], ...] }`. Section keys reuse the matching deck's topic keys (same icon and colour). Add new ones to `const TESTS = [...]`. The build checks each question has a memo and 1 or 3 wrong answers, none repeated.
+- **Grade 6 SS Term 3 cycle test** (`g6ss-ct3`, 34 questions: Explorers 12, Population 15, Climate 7). Jamie: astrolabe was not taught (left out); "carols might rain" is **climate**. Section B Q8 (where would you live) left out: no right answer.
+- Usage counter event: `test/<test id>`, titled "Test practice: Grade 6 SS Cycle Test (Term 3)".
+
 Decisions: words are dealt from the whole shuffled deck, never the same topic twice in a row, no repeats until the deck runs out; the match lives only in memory; the only things kept in localStorage are the sound on/off choice and the solo personal-best numbers (no names, nothing about learners); no login; screen kept awake during a turn. Team colours: blue #1E63E0 (dark #0F3C99, tint #E3ECFD), red #E6262E (dark #9A1117, tint #FDE4E5). On phones under 400px wide the top-bar chips drop their text labels.
 
 ## Usage counter (GoatCounter)
@@ -41,7 +49,7 @@ Jamie asked (30 Oct 2026) to see how many times the game is opened per day. It u
 - `src/decks/*.js`: one file per deck. Each defines `const DECK_xxx = { id, title, short, topics: { KEY: { name, c (colour), t (tint) } }, words: [[topicKey, word, hint], ...] }`. Add new decks to `const DECKS = [...]` in `src/app.src.html` and remove the matching entry from `COMING`.
 - `src/assets/`: `chait-original.png` (Jamie's character as he supplied it), `chait-sticker.png` (cut out with white sticker outline, used in the game), `chait-blue-original.png` / `chait-red-original.png` (Jamie's team versions) and their `-sticker.png` cut-outs (placeholders `__CHAIT_BLUE__`, `__CHAIT_RED__`), `app-icon.png` (180×180 home-screen icon).
 - `src/fonts/`: Luckiest Guy (display) and Nunito 700/800/900 (body).
-- `tools/build.py`: `python3 tools/build.py` checks every hint and writes `index.html`. Needs Python 3 + Pillow, and Node.
+- `tools/build.py`: `python3 tools/build.py` checks every hint and every test question, and writes `index.html`. Needs Python 3 + Pillow, and Node.
 
 ## Rules for decks and hints
 
@@ -65,6 +73,7 @@ Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A;
 
 ## Ideas Jamie has liked / next steps
 
+- Done: Test Practice for the Grade 6 SS Term 3 cycle test (31 Oct). Next tests the same way: Jamie sends the paper + memo.
 - Done: random Mr Chait lines by score, the rolling round, the hint button, the Red vs Blue match with score sheet and words to study (live 29 Oct), ON MY OWN Beat the Clock.
 - Planned: picture words. Jamie is making simple AI images (square, white background, no text) named after the word; about one word in four shows the picture with the word in small text underneath, so the partner still says the exact term.
 - Possible next: give Red one last turn when Blue wins first (equal turns), or a class leaderboard.
