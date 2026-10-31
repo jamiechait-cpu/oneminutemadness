@@ -367,6 +367,25 @@ canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:non
 .pick small{display:block;font-weight:900;font-size:12.5px;color:#C9C2F0}
 .pick .go{flex:none;width:38px;height:38px;border-radius:50%;background:var(--sun);color:var(--night);display:flex;align-items:center;justify-content:center}
 .pick .go svg{width:18px;height:18px}
+/* ---------- Label the Diagram */
+.gcard.label{--mc:var(--sun);--md:#E8562A}
+.gcard.label .kind{color:var(--night)}
+.gcard .pics .pinbox{width:clamp(62px, 17vw, 80px);aspect-ratio:1;border-radius:16px;background:var(--night);color:var(--sun);display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:clamp(34px, 9vw, 44px);box-shadow:5px 5px 0 #E8562A;padding-top:6px}
+.dwrap{position:relative;width:fit-content;max-width:100%;margin:0 auto;border-radius:16px;overflow:hidden;background:#FEFCF7;border:4px solid var(--c)}
+.dwrap img{display:block;max-width:100%;max-height:min(40vh, 560px);width:auto;height:auto}
+.dsheet .dwrap img{max-height:none}
+.play .dwrap+.lq{margin-top:-4px}
+.pin{position:absolute;transform:translate(-50%,-50%);min-width:30px;min-height:30px;padding:3px 7px 0;border-radius:10px;background:var(--night);color:var(--sun);
+  border:2px solid var(--paper);font-family:var(--display);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 0 rgba(0,0,0,.35)}
+.pin.now{background:var(--pop);color:var(--paper);animation:pinpulse 1s infinite}
+.pin.done{background:var(--good);color:var(--paper);font-family:var(--body);font-weight:900;font-size:clamp(9.5px, 2.6vw, 14px);line-height:1.1;max-width:36%;text-align:center;padding:4px 6px;animation:none}
+.pin.miss{background:var(--bad)}
+@keyframes pinpulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.18)}}
+.lq{margin:0;font-weight:900;font-size:clamp(18px, 4.8vw, 24px);line-height:1.3;color:var(--ink);text-align:center}
+.lq b{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;border-radius:9px;background:var(--pop);color:var(--paper);font-family:var(--display);font-weight:400;padding-top:3px;margin:0 3px}
+.dsheet{margin:8px 0 14px}
+.dsheet h5{margin:0 0 6px;font-family:var(--display);font-weight:400;font-size:18px;letter-spacing:.04em;color:var(--c)}
 .how h4{margin:0 0 10px;font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:.04em;color:var(--sun)}
 .mode{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--paper);color:var(--ink);border-radius:22px;
   padding:12px 16px 12px 10px;border:5px solid var(--mc);box-shadow:0 7px 0 var(--md);transition:transform .12s}
@@ -466,7 +485,8 @@ canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:non
 /* ------------------------------------------------------------ decks */
 const DECKS = [DECK_G6SS, DECK_G7SS, DECK_G7EMS];
 const COMING = [];
-const TESTS = [TEST_G6SS_CT3, TEST_G7EMS_CT]; // cycle-test practice rounds (src/tests), played on your own
+const TESTS = [TEST_G6SS_CT3, TEST_G7EMS_CT];
+const DIAGRAM_SETS = [DIAGRAMS_G7SS]; // Label the Diagram (src/diagrams), played on your own // cycle-test practice rounds (src/tests), played on your own
 const ROUND_SECONDS = 60;
 const HINT_COST = 10; // seconds taken off the clock for a hint during the round
 
@@ -607,7 +627,7 @@ function renderHome() {
 /* ------------------------------------------------------------ a grade: its three games, each with a button per subject */
 function renderGrade() {
   stopTimer(); holdWake(false); S.screen = 'grade'; S.mode = 'solo'; window.scrollTo(0, 0);
-  const g = S.grade, decks = DECKS.filter(d => d.grade === g), tests = TESTS.filter(t => t.grade === g);
+  const g = S.grade, decks = DECKS.filter(d => d.grade === g), tests = TESTS.filter(t => t.grade === g), dsets = DIAGRAM_SETS.filter(d => d.grade === g);
   const pick = (kind, i, name, small) => `<button class="pick" data-${kind}="${i}"><span><b>${esc(name)}</b><small>${small}</small></span><span class="go">${PLAY}</span></button>`;
   const deckPicks = kind => decks.map(d => pick(kind, DECKS.indexOf(d), d.subject, `${d.words.length} words`)).join('');
   app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to home">${HOME}<span>Home</span></button><div class="grow"></div>${soundBtn()}</div>
@@ -626,6 +646,10 @@ function renderGrade() {
           <div><h3>CYCLE TEST MEMO</h3><span class="kind">On my own · No clock</span></div></div>
           <p>Redo your <b>cycle test</b>. Read the <b>memo</b> after every answer, then fix your mistakes.</p>
           <div class="picks">${tests.map(t => pick('test', TESTS.indexOf(t), t.subject, `${esc(t.sub)} · ${t.qs.length} questions`)).join('')}</div></div>` : ''}
+        ${dsets.length ? `<div class="gcard label"><div class="top"><div class="pics"><div class="pinbox">1</div></div>
+          <div><h3>LABEL THE DIAGRAM</h3><span class="kind">On my own · No clock</span></div></div>
+          <p>The labels are gone from the <b>diagrams in your notes</b>. Put every one back in the right place!</p>
+          <div class="picks">${dsets.map(d => pick('dset', DIAGRAM_SETS.indexOf(d), d.subject, `${d.diagrams.length} diagrams · ${d.diagrams.reduce((n, g) => n + g.pins.length, 0)} labels`)).join('')}</div></div>` : ''}
       </div>
       <div class="how"><h4>How One Minute MadneSS works</h4><ol>
         <li><span class="n">1</span><span>Split into <b>Team Blue</b> and <b>Team Red</b>. Blue goes first.</span></li>
@@ -639,6 +663,7 @@ function renderGrade() {
   app.querySelectorAll('[data-teams]').forEach(b => b.onclick = () => { Sound.unlock(); S.deck = DECKS[+b.dataset.teams]; renderSetup(); });
   app.querySelectorAll('[data-solo]').forEach(b => b.onclick = () => { Sound.unlock(); S.deck = DECKS[+b.dataset.solo]; renderQuizSetup(); });
   app.querySelectorAll('[data-test]').forEach(b => b.onclick = () => { Sound.unlock(); S.test = TESTS[+b.dataset.test]; renderTestSetup(); });
+  app.querySelectorAll('[data-dset]').forEach(b => b.onclick = () => { Sound.unlock(); S.dset = DIAGRAM_SETS[+b.dataset.dset]; renderLabelSetup(); });
 }
 // back to this grade's games (or home if no grade has been picked)
 const toGames = () => (S.grade ? renderGrade() : renderHome());
@@ -973,6 +998,164 @@ function endTest() {
   setTimeout(() => { if (pct >= 75) { Sound.win(); confetti(); } }, 600);
 }
 
+/* ------------------------------------------------------------ ON MY OWN: Label the Diagram */
+// A diagram from Jamie's notes with its labels wiped off; a numbered pin sits where each label was.
+// One pin pulses at a time: "What goes at 3?" The learner taps the label. Right = the pin turns green with the label;
+// wrong = red, the right label shows, and that pin comes back at the end of the diagram. The memo line shows after every
+// answer. Score = right first time. Best is kept on this device only (a number).
+let L = null;
+const LABEL_SEL = {};
+const topicOf = k => { for (const d of DECKS) if (d.topics[k]) return d.topics[k]; return { name: '', c: '#E8562A', t: '#FDE8E0' }; };
+function renderLabelSetup() {
+  S.screen = 'labelsetup'; S.mode = 'label'; window.scrollTo(0, 0);
+  const ds = S.dset, keys = ds.diagrams.map(g => g.key);
+  const sel = LABEL_SEL[ds.id] || new Set(keys); LABEL_SEL[ds.id] = sel;
+  const chip = g => { const tp = topicOf(g.t); return `<button class="tchip${sel.has(g.key) ? ' on' : ''}" data-k="${g.key}" style="--c:${tp.c}" aria-pressed="${sel.has(g.key)}">${ICONS[g.t]('currentColor')}${esc(g.name)}</button>`; };
+  const all = sel.size === keys.length;
+  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to the games">${HOME}<span>Games</span></button><div class="grow"></div>${soundBtn()}</div>
+    <div class="setup">
+      <div class="deckname">Grade ${ds.grade} ${esc(ds.subject)}</div>
+      <div class="result solo-hero"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
+        <div class="bubble"><div class="big">LABEL THE <b>DIAGRAM</b>!</div>
+          <div class="line">The labels fell off my diagrams! Tap the right label for each number.</div></div></div>
+      <div class="panel"><div class="q">Which diagrams?</div>
+        <div class="topics"><button class="tchip all${all ? ' on' : ''}" id="t-all" aria-pressed="${all}">All diagrams</button>${ds.diagrams.map(chip).join('')}</div>
+        <div class="note" id="pb"></div>
+      </div>
+      <button class="action" id="startlabel">${PLAY} START</button>
+    </div>`;
+  wireSound();
+  document.getElementById('home').onclick = toGames;
+  const paint = () => {
+    const isAll = sel.size === keys.length;
+    app.querySelectorAll('.tchip[data-k]').forEach(b => { const on = sel.has(b.dataset.k); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+    const a = document.getElementById('t-all'); a.classList.toggle('on', isAll); a.setAttribute('aria-pressed', isAll);
+    const n = ds.diagrams.filter(g => sel.has(g.key)).reduce((m, g) => m + g.pins.length, 0), best = getBest(testKey(ds, sel));
+    document.getElementById('pb').innerHTML = `${n} labels · no clock · ${best ? `Your best on this device: <b>${best} / ${n}</b>` : 'No best score yet. Set one!'}`;
+  };
+  app.querySelectorAll('.tchip[data-k]').forEach(b => b.onclick = () => {
+    const k = b.dataset.k;
+    if (sel.size === keys.length) { sel.clear(); sel.add(k); }
+    else if (sel.has(k)) { if (sel.size > 1) sel.delete(k); }
+    else sel.add(k);
+    Sound.tick(true); paint();
+  });
+  document.getElementById('t-all').onclick = () => { keys.forEach(k => sel.add(k)); Sound.tick(true); paint(); };
+  document.getElementById('startlabel').onclick = () => { Sound.unlock(); startLabel(sel); };
+  paint();
+}
+function startLabel(sel) {
+  const ds = S.dset, dias = ds.diagrams.filter(g => sel.has(g.key));
+  L = { sel: new Set(sel), dias, di: -1, queue: [], again: [], placed: new Set(), missed: new Map(), first: 0,
+        total: dias.reduce((n, g) => n + g.pins.length, 0), cur: null, locked: false, key: testKey(ds, sel) };
+  L.prevBest = getBest(L.key);
+  track(`label/${ds.id}`, `Label the diagram: Grade ${ds.grade} ${ds.subject}`);
+  S.mode = 'label'; S.screen = 'game'; S.phase = 'playing';
+  Sound.start();
+  nextDiagram();
+}
+const pinId = (g, i) => `${g.key}:${i}`;
+function nextDiagram() {
+  L.di++;
+  const g = L.dias[L.di], tp = topicOf(g.t);
+  L.queue = g.pins.map((_, i) => i); L.again = []; L.pass = 1;
+  app.innerHTML = `${topBar()}<div class="game"><div class="stage"><div class="card flip" id="card">
+      <div class="head">${LOCKUP()}<div class="grow"></div><div class="tprog" id="tprog"></div></div>
+      <div class="scorebar"><span class="lbl">RIGHT FIRST TIME</span><span class="n" id="score">${TICK}${L.first}</span></div>
+      <div class="play" style="--c:${tp.c}">
+        <div class="tag" style="color:${tp.c};justify-content:center">${ICONS[g.t](tp.c)}${esc(g.name)}${L.dias.length > 1 ? ` · diagram ${L.di + 1} of ${L.dias.length}` : ''}</div>
+        <div class="dwrap" id="dwrap"><img src="${S.dset.pics[g.pic]}" alt="${esc(g.name)} diagram with the labels missing">${g.pins.map((p, i) =>
+          `<div class="pin" id="pin${i}" style="left:${p[0]}%;top:${p[1]}%">${i + 1}</div>`).join('')}</div>
+        <p class="lq" id="lq"></p>
+        <div class="opts" id="opts"></div><div id="memo"></div></div></div></div>
+    <div class="status" id="status">Tap the label that goes at the pink number.</div></div>`;
+  wireSound(); wireHome(); window.scrollTo(0, 0);
+  nextPin();
+}
+function paintLabelProgress() {
+  const p = document.getElementById('tprog'); if (!p) return;
+  p.innerHTML = `<b>${L.placed.size}</b><small>of ${L.total}</small>`;
+}
+function nextPin() {
+  const g = L.dias[L.di];
+  if (!L.queue.length) {
+    if (L.again.length) { L.queue = L.again; L.again = []; L.pass++; document.getElementById('status').textContent = 'Have another go at the ones you missed!'; }
+    else return L.di + 1 < L.dias.length ? nextDiagram() : endLabel();
+  }
+  const i = L.queue.shift(); L.cur = i; L.locked = false;
+  g.pins.forEach((_, j) => document.getElementById('pin' + j).classList.toggle('now', j === i));
+  document.getElementById('lq').innerHTML = `What goes at <b>${i + 1}</b>?`;
+  const labels = g.pins.map(p => p[2]);
+  const op = document.getElementById('opts');
+  op.className = 'opts' + (labels.some(o => o.length > 26) ? ' list' : '');
+  op.innerHTML = labels.map((o, k) => `<button class="opt" data-k="${k}">${esc(o)}</button>`).join('');
+  op.querySelectorAll('.opt').forEach(b => b.onclick = () => labelAnswer(+b.dataset.k));
+  document.getElementById('memo').innerHTML = '';
+  paintLabelProgress();
+}
+function labelAnswer(k) {
+  if (L.locked) return;
+  L.locked = true;
+  const g = L.dias[L.di], i = L.cur, p = g.pins[i], right = k === i, id = pinId(g, i);
+  const op = document.getElementById('opts'), btns = [...op.querySelectorAll('.opt')], pin = document.getElementById('pin' + i);
+  op.classList.add('done'); btns.forEach(b => (b.disabled = true));
+  pin.classList.remove('now');
+  if (right) {
+    Sound.ding(); btns[k].classList.add('right'); L.placed.add(id);
+    pin.classList.add('done'); pin.classList.toggle('miss', false); pin.textContent = p[2];
+    if (L.pass === 1) { L.first++; const n = document.getElementById('score'); n.innerHTML = `${TICK}${L.first}`; n.classList.remove('bump'); void n.offsetWidth; n.classList.add('bump'); }
+  } else {
+    Sound.undo(); btns[k].classList.add('wrong'); btns[i].classList.add('right', 'reveal');
+    const m = L.missed.get(id) || { g, i, picked: new Set() }; m.picked.add(g.pins[k][2]); L.missed.set(id, m);
+    pin.classList.add('miss'); L.again.push(i);
+  }
+  const lastHere = !L.queue.length && !L.again.length, last = lastHere && L.di + 1 >= L.dias.length;
+  document.getElementById('memo').innerHTML = `<div class="memo${right ? '' : ' no'}"><div class="lbl">${right ? (L.pass === 1 ? 'CORRECT!' : 'FIXED IT!') : 'NOT QUITE'}</div>
+    ${right ? '' : `<div class="ans">${i + 1} is the ${esc(p[2].toLowerCase())}</div>`}<p><b>${esc(p[2])}:</b> ${esc(p[3])}</p>
+    ${right ? '' : '<div class="comeback">This one comes back for another go.</div>'}
+    <button class="action" id="nextq">${last ? 'SEE MY SCORE' : lastHere ? 'NEXT DIAGRAM' : 'NEXT'} ${PLAY}</button></div>`;
+  document.getElementById('nextq').onclick = nextPin;
+  document.getElementById('memo').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  paintLabelProgress();
+}
+function endLabel() {
+  S.phase = 'done'; S.screen = 'final';
+  const ds = S.dset, total = L.total, n = L.first, pct = Math.round(n / total * 100);
+  const newBest = n > 0 && n > L.prevBest;
+  if (newBest) setBest(L.key, n);
+  const best = Math.max(n, L.prevBest);
+  // every diagram fully labelled again, with the ones they missed in red and listed underneath
+  const sheets = L.dias.map(g => { const tp = topicOf(g.t);
+    const missed = g.pins.map((p, i) => [p, i, L.missed.get(pinId(g, i))]).filter(x => x[2]);
+    return `<div class="dsheet" style="--c:${tp.c}"><h5>${esc(g.name)}</h5>
+      <div class="dwrap"><img src="${ds.pics[g.pic]}" alt="${esc(g.name)} diagram">${g.pins.map((p, i) =>
+        `<div class="pin done${L.missed.has(pinId(g, i)) ? ' miss' : ''}" style="left:${p[0]}%;top:${p[1]}%">${esc(p[2])}</div>`).join('')}</div>
+      ${missed.length ? `<ul>${missed.map(([p, i, m]) => `<li style="--c:${tp.c}"><span class="qn">LABEL ${i + 1}</span><div class="qq">${esc(p[2])}</div>
+        <div class="picked">You picked: ${[...m.picked].map(esc).join(' · ')}</div><p>${esc(p[3])}</p></li>`).join('')}</ul>` : '<p class="none">All right first time! 🏆</p>'}</div>`; }).join('');
+  app.innerHTML = `${topBar()}<div class="final">
+    <div class="result" id="result"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
+      <div class="bubble">${newBest ? '<div class="ribbon">NEW BEST!</div>' : ''}
+        <div class="big">YOU GOT <b>${n}</b>/${total}!</div>
+        <div class="line">${testPraise(pct)}</div>
+        <div class="best">Your best: ${best} / ${total}</div></div></div>
+    <div class="sheet">
+      <h3>YOUR DIAGRAM SHEET</h3>
+      <div class="meta">Grade ${ds.grade} ${esc(ds.subject)} · ${L.dias.map(g => esc(g.name)).join(', ')}</div>
+      <div class="qstats"><div><b>${n}</b>right first time</div><div><b>${L.missed.size}</b>needed another go</div><div><b>${pct}%</b>score</div><div><b>${total}</b>labels</div></div>
+      <div class="slist test"><h4>STUDY YOUR DIAGRAMS</h4>${sheets}</div>
+      <p class="tip">Cover the labels in your notes and test yourself, then beat <b>${best}</b>!</p>
+    </div>
+    <button class="action" id="again">${PLAY} PLAY AGAIN</button>
+    <button class="practice" id="secs">Change diagrams</button>
+  </div>`;
+  wireSound(); wireHome();
+  const sel = L.sel;
+  document.getElementById('again').onclick = () => { Sound.unlock(); startLabel(sel); };
+  document.getElementById('secs').onclick = renderLabelSetup;
+  window.scrollTo(0, 0);
+  setTimeout(() => { if (pct >= 75) { Sound.win(); confetti(); } }, 600);
+}
+
 /* ------------------------------------------------------------ match setup: Blue vs Red, first to N */
 const TEAMS = { blue: { name: 'BLUE', img: CHAIT_BLUE }, red: { name: 'RED', img: CHAIT_RED } };
 const other = t => (t === 'blue' ? 'red' : 'blue');
@@ -1031,7 +1214,7 @@ function miniScore() {
 }
 function topBar() {
   return `<div class="bar"><button class="chip" id="home" aria-label="Back to the games">${HOME}<span>Games</span></button>
-    <div class="grow"></div>${S.mode === 'match' ? miniScore() : S.mode === 'quiz' ? '<span class="round-label">BEAT THE CLOCK</span>' : S.mode === 'test' ? '<span class="round-label">CYCLE TEST MEMO</span>' : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
+    <div class="grow"></div>${S.mode === 'match' ? miniScore() : S.mode === 'quiz' ? '<span class="round-label">BEAT THE CLOCK</span>' : S.mode === 'test' ? '<span class="round-label">CYCLE TEST MEMO</span>' : S.mode === 'label' ? '<span class="round-label">LABEL IT!</span>' : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
 }
 function wireHome() {
   const b = document.getElementById('home'); if (!b) return;

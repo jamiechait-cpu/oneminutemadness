@@ -40,6 +40,12 @@ Pairs (no teams) keeps the old result panel: "YOU GOT 7!", best this game, NEW B
 - Keep the right answer about the same length as the wrong ones, so the longest option is not a giveaway.
 - Usage counter event: `test/<test id>`, titled e.g. "Cycle test memo: Grade 6 SS Cycle Test (Term 3)".
 
+**Label the Diagram** (Jamie's idea, 31 Oct 2026; Grade 7 SS): the 4th game card on a grade screen (only if that grade has a diagram set). Diagrams come from **Jamie's own notes**: the labels are wiped off the picture and a numbered pin sits where each label was.
+- Setup: Mr Chait "LABEL THE DIAGRAM!", diagram chips (all or some), best score. Play: one pin pulses pink, "What goes at 3?", tap the label (the diagram's own labels as buttons, no clock). Right = ding, the pin turns green with the label; wrong = red, the right label shows, and that pin comes back at the end of the diagram. The memo line shows after every answer, then NEXT / NEXT DIAGRAM / SEE MY SCORE. Score = right first time; best kept on the device (`omm-best-<set id>-<diagram keys>`).
+- Diagram sheet at the end: every diagram fully labelled again (missed labels in red) with each missed label, what they picked and its memo line; PLAY AGAIN or Change diagrams. Top bar label: "LABEL IT!". Counter event `label/<set id>`.
+- Files: `src/diagrams/*.js`, one set per grade/subject: `const DIAGRAMS_xxx = { id, title, grade, subject, pics: { key: '__TESTIMG_<file>__' }, diagrams: [{ key, name, t (a deck topic key, for its icon and colour), pic, pins: [[x %, y %, label, memo], ...] }] }`; add to `const DIAGRAM_SETS = [...]`. Pin x/y are % of the picture (centre of where the label was). The build checks pictures, pins and repeated labels. The diagram is capped at 40% of the screen height so the buttons fit on a phone.
+- **Grade 7 SS** (`g7ss-label`): **Layers of the Earth** (crust, mantle, outer core, inner core) and **Parts of a Volcano** (ash, gas and steam; crater; lava flow; layers of lava and ash; vent; magma chamber), cut from Jamie's "How the structure of the Earth leads to volcanoes" sheet (original kept as `src/assets/tests/g7ss-volcano-sheet-original.jpg`). Memo lines come from that sheet. Still to come when Jamie sends the diagrams: 3 ways tectonic plates move, convection currents, how an earthquake happens.
+
 Decisions: words are dealt from the whole shuffled deck, never the same topic twice in a row, no repeats until the deck runs out; the match lives only in memory; the only things kept in localStorage are the sound on/off choice and the solo personal-best numbers (no names, nothing about learners); no login; screen kept awake during a turn. Team colours: blue #1E63E0 (dark #0F3C99, tint #E3ECFD), red #E6262E (dark #9A1117, tint #FDE4E5). On phones under 400px wide the top-bar chips drop their text labels.
 
 ## Usage counter (GoatCounter)
@@ -56,7 +62,7 @@ Jamie asked (30 Oct 2026) to see how many times the game is opened per day. It u
 - `src/decks/*.js`: one file per deck. Each defines `const DECK_xxx = { id, title, short, grade, subject, topics: { KEY: { name, c (colour), t (tint) } }, words: [[topicKey, word, hint], ...] }`. Add new decks to `const DECKS = [...]` in `src/app.src.html` and remove the matching entry from `COMING`.
 - `src/assets/`: `chait-original.png` (Jamie's character as he supplied it), `chait-sticker.png` (cut out with white sticker outline, used in the game), `chait-blue-original.png` / `chait-red-original.png` (Jamie's team versions) and their `-sticker.png` cut-outs (placeholders `__CHAIT_BLUE__`, `__CHAIT_RED__`), `app-icon.png` (180×180 home-screen icon).
 - `src/fonts/`: Luckiest Guy (display) and Nunito 700/800/900 (body).
-- `tools/build.py`: `python3 tools/build.py` checks every hint and every test question, and writes `index.html`. Needs Python 3 + Pillow, and Node.
+- `tools/build.py`: `python3 tools/build.py` checks every hint, test question and diagram, and writes `index.html`. Needs Python 3 + Pillow, and Node.
 
 ## Rules for decks and hints
 

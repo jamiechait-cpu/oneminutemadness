@@ -56,12 +56,26 @@ def check_tests(test_files):
         sys.exit('Fix the test questions above, then build again.')
 
 
+def check_diagrams(files):
+    js = "const fs=require('fs');let bad=0;for(const f of JSON.parse(process.argv[1])){const src=fs.readFileSync(f,'utf8');" \
+         "const D=eval(src.replace(/if \\(typeof module[\\s\\S]*$/,'')+';'+src.match(/const (DIAGRAMS_\\w+)/)[1]);" \
+         "for(const g of D.diagrams){const err=!D.pics[g.pic]?'unknown picture':g.pins.length<2?'needs 2+ pins':" \
+         "g.pins.some(p=>!(p[0]>=0&&p[0]<=100&&p[1]>=0&&p[1]<=100&&p[2]&&p[3]))?'pin needs x, y (0-100), label and memo':" \
+         "new Set(g.pins.map(p=>p[2])).size!==g.pins.length?'repeated label':'';if(err){bad++;console.log('DIAGRAM PROBLEM:',D.id,g.key,'|',err)}}}process.exit(bad?1:0)"
+    r = subprocess.run(['node', '-e', js, json.dumps(files)], capture_output=True, text=True)
+    print(r.stdout, r.stderr, end='')
+    if r.returncode:
+        sys.exit('Fix the diagrams above, then build again.')
+
+
 def main():
     deck_files = sorted(glob.glob(os.path.join(SRC, 'decks', '*.js')))
     check_hints(deck_files)
     test_files = sorted(glob.glob(os.path.join(SRC, 'tests', '*.js')))
     check_tests(test_files)
-    decks = '\n'.join(open(f).read().replace("if (typeof module !== 'undefined') module.exports", '//') for f in deck_files + test_files)
+    diagram_files = sorted(glob.glob(os.path.join(SRC, 'diagrams', '*.js')))
+    check_diagrams(diagram_files)
+    decks = '\n'.join(open(f).read().replace("if (typeof module !== 'undefined') module.exports", '//') for f in deck_files + test_files + diagram_files)
     s = open(os.path.join(SRC, 'app.src.html')).read()
     s = s.replace('/*DECKS*/', decks)
     # pictures for test questions: '__TESTIMG_<name>__' -> src/assets/tests/<name>.png, inlined
@@ -92,7 +106,7 @@ def main():
                  'data-goatcounter-settings=\'{"path": "/"}\' async src="https://gc.zgo.at/count.js"></script>')
     s = head + s.replace('<div class="app" id="app">', '</head><body><div class="app" id="app">', 1) + '</body></html>'
     open(os.path.join(ROOT, 'index.html'), 'w').write(s)
-    print(f'Built index.html ({len(s) // 1024} KB) with {len(deck_files)} deck(s) and {len(test_files)} test(s); counter: {GOATCOUNTER or "off"}.')
+    print(f'Built index.html ({len(s) // 1024} KB) with {len(deck_files)} deck(s), {len(test_files)} test(s) and {len(diagram_files)} diagram set(s); counter: {GOATCOUNTER or "off"}.')
 
 
 if __name__ == '__main__':
