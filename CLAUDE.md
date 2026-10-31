@@ -32,7 +32,9 @@ Pairs (no teams) keeps the old result panel: "YOU GOT 7!", best this game, NEW B
 - Files: `src/tests/*.js`, one per test: `const TEST_xxx = { id, title, sub, short, sections: { KEY: { name, c, t } }, qs: [[section, 'Q3', question, right answer, [wrong answers], memo line], ...] }`. Section keys reuse the matching deck's topic keys (same icon and colour). Add new ones to `const TESTS = [...]`. The build checks each question has a memo and 1 to 3 wrong answers, none repeated, and that its pictures exist.
 - **Grade 6 SS Term 3 cycle test** (`g6ss-ct3`, 42 questions: Explorers 12, Population 23, Climate 7). Jamie: astrolabe was not taught (left out); "carols might rain" is **climate**; Section B Q8 (where would you live) left out: no right answer. The test's graph questions (Q10–11) **compared an expansive and a constrictive population pyramid**, like his "Reading Population Pyramids" task, so they are 12 questions on that task's Pyramid A (expansive) and Pyramid C (constrictive), with the pyramids on screen (labelled "Test: population pyramids").
 - Pictures: a test can have `pics: { A: '__TESTIMG_<file>__' }` (the build inlines `src/assets/tests/<file>.png`), and a question's 7th field lists the pictures to show, e.g. `['A', 'C']`. Tap a picture to zoom; tap anywhere to close. 2 or 3 options are allowed (shape names, grow/shrink); they keep a fixed alphabetical order.
-- Usage counter event: `test/<test id>`, titled "Test practice: Grade 6 SS Cycle Test (Term 3)".
+- **Grade 7 EMS cycle test "Movie Night"** (`g7ems-ct`, 22 Oct 2026, 43 questions: Target Market 10, Planning & Risk 9, Break-Even 15, Income & Profit 9), built from Jamie's marking memo. The wrong options are the mistakes the memo warns about (Bulk Bites on 100 children = R1 500, R500 ÷ R50 = 10, 16 instead of 17, the whole R1 500 tuckshop profit = R6 500). Source A/B facts are written into each question (no source sheet). 4.6 and 4.7 left out (no right or wrong answer); "your own Market Day business" questions (2.3, 3.5, 4.9) use the memo's stall examples. The break-even graph (`g7ems-breakeven.png`) shows on 3.6.
+- Keep the right answer about the same length as the wrong ones, so the longest option is not a giveaway.
+- Usage counter event: `test/<test id>`, titled e.g. "Test practice: Grade 6 SS Cycle Test (Term 3)".
 
 Decisions: words are dealt from the whole shuffled deck, never the same topic twice in a row, no repeats until the deck runs out; the match lives only in memory; the only things kept in localStorage are the sound on/off choice and the solo personal-best numbers (no names, nothing about learners); no login; screen kept awake during a turn. Team colours: blue #1E63E0 (dark #0F3C99, tint #E3ECFD), red #E6262E (dark #9A1117, tint #FDE4E5). On phones under 400px wide the top-bar chips drop their text labels.
 
@@ -74,7 +76,7 @@ Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A;
 
 ## Ideas Jamie has liked / next steps
 
-- Done: Test Practice for the Grade 6 SS Term 3 cycle test (31 Oct). Next tests the same way: Jamie sends the paper + memo.
+- Done: Test Practice for the Grade 6 SS Term 3 cycle test and the Grade 7 EMS Movie Night cycle test (31 Oct). Next tests the same way: Jamie sends the paper + memo.
 - Done: random Mr Chait lines by score, the rolling round, the hint button, the Red vs Blue match with score sheet and words to study (live 29 Oct), ON MY OWN Beat the Clock.
 - Planned: picture words. Jamie is making simple AI images (square, white background, no text) named after the word; about one word in four shows the picture with the word in small text underneath, so the partner still says the exact term.
 - Possible next: give Red one last turn when Blue wins first (equal turns), or a class leaderboard.

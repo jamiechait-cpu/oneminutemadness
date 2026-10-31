@@ -423,7 +423,7 @@ canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:non
 /* ------------------------------------------------------------ decks */
 const DECKS = [DECK_G6SS, DECK_G7SS, DECK_G7EMS];
 const COMING = [];
-const TESTS = [TEST_G6SS_CT3]; // cycle-test practice rounds (src/tests), played on your own
+const TESTS = [TEST_G6SS_CT3, TEST_G7EMS_CT]; // cycle-test practice rounds (src/tests), played on your own
 const ROUND_SECONDS = 60;
 const HINT_COST = 10; // seconds taken off the clock for a hint during the round
 
@@ -851,7 +851,7 @@ function nextTestQ() {
   const sec = S.test.sections[x.s];
   const qc = document.getElementById('qcard');
   qc.style.setProperty('--c', sec.c); qc.style.setProperty('--t', sec.t);
-  const pics = (x.pics || []).map(k => `<button data-pic="${k}" aria-label="Zoom in on Pyramid ${k}"><img src="${S.test.pics[k]}" alt="Population Pyramid ${k}"></button>`).join('');
+  const pics = (x.pics || []).map(k => `<button data-pic="${k}" aria-label="Zoom in on the picture"><img src="${S.test.pics[k]}" alt="Picture for this question"></button>`).join('');
   qc.innerHTML = `<div class="in slide"><div class="tag">${ICONS[x.s](sec.c)}${sec.name}</div><div class="ref">${refLabel(x.ref)}</div>${pics ? `<div class="qpics">${pics}</div>` : ''}<p class="qtext">${esc(x.q)}</p></div>`;
   qc.querySelectorAll('[data-pic]').forEach(b => b.onclick = () => zoomPic(S.test.pics[b.dataset.pic]));
   const op = document.getElementById('opts');
