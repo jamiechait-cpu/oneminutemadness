@@ -1,4 +1,4 @@
-<title>Mr Chait's One Minute MadneSS</title>
+<title>Mr Chait's Classroom</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@700;800;900&display=swap">
@@ -31,6 +31,7 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
   transform:rotate(-4deg);margin-bottom:.3em;box-shadow:.1em .1em 0 var(--sun)}
 .logo .one{color:var(--sun);font-size:.52em;letter-spacing:.06em}
 .logo .mad{color:var(--paper)}
+.logo .mad.cls{font-size:.86em;letter-spacing:.01em;margin-top:.04em}
 .logo .mad b{font-weight:400;color:var(--pop);font-size:1.2em;-webkit-text-stroke:.03em var(--paper);paint-order:stroke fill;text-shadow:.05em .05em 0 var(--sun)}
 
 /* ---------- top bar */
@@ -188,6 +189,7 @@ button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
 .badge .logo{font-size:clamp(30px, 8vw, 40px);align-items:center}
 .badge .logo .mr{align-self:center}
 .badge .logo .one,.badge .logo .mad{color:var(--night)}
+.badge .logo .mad b{-webkit-text-stroke:.03em var(--night)}
 .back .msg{max-width:30ch;font-weight:900;font-size:17px;line-height:1.35;color:var(--paper)}
 .back .msg b{color:var(--sun)}
 
@@ -453,7 +455,8 @@ const SOUND_ON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><p
 const SOUND_OFF = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`;
 const PLAY = `<svg width="26" height="26" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>`;
 const HOURGLASS = (s, frame, sand) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><rect x="4" y="1.5" width="16" height="2.6" rx="1.2" fill="${frame}"/><rect x="4" y="19.9" width="16" height="2.6" rx="1.2" fill="${frame}"/><path d="M6 4.1 L18 4.1 Q18 9 12 12 Q18 15 18 19.9 L6 19.9 Q6 15 12 12 Q6 9 6 4.1 Z" fill="none" stroke="${frame}" stroke-width="1.8"/><path d="M8 6.5 L16 6.5 Q15 9.5 12 11 Q9 9.5 8 6.5 Z M8.5 19 Q12 15.5 15.5 19 Z" fill="${sand}"/></svg>`;
-const LOGO = `<div class="logo"><span class="mr">MR CHAIT’S</span><span class="one">ONE MINUTE</span><span class="mad">MADNE<b>SS</b></span></div>`;
+// Mr Chait's Classroom (renamed from One Minute MadneSS on 31 Oct 2026). The pink SS (Social Sciences) lives on in claSSroom.
+const LOGO = `<div class="logo"><span class="mr">MR CHAIT’S</span><span class="mad cls">CLA<b>SS</b>ROOM</span></div>`;
 const CHAIT = '__CHAIT__';
 const CHAIT_BLUE = '__CHAIT_BLUE__';
 const CHAIT_RED = '__CHAIT_RED__';
@@ -558,7 +561,7 @@ function renderHome() {
   app.innerHTML = `
     <div class="bar"><div class="grow"></div>${soundBtn()}</div>
     <div class="home">
-      <div class="hero">${LOCKUP()}<div class="tagline">Describe it. Don’t say it. Team Blue vs Team Red, or beat the clock on your own!</div></div>
+      <div class="hero">${LOCKUP()}<div class="tagline">Play it. Study it. Smash the test! One Minute MadneSS in teams, Beat the Clock on your own, or redo your cycle test memo.</div></div>
       <div class="section-title">Pick a deck</div>
       <div class="decks">${decks}</div>
       ${TESTS.length ? `<div class="section-title">Cycle test memo</div><div class="decks">${tests}</div>` : ''}
@@ -583,7 +586,7 @@ function renderMode() {
       <div class="section-title" style="align-self:center">How do you want to play?</div>
       <div class="modes">
         <button class="mode teams" id="m-teams"><div class="pics"><img src="${CHAIT_BLUE}" alt=""><img src="${CHAIT_RED}" alt=""></div>
-          <div class="info"><h3>TEAMS</h3><p><b>Red vs Blue.</b> Explain the words to your team. First to the target wins!</p></div><div class="go">${PLAY}</div></button>
+          <div class="info"><h3>TEAMS</h3><p><b>One Minute MadneSS: Red vs Blue.</b> Explain the words to your team. First to the target wins!</p></div><div class="go">${PLAY}</div></button>
         <button class="mode solo" id="m-solo"><div class="pics"><img src="${CHAIT}" alt=""></div>
           <div class="info"><h3>ON MY OWN</h3><p><b>Beat the Clock.</b> The meaning pops up, you pick the word. Perfect for studying!</p></div><div class="go">${PLAY}</div></button>
       </div>

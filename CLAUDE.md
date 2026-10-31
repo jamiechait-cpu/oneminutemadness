@@ -1,4 +1,6 @@
-# Mr Chait's One Minute MadneSS
+# Mr Chait's Classroom
+
+**Renamed 31 Oct 2026** (Jamie's choice) from "Mr Chait's One Minute MadneSS", because it is now more than the one-minute game. **One Minute MadneSS** lives on as the name of the Teams game inside it. The web address, repo name (`oneminutemadness`) and app icon stay the same on purpose: changing the address would break the QR posters, the printed cards and every iPad home-screen icon. The name under the home-screen icon is "Mr Chait" (iPads that added it earlier keep the old label until it is re-added).
 
 Jamie Chait's own classroom study game (Knights Preparatory School, Randburg). Learners play Team Blue vs Team Red on school iPads (the Explainer describes words one at a time without saying them while their team guesses, one minute per turn), or study on their own with Beat the Clock (see the meaning, tap the word). It is Jamie's game, not a Knights product: Knights branding rules do not apply.
 
@@ -72,7 +74,7 @@ Jamie asked (30 Oct 2026) to see how many times the game is opened per day. It u
 
 ## Look
 
-Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A; "MR CHAIT'S" in a tilted pink tag over "ONE MINUTE" (yellow) and "MADNESS" with a big pink **SS** (the SS stands for Social Sciences). Mr Chait (cap, beard, black hoodie, blue sneakers, thumbs up) appears in the logo lockup, on the card back, in the card header and in the end-of-round result panel. In a match, the blue or red Mr Chait replaces him for that team's turn, result and win screen.
+Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A; "MR CHAIT'S" in a tilted pink tag over "CLASSROOM" with a big pink **SS** in the middle ("claSSroom": the SS stands for Social Sciences, carried over from the old MADNESS logo). Mr Chait (cap, beard, black hoodie, blue sneakers, thumbs up) appears in the logo lockup, on the card back, in the card header and in the end-of-round result panel. In a match, the blue or red Mr Chait replaces him for that team's turn, result and win screen.
 
 ## Ideas Jamie has liked / next steps
 
@@ -80,7 +82,7 @@ Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A;
 - Done: random Mr Chait lines by score, the rolling round, the hint button, the Red vs Blue match with score sheet and words to study (live 29 Oct), ON MY OWN Beat the Clock.
 - Planned: picture words. Jamie is making simple AI images (square, white background, no text) named after the word; about one word in four shows the picture with the word in small text underneath, so the partner still says the exact term.
 - Possible next: give Red one last turn when Blue wins first (equal turns), or a class leaderboard.
-- Also made (outside the repo): an A4 "SCAN ME!" QR poster in the game's style that opens the live link.
+- Also made (outside the repo): an A4 "SCAN ME!" QR poster in the game's style that opens the live link, and a 6-per-page version as a Word doc. Both still show the old One Minute MadneSS logo.
 
 ## Printed version
 

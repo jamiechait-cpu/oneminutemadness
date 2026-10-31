@@ -84,7 +84,7 @@ def main():
     icon = 'data:image/png;base64,' + b64(os.path.join(SRC, 'assets', 'app-icon.png'))
     head = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
-            '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="MadneSS">'
+            '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mr Chait">'
             f'<link rel="apple-touch-icon" href="{icon}"><link rel="icon" href="{icon}">'
             '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>')
     if GOATCOUNTER:
