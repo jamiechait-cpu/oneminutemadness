@@ -2,7 +2,7 @@
 // Transatlantic Slave Trade). Each hint never uses the word itself.
 // Not taught, so left out: frontier wars, hurricanes, tornadoes, slavery at the Cape, trekboers.
 const DECK_G7SS = {
-  id: 'g7ss', title: 'Grade 7 Social Sciences', short: 'Gr 7 SS',
+  id: 'g7ss', title: 'Grade 7 Social Sciences', short: 'Gr 7 SS', grade: 7, subject: 'Social Sciences',
   topics: {
     K: { name: 'The Cape', c: '#0E9F9A', t: '#DFF5F4' },
     Q: { name: 'Disasters', c: '#E8562A', t: '#FDE8E0' },

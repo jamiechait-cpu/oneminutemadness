@@ -6,7 +6,7 @@
 const TEST_G6SS_CT3 = {
   id: 'g6ss-ct3',
   // pictures used by questions: key -> file in src/assets/tests (inlined by the build)
-  pics: { A: '__TESTIMG_g6ss-pyramid-a__', C: '__TESTIMG_g6ss-pyramid-c__' }, title: 'Grade 6 SS Cycle Test', sub: 'Term 3', short: 'Gr 6 SS Test',
+  pics: { A: '__TESTIMG_g6ss-pyramid-a__', C: '__TESTIMG_g6ss-pyramid-c__' }, title: 'Grade 6 SS Cycle Test', sub: 'Term 3', short: 'Gr 6 SS Test', grade: 6, subject: 'Social Sciences',
   sections: {
     E: { name: 'Explorers', c: '#F07F1E', t: '#FFF0E1' },
     P: { name: 'Population', c: '#1FA463', t: '#E3F6EC' },

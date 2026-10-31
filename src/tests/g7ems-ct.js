@@ -6,7 +6,7 @@
 // Section keys reuse the Grade 7 EMS deck's topic keys (same icons and colours).
 // Each question: [section, test question number, question, right answer, [wrong answers], memo line, optional pictures]
 const TEST_G7EMS_CT = {
-  id: 'g7ems-ct', title: 'Grade 7 EMS Cycle Test', sub: 'Movie Night', short: 'Gr 7 EMS Test',
+  id: 'g7ems-ct', title: 'Grade 7 EMS Cycle Test', sub: 'Movie Night', short: 'Gr 7 EMS Test', grade: 7, subject: 'EMS',
   // pictures used by questions: key -> file in src/assets/tests (inlined by the build)
   pics: { G: '__TESTIMG_g7ems-breakeven__' },
   sections: {

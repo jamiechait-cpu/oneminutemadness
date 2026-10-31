@@ -1,7 +1,7 @@
 // Grade 7 EMS deck: words from Financial Literacy and Entrepreneurship, the two strands Jamie chose for the
 // Nov 2026 EMS exam (Market Day pack + textbook). Each hint never uses the word itself.
 const DECK_G7EMS = {
-  id: 'g7ems', title: 'Grade 7 EMS', short: 'Gr 7 EMS',
+  id: 'g7ems', title: 'Grade 7 EMS', short: 'Gr 7 EMS', grade: 7, subject: 'EMS',
   topics: {
     A: { name: 'Money Words', c: '#1FA463', t: '#E3F6EC' },
     R: { name: 'Costs & Prices', c: '#F07F1E', t: '#FFF0E1' },

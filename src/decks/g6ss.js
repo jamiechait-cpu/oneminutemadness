@@ -1,6 +1,6 @@
 // Grade 6 Social Sciences deck: 90 words, each with a hint that never uses the word itself.
 const DECK_G6SS = {
-  id: 'g6ss', title: 'Grade 6 Social Sciences', short: 'Gr 6 SS',
+  id: 'g6ss', title: 'Grade 6 Social Sciences', short: 'Gr 6 SS', grade: 6, subject: 'Social Sciences',
   topics: {
     E: { name: 'Explorers', c: '#F07F1E', t: '#FFF0E1' },
     P: { name: 'Population', c: '#1FA463', t: '#E3F6EC' },

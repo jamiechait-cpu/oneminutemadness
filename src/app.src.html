@@ -327,6 +327,47 @@ canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:non
 @media (max-width:400px){.mini .pill{font-size:19px;padding:5px 9px 1px;min-width:38px}}
 /* ---------- choose mode */
 .modes{width:100%;display:grid;gap:14px}
+/* ---------- home: pick your grade */
+.grades{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grade{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--paper);color:var(--night);border-radius:24px;
+  border:5px solid var(--gc);box-shadow:0 8px 0 var(--gd);padding:14px 8px 16px;transition:transform .12s}
+.grade:active{transform:translateY(3px);box-shadow:0 5px 0 var(--gd)}
+.grade.g6{--gc:var(--sun);--gd:var(--pop)}
+.grade.g7{--gc:var(--pop);--gd:var(--sun)}
+.grade .gl{font-family:var(--display);font-size:clamp(20px, 5.5vw, 28px);letter-spacing:.06em;padding-top:4px}
+.grade .num{font-family:var(--display);font-size:clamp(84px, 24vw, 130px);line-height:.85;color:var(--gc);-webkit-text-stroke:.035em var(--night);paint-order:stroke fill;text-shadow:.04em .05em 0 var(--night);padding-top:.06em}
+.grade p{margin:4px 0 0;font-weight:900;font-size:clamp(13px, 3.5vw, 15px);line-height:1.3;color:var(--ink-soft);text-align:center}
+.grade .go{margin-top:8px;width:46px;height:46px;border-radius:50%;background:var(--sun);display:flex;align-items:center;justify-content:center;color:var(--night)}
+/* ---------- grade screen: the three games */
+.gradehead{font-family:var(--display);font-size:clamp(40px, 11vw, 60px);line-height:1;letter-spacing:.04em;color:var(--sun);text-align:center;padding-top:4px}
+.gradehead small{display:block;font-size:.42em;color:var(--paper);letter-spacing:.06em;margin-top:4px}
+.games{width:100%;display:grid;gap:18px}
+.gcard{width:100%;background:var(--paper);color:var(--ink);border-radius:24px;border:5px solid var(--mc);box-shadow:0 8px 0 var(--md);padding:14px 16px 16px}
+.gcard.teams{--mc:var(--blue);--md:var(--red)}
+.gcard.solo{--mc:var(--sun);--md:var(--pop)}
+.gcard.tmemo{--mc:var(--pop);--md:var(--night-3)}
+.gcard .top{display:flex;align-items:center;gap:12px}
+.gcard,.gcard .top>div:last-child{min-width:0}
+.games{grid-template-columns:minmax(0, 1fr)}
+.gcard .pics{flex:none;display:flex;align-items:flex-end;justify-content:center;width:clamp(82px, 23vw, 112px)}
+.gcard .pics img{height:clamp(76px, 20vw, 100px);width:auto}
+.gcard .pics img+img{margin-left:-26%;transform:scaleX(-1)}
+.gcard .pics .tickbox{width:clamp(62px, 17vw, 80px);aspect-ratio:1;border-radius:16px;background:var(--pop);color:var(--paper);display:flex;align-items:center;justify-content:center;box-shadow:5px 5px 0 var(--sun)}
+.gcard .pics .tickbox svg{width:60%;height:60%}
+.gcard h3{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(23px, 6.4vw, 30px);line-height:1;letter-spacing:.04em;color:var(--night);padding-top:4px}
+.gcard .kind{display:inline-block;margin-top:6px;font-weight:900;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper);background:var(--mc);border-radius:999px;padding:3px 10px}
+.gcard.solo .kind{color:var(--night)}
+.gcard p{margin:10px 0 12px;font-weight:800;font-size:15px;line-height:1.35;color:var(--ink-soft)}
+.gcard p b{color:var(--night)}
+.picks{display:flex;flex-wrap:wrap;gap:10px}
+.pick{flex:1 1 150px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;background:var(--night);color:var(--paper);
+  border-radius:16px;padding:10px 10px 10px 14px;box-shadow:0 5px 0 var(--mc);transition:transform .1s}
+.pick:active{transform:translateY(3px);box-shadow:0 2px 0 var(--mc)}
+.pick b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(18px, 4.8vw, 22px);letter-spacing:.04em;padding-top:3px}
+.pick small{display:block;font-weight:900;font-size:12.5px;color:#C9C2F0}
+.pick .go{flex:none;width:38px;height:38px;border-radius:50%;background:var(--sun);color:var(--night);display:flex;align-items:center;justify-content:center}
+.pick .go svg{width:18px;height:18px}
+.how h4{margin:0 0 10px;font-family:var(--display);font-weight:400;font-size:20px;letter-spacing:.04em;color:var(--sun)}
 .mode{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--paper);color:var(--ink);border-radius:22px;
   padding:12px 16px 12px 10px;border:5px solid var(--mc);box-shadow:0 7px 0 var(--md);transition:transform .12s}
 .mode:active{transform:translateY(3px)}
@@ -545,57 +586,62 @@ function wireSound() {
 
 /* ------------------------------------------------------------ home */
 function renderHome() {
-  stopTimer(); holdWake(false); S.screen = 'home';
-  const decks = DECKS.map((d, i) => {
-    const dots = Object.entries(d.topics).map(([k, t]) => `<span style="--c:${t.c}">${ICONS[k]('#fff')}${t.name}</span>`).join('');
-    return `<button class="deck" data-deck="${i}"><div class="stack">${HOURGLASS(30, '#FFD23F', '#FF4F9A')}</div>
-      <div class="info"><h3>${esc(d.title)}</h3><p>${d.words.length} words · teams or on your own</p><div class="dots">${dots}</div></div>
-      <div class="go">${PLAY}</div></button>`;
-  }).join('') + COMING.map(c => `<div class="deck soon" aria-disabled="true"><div class="stack"></div><div class="info"><h3>${esc(c.title)}</h3><p>${c.note}</p></div></div>`).join('');
-  const tests = TESTS.map((t, i) => {
-    const dots = Object.entries(t.sections).map(([k, x]) => `<span style="--c:${x.c}">${ICONS[k]('#fff')}${x.name}</span>`).join('');
-    return `<button class="deck test" data-test="${i}"><div class="stack">${TICK}</div>
-      <div class="info"><h3>${esc(t.title)}</h3><p>${esc(t.sub)} · ${t.qs.length} questions · redo it on your own</p><div class="dots">${dots}</div></div>
-      <div class="go">${PLAY}</div></button>`;
-  }).join('');
+  stopTimer(); holdWake(false); S.screen = 'home'; S.mode = 'solo'; window.scrollTo(0, 0);
+  const grades = [...new Set([...DECKS, ...TESTS].map(d => d.grade))].sort();
+  const card = g => {
+    const subs = [...new Set(DECKS.filter(d => d.grade === g).map(d => d.subject))];
+    return `<button class="grade g${g}" data-grade="${g}" aria-label="Grade ${g}"><span class="gl">GRADE</span><span class="num">${g}</span>
+      <p>${subs.map(esc).join(' · ')}</p><span class="go">${PLAY}</span></button>`;
+  };
   app.innerHTML = `
     <div class="bar"><div class="grow"></div>${soundBtn()}</div>
     <div class="home">
-      <div class="hero">${LOCKUP()}<div class="tagline">Play it. Study it. Smash the test! One Minute MadneSS in teams, Beat the Clock on your own, or redo your cycle test memo.</div></div>
-      <div class="section-title">Pick a deck</div>
-      <div class="decks">${decks}</div>
-      ${TESTS.length ? `<div class="section-title">Cycle test memo</div><div class="decks">${tests}</div>` : ''}
-      <div class="how"><ol>
-        <li><span class="n">1</span><span>Pick a deck, then <b>Teams</b> (Blue vs Red, Blue goes first) or <b>On my own</b> to study solo.</span></li>
+      <div class="hero">${LOCKUP()}<div class="tagline">Play it. Study it. Smash the test!</div></div>
+      <div class="section-title" style="align-self:center">Which grade are you in?</div>
+      <div class="grades">${grades.map(card).join('')}</div>
+    </div>`;
+  wireSound();
+  app.querySelectorAll('[data-grade]').forEach(b => b.onclick = () => { Sound.unlock(); S.grade = +b.dataset.grade; renderGrade(); });
+}
+
+/* ------------------------------------------------------------ a grade: its three games, each with a button per subject */
+function renderGrade() {
+  stopTimer(); holdWake(false); S.screen = 'grade'; S.mode = 'solo'; window.scrollTo(0, 0);
+  const g = S.grade, decks = DECKS.filter(d => d.grade === g), tests = TESTS.filter(t => t.grade === g);
+  const pick = (kind, i, name, small) => `<button class="pick" data-${kind}="${i}"><span><b>${esc(name)}</b><small>${small}</small></span><span class="go">${PLAY}</span></button>`;
+  const deckPicks = kind => decks.map(d => pick(kind, DECKS.indexOf(d), d.subject, `${d.words.length} words`)).join('');
+  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to home">${HOME}<span>Home</span></button><div class="grow"></div>${soundBtn()}</div>
+    <div class="setup">
+      <div class="gradehead">GRADE ${g}<small>Pick a game</small></div>
+      <div class="games">
+        <div class="gcard teams"><div class="top"><div class="pics"><img src="${CHAIT_BLUE}" alt=""><img src="${CHAIT_RED}" alt=""></div>
+          <div><h3>ONE MINUTE MADNESS</h3><span class="kind">Teams · Blue vs Red</span></div></div>
+          <p>The <b>Explainer</b> describes each word <b>without saying it</b>. One minute a turn. First team to the target wins!</p>
+          <div class="picks">${deckPicks('teams')}</div></div>
+        <div class="gcard solo"><div class="top"><div class="pics"><img src="${CHAIT}" alt=""></div>
+          <div><h3>BEAT THE CLOCK</h3><span class="kind">On my own · 60 seconds</span></div></div>
+          <p>The <b>meaning</b> pops up. Tap the right <b>word</b>. How many can you get in one minute?</p>
+          <div class="picks">${deckPicks('solo')}</div></div>
+        ${tests.length ? `<div class="gcard tmemo"><div class="top"><div class="pics"><div class="tickbox">${TICK}</div></div>
+          <div><h3>CYCLE TEST MEMO</h3><span class="kind">On my own · No clock</span></div></div>
+          <p>Redo your <b>cycle test</b>. Read the <b>memo</b> after every answer, then fix your mistakes.</p>
+          <div class="picks">${tests.map(t => pick('test', TESTS.indexOf(t), t.subject, `${esc(t.sub)} · ${t.qs.length} questions`)).join('')}</div></div>` : ''}
+      </div>
+      <div class="how"><h4>How One Minute MadneSS works</h4><ol>
+        <li><span class="n">1</span><span>Split into <b>Team Blue</b> and <b>Team Red</b>. Blue goes first.</span></li>
         <li><span class="n">2</span><span>The <b>Explainer</b> holds the iPad so their team can’t see it. One word at a time: describe it <b>without saying it</b>.</span></li>
         <li><span class="n">3</span><span>Team got it? Tap <b>GOT IT</b> for a point. Stuck? <b>HINT</b> costs 10 seconds, or <b>skip</b> it.</span></li>
         <li><span class="n">4</span><span>Teams swap every minute. First to the target <b>wins</b>, and Mr Chait hands each team its <b>words to study</b>!</span></li>
       </ol></div>
     </div>`;
   wireSound();
-  app.querySelectorAll('[data-deck]').forEach(b => b.onclick = () => { Sound.unlock(); S.deck = DECKS[+b.dataset.deck]; renderMode(); });
+  document.getElementById('home').onclick = renderHome;
+  app.querySelectorAll('[data-teams]').forEach(b => b.onclick = () => { Sound.unlock(); S.deck = DECKS[+b.dataset.teams]; renderSetup(); });
+  app.querySelectorAll('[data-solo]').forEach(b => b.onclick = () => { Sound.unlock(); S.deck = DECKS[+b.dataset.solo]; renderQuizSetup(); });
   app.querySelectorAll('[data-test]').forEach(b => b.onclick = () => { Sound.unlock(); S.test = TESTS[+b.dataset.test]; renderTestSetup(); });
 }
-
-/* ------------------------------------------------------------ choose: teams or on my own */
-function renderMode() {
-  S.screen = 'mode'; window.scrollTo(0, 0);
-  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to decks">${HOME}<span>Decks</span></button><div class="grow"></div>${soundBtn()}</div>
-    <div class="setup">
-      <div class="deckname">${esc(S.deck.title)}</div>
-      <div class="section-title" style="align-self:center">How do you want to play?</div>
-      <div class="modes">
-        <button class="mode teams" id="m-teams"><div class="pics"><img src="${CHAIT_BLUE}" alt=""><img src="${CHAIT_RED}" alt=""></div>
-          <div class="info"><h3>TEAMS</h3><p><b>One Minute MadneSS: Red vs Blue.</b> Explain the words to your team. First to the target wins!</p></div><div class="go">${PLAY}</div></button>
-        <button class="mode solo" id="m-solo"><div class="pics"><img src="${CHAIT}" alt=""></div>
-          <div class="info"><h3>ON MY OWN</h3><p><b>Beat the Clock.</b> The meaning pops up, you pick the word. Perfect for studying!</p></div><div class="go">${PLAY}</div></button>
-      </div>
-    </div>`;
-  wireSound();
-  document.getElementById('home').onclick = renderHome;
-  document.getElementById('m-teams').onclick = () => { Sound.unlock(); renderSetup(); };
-  document.getElementById('m-solo').onclick = () => { Sound.unlock(); renderQuizSetup(); };
-}
+// back to this grade's games (or home if no grade has been picked)
+const toGames = () => (S.grade ? renderGrade() : renderHome());
 
 /* ------------------------------------------------------------ ON MY OWN: Beat the Clock */
 // The hint (the meaning) shows; the learner taps the right word out of four from the same topic.
@@ -613,7 +659,7 @@ function renderQuizSetup() {
   const sel = QUIZ_TOPICS[d.id] || new Set(keys); QUIZ_TOPICS[d.id] = sel;
   const chip = k => { const t = d.topics[k]; return `<button class="tchip${sel.has(k) ? ' on' : ''}" data-k="${k}" style="--c:${t.c}" aria-pressed="${sel.has(k)}">${ICONS[k]('currentColor')}${t.name}</button>`; };
   const all = sel.size === keys.length;
-  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back">${HOME}<span>Decks</span></button><div class="grow"></div>${soundBtn()}</div>
+  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to the games">${HOME}<span>Games</span></button><div class="grow"></div>${soundBtn()}</div>
     <div class="setup">
       <div class="deckname">${esc(d.title)}</div>
       <div class="result solo-hero"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
@@ -626,7 +672,7 @@ function renderQuizSetup() {
       <button class="action" id="startquiz">${PLAY} START</button>
     </div>`;
   wireSound();
-  document.getElementById('home').onclick = renderMode;
+  document.getElementById('home').onclick = toGames;
   const paint = () => {
     const isAll = sel.size === keys.length;
     app.querySelectorAll('.tchip[data-k]').forEach(b => { const on = sel.has(b.dataset.k); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
@@ -779,7 +825,7 @@ function renderTestSetup() {
   const sel = TEST_SECS[t.id] || new Set(keys); TEST_SECS[t.id] = sel;
   const chip = k => { const x = t.sections[k]; return `<button class="tchip${sel.has(k) ? ' on' : ''}" data-k="${k}" style="--c:${x.c}" aria-pressed="${sel.has(k)}">${ICONS[k]('currentColor')}${x.name}</button>`; };
   const all = sel.size === keys.length;
-  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back">${HOME}<span>Decks</span></button><div class="grow"></div>${soundBtn()}</div>
+  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to the games">${HOME}<span>Games</span></button><div class="grow"></div>${soundBtn()}</div>
     <div class="setup">
       <div class="deckname">${esc(t.title)} · ${esc(t.sub)}</div>
       <div class="result solo-hero"><img class="me" src="${CHAIT}" alt="Mr Chait giving a thumbs up">
@@ -792,7 +838,7 @@ function renderTestSetup() {
       <button class="action" id="starttest">${PLAY} START</button>
     </div>`;
   wireSound();
-  document.getElementById('home').onclick = renderHome;
+  document.getElementById('home').onclick = toGames;
   const paint = () => {
     const isAll = sel.size === keys.length;
     app.querySelectorAll('.tchip[data-k]').forEach(b => { const on = sel.has(b.dataset.k); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
@@ -934,7 +980,7 @@ const TARGETS = [5, 10, 15, 20, 25];
 let M = null; // the match in progress
 function renderSetup() {
   S.screen = 'setup'; window.scrollTo(0, 0);
-  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to decks">${HOME}<span>Decks</span></button><div class="grow"></div>${soundBtn()}</div>
+  app.innerHTML = `<div class="bar"><button class="chip" id="home" aria-label="Back to the games">${HOME}<span>Games</span></button><div class="grow"></div>${soundBtn()}</div>
     <div class="setup">
       <div class="deckname">${esc(S.deck.title)}</div>
       <div class="faceoff">
@@ -950,7 +996,7 @@ function renderSetup() {
       <button class="practice" id="practice">or just play in pairs (no teams)</button>
     </div>`;
   wireSound();
-  document.getElementById('home').onclick = renderMode;
+  document.getElementById('home').onclick = toGames;
   app.querySelectorAll('.tgt').forEach(b => b.onclick = () => {
     S.target = +b.dataset.t; Sound.tick(true);
     app.querySelectorAll('.tgt').forEach(x => { const on = +x.dataset.t === S.target; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
@@ -984,7 +1030,7 @@ function miniScore() {
     <span class="pill team-blue">${M.score.blue}</span><span class="t">FIRST<br>TO ${M.target}</span><span class="pill team-red">${M.score.red}</span></div>`;
 }
 function topBar() {
-  return `<div class="bar"><button class="chip" id="home" aria-label="Back to decks">${HOME}<span>Decks</span></button>
+  return `<div class="bar"><button class="chip" id="home" aria-label="Back to the games">${HOME}<span>Games</span></button>
     <div class="grow"></div>${S.mode === 'match' ? miniScore() : S.mode === 'quiz' ? '<span class="round-label">BEAT THE CLOCK</span>' : S.mode === 'test' ? '<span class="round-label">CYCLE TEST MEMO</span>' : `<span class="round-label">ROUND ${S.round}</span>`}<div class="grow"></div>${soundBtn()}</div>`;
 }
 function wireHome() {
@@ -992,9 +1038,9 @@ function wireHome() {
   // in a match, leaving needs a second tap so nobody loses the scores by accident (no pop-up dialogs)
   let armed = false, t = 0;
   b.onclick = () => {
-    if (S.mode !== 'match' || S.screen === 'final' || armed) { stopTimer(); renderHome(); return; }
+    if (S.mode !== 'match' || S.screen === 'final' || armed) { stopTimer(); toGames(); return; }
     armed = true; b.classList.add('armed'); b.querySelector('span').textContent = 'Tap again to quit';
-    clearTimeout(t); t = setTimeout(() => { armed = false; b.classList.remove('armed'); b.querySelector('span').textContent = 'Decks'; }, 2500);
+    clearTimeout(t); t = setTimeout(() => { armed = false; b.classList.remove('armed'); b.querySelector('span').textContent = 'Games'; }, 2500);
   };
 }
 function ring() {
@@ -1218,11 +1264,11 @@ function renderFinal() {
       <p class="tip">Learn each word with its meaning, then play again and beat your score!</p>
     </div>
     <button class="action" id="again">${PLAY} REMATCH</button>
-    <button class="practice" id="decks">Pick a different deck</button>
+    <button class="practice" id="decks">Pick a different game</button>
   </div>`;
   wireSound(); wireHome();
   document.getElementById('again').onclick = () => { Sound.unlock(); S.target = M.target; startMatch(); };
-  document.getElementById('decks').onclick = renderHome;
+  document.getElementById('decks').onclick = toGames;
   window.scrollTo(0, 0);
 }
 
