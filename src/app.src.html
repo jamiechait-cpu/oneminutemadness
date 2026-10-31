@@ -385,6 +385,15 @@ canvas#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:non
 .opts.list .opt{min-height:58px;text-align:left;font-size:clamp(15px, 4.1vw, 19px);line-height:1.25;padding:10px 14px}
 .opts .opt:disabled{cursor:default}
 .opts.done .opt:not(.right):not(.wrong){opacity:.45}
+.opts.three{grid-template-columns:repeat(3, 1fr)}
+.opts.three .opt{font-size:clamp(14px, 3.9vw, 20px);padding:8px 4px}
+.qpics{display:flex;gap:8px;justify-content:center;width:100%}
+.qpics button{flex:1;max-width:420px;border-radius:12px;overflow:hidden;background:var(--paper);border:3px solid var(--c);padding:0;position:relative}
+.qpics img{display:block;width:100%;height:auto}
+.qpics button::after{content:"🔍 tap to zoom";position:absolute;right:6px;bottom:6px;font-size:11px;font-weight:900;color:var(--paper);background:rgba(36,26,77,.8);border-radius:999px;padding:2px 8px}
+.zoom{position:fixed;inset:0;z-index:50;background:rgba(20,14,46,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;animation:pop .2s}
+.zoom img{max-width:100%;max-height:82vh;border-radius:14px;background:var(--paper)}
+.zoom .close{font-weight:900;font-size:16px;color:var(--sun)}
 .memo{border-radius:18px;background:var(--paper);color:var(--ink);border:4px solid var(--good);padding:12px 14px 14px;animation:pop .3s}
 .memo.no{border-color:var(--bad)}
 .memo .lbl{font-family:var(--display);font-size:22px;letter-spacing:.04em;color:var(--good);padding-top:3px}
@@ -802,7 +811,7 @@ function renderTestSetup() {
 // only = a list of question indexes, for "Just my mistakes" (not counted for the personal best)
 function startTest(sel, only) {
   const t = S.test;
-  const pool = t.qs.map(([s, ref, q, ok, wr, memo], i) => ({ i, s, ref, q, ok, wr, memo }))
+  const pool = t.qs.map(([s, ref, q, ok, wr, memo, pics], i) => ({ i, s, ref, q, ok, wr, memo, pics }))
     .filter(x => only ? only.includes(x.i) : sel.has(x.s));
   T = { secs: new Set(sel), only: only || null, pool, queue: [...pool], again: [], pass: 1, done: 0, first: 0, missed: new Map(), cur: null, opts: [], locked: false,
         key: testKey(t, sel) };
@@ -818,6 +827,13 @@ function startTest(sel, only) {
   wireSound(); wireHome(); window.scrollTo(0, 0);
   nextTestQ();
 }
+const refLabel = r => r === 'Passage' ? 'Test reading passage' : r === 'Pyramids' ? 'Test: population pyramids' : 'Test question ' + r.slice(1);
+// tap a picture to see it big; tap anywhere to close (no pop-up dialogs)
+function zoomPic(src) {
+  const z = document.createElement('div'); z.className = 'zoom';
+  z.innerHTML = `<img src="${src}" alt=""><button class="close">Tap anywhere to close</button>`;
+  z.onclick = () => z.remove(); document.body.appendChild(z);
+}
 function paintTestProgress() {
   const p = document.getElementById('tprog'); if (!p) return;
   p.classList.toggle('again', T.pass > 1);
@@ -831,13 +847,15 @@ function nextTestQ() {
     document.getElementById('status').textContent = T.pass === 2 ? 'Second go! Let’s fix the ones you missed.' : 'One more go at these!';
   }
   const x = T.queue.shift(); T.cur = x; T.locked = false;
-  T.opts = x.wr.length === 1 ? [x.ok, ...x.wr].sort() : shuffle([x.ok, ...x.wr]);
+  T.opts = x.wr.length < 3 ? [x.ok, ...x.wr].sort() : shuffle([x.ok, ...x.wr]);
   const sec = S.test.sections[x.s];
   const qc = document.getElementById('qcard');
   qc.style.setProperty('--c', sec.c); qc.style.setProperty('--t', sec.t);
-  qc.innerHTML = `<div class="in slide"><div class="tag">${ICONS[x.s](sec.c)}${sec.name}</div><div class="ref">Test ${x.ref === 'Passage' ? 'reading passage' : 'question ' + x.ref.slice(1)}</div><p class="qtext">${esc(x.q)}</p></div>`;
+  const pics = (x.pics || []).map(k => `<button data-pic="${k}" aria-label="Zoom in on Pyramid ${k}"><img src="${S.test.pics[k]}" alt="Population Pyramid ${k}"></button>`).join('');
+  qc.innerHTML = `<div class="in slide"><div class="tag">${ICONS[x.s](sec.c)}${sec.name}</div><div class="ref">${refLabel(x.ref)}</div>${pics ? `<div class="qpics">${pics}</div>` : ''}<p class="qtext">${esc(x.q)}</p></div>`;
+  qc.querySelectorAll('[data-pic]').forEach(b => b.onclick = () => zoomPic(S.test.pics[b.dataset.pic]));
   const op = document.getElementById('opts');
-  op.className = 'opts' + (T.opts.some(o => o.length > 18) ? ' list' : '');
+  op.className = 'opts' + (T.opts.some(o => o.length > 18) ? ' list' : T.opts.length === 3 ? ' three' : '');
   op.innerHTML = T.opts.map((o, i) => `<button class="opt" data-i="${i}">${esc(o)}</button>`).join('');
   op.querySelectorAll('.opt').forEach(b => b.onclick = () => testAnswer(+b.dataset.i));
   document.getElementById('memo').innerHTML = '';
@@ -876,7 +894,7 @@ function endTest() {
   const bySec = Object.keys(t.sections).map(k => [k, [...T.missed.keys()].filter(x => x.s === k)]).filter(([, xs]) => xs.length);
   const list = bySec.length ? bySec.map(([k, xs]) => { const sec = t.sections[k];
       return `<div class="sec" style="--c:${sec.c}">${sec.name}</div><ul>${xs.map(x => { const m = T.missed.get(x);
-        return `<li style="--c:${sec.c}"><span class="qn">${x.ref === 'Passage' ? 'PASSAGE' : 'TEST ' + x.ref}</span><div class="qq">${esc(x.q)}</div>
+        return `<li style="--c:${sec.c}"><span class="qn">${x.ref === 'Passage' ? 'PASSAGE' : x.ref === 'Pyramids' ? 'PYRAMIDS' : 'TEST ' + x.ref}</span><div class="qq">${esc(x.q)}</div>
           <div class="picked">You picked: ${[...m.picked].map(esc).join(' · ')}</div><div class="ok">Answer: ${esc(x.ok)}</div><p>${esc(x.memo)}</p></li>`; }).join('')}</ul>`; }).join('')
     : '<p class="none">Every question right first time. Flawless! 🏆</p>';
   const secs = T.only ? 'just my mistakes' : T.secs.size === Object.keys(t.sections).length ? 'whole test' : [...T.secs].map(k => t.sections[k].name).join(', ');

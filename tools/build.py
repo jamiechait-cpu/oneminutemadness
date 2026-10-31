@@ -7,7 +7,7 @@
   that works offline and needs no other host.
 - Checks every hint: a hint must never contain its own word (or the first 4 letters of any part of it).
 - Inlines every cycle-test practice file in src/tests/*.js (each defines a TEST_xxx constant) and checks it:
-  every question needs a right answer, 1 or 3 wrong answers (no repeats, none equal to the right one) and a memo line.
+  every question needs a right answer, 1 to 3 wrong answers (no repeats, none equal to the right one) and a memo line.
 """
 import base64, glob, io, os, re, subprocess, sys, json
 
@@ -48,7 +48,7 @@ def check_tests(test_files):
          "const T=eval(src.replace(/if \\(typeof module[\\s\\S]*$/,'')+';'+src.match(/const (TEST_\\w+)/)[1]);" \
          "T.qs.forEach((q,i)=>{const [s,ref,qt,ok,wr,memo]=q;const all=[ok,...(wr||[])];" \
          "const err=!T.sections[s]?'unknown section':!qt||!ok||!memo?'missing question, answer or memo':" \
-         "!(wr&&(wr.length===1||wr.length===3))?'needs 1 or 3 wrong answers':new Set(all).size!==all.length?'repeated answer':'';" \
+         "!(wr&&wr.length>=1&&wr.length<=3)?'needs 1 to 3 wrong answers':(q[6]||[]).some(k=>!(T.pics||{})[k])?'unknown picture':new Set(all).size!==all.length?'repeated answer':'';" \
          "if(err){bad++;console.log('TEST QUESTION PROBLEM:',T.id,'#'+(i+1),ref,'|',err,'|',qt)}})}process.exit(bad?1:0)"
     r = subprocess.run(['node', '-e', js, json.dumps(test_files)], capture_output=True, text=True)
     print(r.stdout, r.stderr, end='')
@@ -64,6 +64,13 @@ def main():
     decks = '\n'.join(open(f).read().replace("if (typeof module !== 'undefined') module.exports", '//') for f in deck_files + test_files)
     s = open(os.path.join(SRC, 'app.src.html')).read()
     s = s.replace('/*DECKS*/', decks)
+    # pictures for test questions: '__TESTIMG_<name>__' -> src/assets/tests/<name>.png, inlined
+    def testimg(m):
+        f = os.path.join(SRC, 'assets', 'tests', m.group(1) + '.png')
+        if not os.path.exists(f):
+            sys.exit(f'Missing test picture: {f}')
+        return webp_data_uri(f)
+    s = re.sub(r'__TESTIMG_([\w-]+)__', testimg, s)
     s = s.replace('__CHAIT__', webp_data_uri(os.path.join(SRC, 'assets', 'chait-sticker.png')))
     s = s.replace('__CHAIT_BLUE__', webp_data_uri(os.path.join(SRC, 'assets', 'chait-blue-sticker.png')))
     s = s.replace('__CHAIT_RED__', webp_data_uri(os.path.join(SRC, 'assets', 'chait-red-sticker.png')))
