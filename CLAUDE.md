@@ -18,8 +18,8 @@ Jamie Chait's own classroom study game (Knights Preparatory School, Randburg). L
 4. A turn is one minute of the rolling round: one word at a time. **GOT IT!** = 1 point. **SKIP** sends the word to the back of the pile. **Oops, undo** takes back the last tick. **HINT −10 sec** shows the hint and takes 10 seconds off the clock (`HINT_COST`); the word can still be ticked, it never costs twice, and the button is locked in the last 10 seconds. The score strip is in the team colour and shows "Match: 7 of 10 · 3 to win".
 5. Time up: buzzer, "TIME'S UP!", the hint for the last word (locked). Then the team's Mr Chait says "BLUE GOT 6!" with a random line by score (`PRAISE`), and a **SCORE UPDATE** board pops up: both teams' bars grow to the new totals, a "+6" badge, and "Blue needs 3 more · Red needs 5 more". The button says "TEAM RED'S TURN".
 6. **Winning is instant**: the moment a team's total reaches the target, mid-turn, the match ends. The win screen shows "BLUE WINS!" stamp, a bouncing team Mr Chait, "WHOOOHOOO! MADNESS!", confetti and a fanfare, and the final score.
-7. Under that is the **score sheet**: points, turns, skips and hints per team, and each team's **words to study**. These are the words they skipped, ran out of time on, or needed a hint for, each with its hint as the meaning, tagged Skipped / Out of time / Needed a hint. Then REMATCH (same target) or "Pick a different deck".
-8. In a match, the Decks button needs a second tap ("Tap again to quit") so nobody loses the score by accident. No pop-up dialogs.
+7. Under that is the **score sheet**: points, turns, skips and hints per team, and each team's **words to study**. These are the words they skipped, ran out of time on, or needed a hint for, each with its hint as the meaning, tagged Skipped / Out of time / Needed a hint. Then REMATCH (same target) or "Pick a different game".
+8. In a match, the Games button needs a second tap ("Tap again to quit") so nobody loses the score by accident. No pop-up dialogs.
 
 Pairs (no teams) keeps the old result panel: "YOU GOT 7!", best this game, NEW BEST from round 2.
 
@@ -29,7 +29,7 @@ Pairs (no teams) keeps the old result panel: "YOU GOT 7!", best this game, NEW B
 - Score sheet: "YOU GOT 9!" with a random line by score, NEW BEST ribbon and confetti; stats (right, wrong, accuracy, best streak); **words to study** (each wrong word with "You picked: …", its meaning, and "Got it later ✓" if they fixed it); "You knew these" chips; PLAY AGAIN or Change topics.
 - Personal best is saved on the device in localStorage (`omm-best-<deck>-<topic keys>`), just a number, no names.
 
-**Cycle test memo** (Jamie's idea, 31 Oct 2026; first called Test Practice, renamed by Jamie the same day): a learner redoes one of Jamie's cycle tests on their own. It has its own "Cycle test memo" section on the home screen, under the decks.
+**Cycle test memo** (Jamie's idea, 31 Oct 2026; first called Test Practice, renamed by Jamie the same day): a learner redoes one of Jamie's cycle tests on their own. It is the third game card on each grade screen (only for grades that have a test).
 - Each written test question became 1 or 2 tap-the-answer questions (4 options, or 2 for weather/climate), in test order, with **no clock**. Pick sections or the whole test.
 - After every tap, the **memo line** shows, right or wrong ("NOT QUITE · Answer: …"), then NEXT. Missed questions come back for another go at the end, until all are right.
 - Score = **right first time** out of the total; best is kept on the device (`omm-best-<test id>-<section keys>`). The test sheet lists **questions to revise** by section (what they picked, the answer, the memo line), then JUST MY MISTAKES (redo only those; doesn't count for the best), redo the whole thing, or change sections.
@@ -80,7 +80,7 @@ Deep purple sunburst world (#241A4D), sunshine yellow #FFD23F, hot pink #FF4F9A;
 
 ## Ideas Jamie has liked / next steps
 
-- Done: Test Practice for the Grade 6 SS Term 3 cycle test and the Grade 7 EMS Movie Night cycle test (31 Oct). Next tests the same way: Jamie sends the paper + memo.
+- Done (live 31 Oct): Cycle test memo for the Grade 6 SS Term 3 test and the Grade 7 EMS Movie Night test; the rename to Mr Chait's Classroom; the grade-first layout. Next tests the same way: Jamie sends the paper + memo.
 - Done: random Mr Chait lines by score, the rolling round, the hint button, the Red vs Blue match with score sheet and words to study (live 29 Oct), ON MY OWN Beat the Clock.
 - Planned: picture words. Jamie is making simple AI images (square, white background, no text) named after the word; about one word in four shows the picture with the word in small text underneath, so the partner still says the exact term.
 - Possible next: give Red one last turn when Blue wins first (equal turns), or a class leaderboard.
