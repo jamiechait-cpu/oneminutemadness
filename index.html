@@ -1737,6 +1737,8 @@ function nextDiagram() {
   L.di++;
   const g = L.dias[L.di], tp = topicOf(g.t);
   L.queue = g.pins.map((_, i) => i); L.again = []; L.pass = 1;
+  // the label buttons are mixed up (never in the diagram's own order), and stay in that order for this diagram
+  do { L.order = shuffle(g.pins.map((_, i) => i)); } while (g.pins.length > 2 && L.order.every((v, j) => v === j));
   app.innerHTML = `${topBar()}<div class="game"><div class="stage"><div class="card flip" id="card">
       <div class="head">${LOCKUP()}<div class="grow"></div><div class="tprog" id="tprog"></div></div>
       <div class="scorebar"><span class="lbl">RIGHT FIRST TIME</span><span class="n" id="score">${TICK}${L.first}</span></div>
@@ -1767,7 +1769,7 @@ function nextPin() {
   const labels = g.pins.map(p => p[2]);
   const op = document.getElementById('opts');
   op.className = 'opts' + (labels.some(o => o.length > 26) ? ' list' : '');
-  op.innerHTML = labels.map((o, k) => `<button class="opt" data-k="${k}">${esc(o)}</button>`).join('');
+  op.innerHTML = L.order.map(k => `<button class="opt" data-k="${k}">${esc(labels[k])}</button>`).join('');
   op.querySelectorAll('.opt').forEach(b => b.onclick = () => labelAnswer(+b.dataset.k));
   document.getElementById('memo').innerHTML = '';
   paintLabelProgress();
@@ -1777,16 +1779,17 @@ function labelAnswer(k) {
   L.locked = true;
   const g = L.dias[L.di], i = L.cur, p = g.pins[i], right = k === i, id = pinId(g, i);
   const op = document.getElementById('opts'), btns = [...op.querySelectorAll('.opt')], pin = document.getElementById('pin' + i);
+  const btn = n => op.querySelector(`.opt[data-k="${n}"]`);
   op.classList.add('done'); btns.forEach(b => (b.disabled = true));
   pin.classList.remove('now');
   if (right) {
-    Sound.ding(); btns[k].classList.add('right'); L.placed.add(id);
+    Sound.ding(); btn(k).classList.add('right'); L.placed.add(id);
     pin.classList.add('done'); pin.classList.toggle('miss', false); pin.innerHTML = `<span class="n">${i + 1}</span><span class="t">${esc(p[2])}</span>`;
     const key = document.getElementById('dkey');
     if (key) key.innerHTML = g.pins.map((q, j) => [q, j]).filter(([, j]) => L.placed.has(pinId(g, j))).map(([q, j]) => `<li><b>${j + 1}</b>${esc(q[2])}</li>`).join('');
     if (L.pass === 1) { L.first++; const n = document.getElementById('score'); n.innerHTML = `${TICK}${L.first}`; n.classList.remove('bump'); void n.offsetWidth; n.classList.add('bump'); }
   } else {
-    Sound.undo(); btns[k].classList.add('wrong'); btns[i].classList.add('right', 'reveal');
+    Sound.undo(); btn(k).classList.add('wrong'); btn(i).classList.add('right', 'reveal');
     const m = L.missed.get(id) || { g, i, picked: new Set() }; m.picked.add(g.pins[k][2]); L.missed.set(id, m);
     pin.classList.add('miss'); L.again.push(i);
   }
