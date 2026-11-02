@@ -1128,7 +1128,7 @@ function labelAnswer(k) {
   }
   const lastHere = !L.queue.length && !L.again.length, last = lastHere && L.di + 1 >= L.dias.length;
   document.getElementById('memo').innerHTML = `<div class="memo${right ? '' : ' no'}"><div class="lbl">${right ? (L.pass === 1 ? 'CORRECT!' : 'FIXED IT!') : 'NOT QUITE'}</div>
-    ${right ? '' : `<div class="ans">${i + 1} is the ${esc(p[2].toLowerCase())}</div>`}<p><b>${esc(p[2])}:</b> ${esc(p[3])}</p>
+    ${right ? '' : `<div class="ans">Answer: ${esc(p[2])}</div>`}<p><b>${esc(p[2])}:</b> ${esc(p[3])}</p>
     ${right ? '' : '<div class="comeback">This one comes back for another go.</div>'}
     <button class="action" id="nextq">${last ? 'SEE MY SCORE' : lastHere ? 'NEXT DIAGRAM' : 'NEXT'} ${PLAY}</button></div>`;
   document.getElementById('nextq').onclick = nextPin;
